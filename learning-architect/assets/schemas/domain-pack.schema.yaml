@@ -13,7 +13,7 @@ properties:
   created_at: {$ref: common.schema.yaml#/$defs/timestamp}
   updated_at: {$ref: common.schema.yaml#/$defs/timestamp}
   version: {$ref: common.schema.yaml#/$defs/version}
-  last_reviewed_at: {$ref: common.schema.yaml#/$defs/timestamp}
+  last_reviewed_at: {type: string, format: date}
   review_interval_days: {type: integer, minimum: 1}
   target_outcomes: {type: array}
   competencies: {type: array}

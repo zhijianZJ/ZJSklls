@@ -8,6 +8,7 @@ import tempfile
 import unittest
 
 import yaml
+from jsonschema import FormatChecker
 
 ROOT = Path(__file__).resolve().parents[2]
 MODULE_PATH = ROOT / "learning-architect/scripts/validate_learning_system.py"
@@ -151,6 +152,79 @@ class LearningSystemValidationTests(unittest.TestCase):
         self.assertEqual(set(category_counts), expected_categories)
         self.assertEqual(set(category_counts.values()), {6})
 
+    def test_ai_agent_domain_pack_matches_schema(self):
+        pack = self.load_ai_agent_domain_pack()
+        schemas, registry = self.validator._load_schemas(self.skill_root)
+        issues = sorted(
+            self.validator.Draft202012Validator(
+                schemas["domain-pack"],
+                registry=registry,
+                format_checker=FormatChecker(),
+            ).iter_errors(pack),
+            key=lambda item: list(item.path),
+        )
+        messages = [
+            f"{'.'.join(str(part) for part in issue.path) or '<root>'}: "
+            f"{issue.message}"
+            for issue in issues
+        ]
+        self.assertEqual(messages, [])
+
+    def test_domain_pack_review_date_accepts_calendar_date(self):
+        pack = self.load_ai_agent_domain_pack()
+        issues = self.domain_pack_issues(pack)
+        self.assertFalse(
+            any(list(issue.path) == ["last_reviewed_at"] for issue in issues),
+            [issue.message for issue in issues],
+        )
+
+    def test_domain_pack_review_date_rejects_invalid_calendar_date(self):
+        pack = self.load_ai_agent_domain_pack()
+        pack["last_reviewed_at"] = "2026-02-30"
+        issues = self.domain_pack_issues(pack)
+        self.assertTrue(
+            any(list(issue.path) == ["last_reviewed_at"] for issue in issues),
+            [issue.message for issue in issues],
+        )
+
+    def test_ai_agent_domain_pack_dependency_endpoints_exist(self):
+        pack = self.load_ai_agent_domain_pack()
+        competency_ids = {
+            competency["id"] for competency in pack["competencies"]
+        }
+        unknown_endpoints = sorted(
+            {
+                endpoint
+                for dependency in pack["dependencies"]
+                for endpoint in (dependency["from"], dependency["to"])
+                if endpoint not in competency_ids
+            }
+        )
+        self.assertEqual(unknown_endpoints, [])
+
+    def test_ai_agent_domain_pack_includes_required_competencies(self):
+        pack = self.load_ai_agent_domain_pack()
+        competency_ids = {
+            competency["id"] for competency in pack["competencies"]
+        }
+        required_ids = {
+            "python-foundation",
+            "api-integration",
+            "prompt-engineering",
+            "llm-fundamentals",
+            "embedding-retrieval",
+            "rag-engineering",
+            "tool-calling",
+            "agent-workflow",
+            "mcp-integration",
+            "multi-agent-coordination",
+            "evaluation-observability",
+            "deployment-security",
+            "business-problem-framing",
+            "technical-communication",
+        }
+        self.assertEqual(sorted(required_ids - competency_ids), [])
+
     def test_confidence_enum_is_accepted(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
             learner_dir = Path(temporary_directory) / "learner"
@@ -225,6 +299,21 @@ class LearningSystemValidationTests(unittest.TestCase):
             document = yaml.safe_load(path.read_text(encoding="utf-8"))
             document["confidence"] = value
             path.write_text(yaml.safe_dump(document), encoding="utf-8")
+
+    def load_ai_agent_domain_pack(self):
+        path = self.skill_root / "assets" / "domain-packs" / "ai-agent.yaml"
+        self.assertTrue(path.is_file(), f"Missing Domain Pack: {path}")
+        return yaml.safe_load(path.read_text(encoding="utf-8"))
+
+    def domain_pack_issues(self, pack):
+        schemas, registry = self.validator._load_schemas(self.skill_root)
+        return list(
+            self.validator.Draft202012Validator(
+                schemas["domain-pack"],
+                registry=registry,
+                format_checker=FormatChecker(),
+            ).iter_errors(pack)
+        )
 
     def run_cli(self, learner_dir):
         return subprocess.run(

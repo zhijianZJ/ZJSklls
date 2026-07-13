@@ -1,0 +1,311 @@
+id: ai-agent-engineer
+schema_version: 1.0.0
+content_version: 1.0.0
+status: active
+source: Learning Architect reference synthesis
+confidence: medium
+created_at: "2026-07-13T00:00:00+08:00"
+updated_at: "2026-07-13T00:00:00+08:00"
+version: 1.0.0
+last_reviewed_at: "2026-07-13"
+review_interval_days: 90
+
+target_outcomes:
+  - id: production-ai-agent-delivery
+    name: Production AI agent delivery
+    description: Design, evaluate, deploy, and explain an AI agent that solves a bounded business problem under explicit reliability, security, and cost constraints.
+    success_evidence:
+      - A working external-facing delivery with acceptance evidence
+      - Reproducible functional and quality evaluations
+      - An architecture and operations handover suitable for another engineer
+  - id: ai-agent-engineering-employment
+    name: AI agent engineering employment readiness
+    description: Present verified implementation evidence and make defensible technical and business trade-offs in a hiring process.
+    success_evidence:
+      - A portfolio case with traceable competency coverage
+      - A live architecture and failure-analysis walkthrough
+      - Role-specific interview and work-sample evidence
+
+competencies:
+  - id: python-foundation
+    name: Python foundation
+    category: software-engineering
+    levels:
+      L0: Cannot yet identify or modify Python program structure.
+      L1: Explains basic syntax and follows a demonstrated script with prompts.
+      L2: Implements and tests a bounded Python module independently.
+      L3: Integrates typed modules, dependencies, errors, and tests in an application.
+      L4: Profiles and improves maintainability, performance, and reliability under constraints.
+      L5: Defines Python engineering standards and guides novel cross-service decisions.
+    evidence_requirements: [Runnable repository, automated tests, dependency and error-handling rationale]
+  - id: api-integration
+    name: API integration
+    category: software-engineering
+    levels:
+      L0: Cannot yet identify an API request-response contract.
+      L1: Explains endpoints, authentication, payloads, and status codes from an example.
+      L2: Calls a documented API and handles a bounded success and error path.
+      L3: Integrates multiple APIs with validation, retries, timeouts, and idempotency controls.
+      L4: Optimizes integration reliability, latency, cost, rate limits, and degradation behavior.
+      L5: Defines interface standards and leads novel multi-system integration decisions.
+    evidence_requirements: [Contract tests, failure simulation, integration decision record]
+  - id: prompt-engineering
+    name: Prompt engineering
+    category: model-interaction
+    levels:
+      L0: Cannot yet distinguish instructions, context, examples, and outputs.
+      L1: Explains prompt components and adapts a demonstrated prompt with guidance.
+      L2: Produces a structured prompt for a bounded task and checks representative outputs.
+      L3: Designs prompt variants, schemas, context boundaries, and regression evaluations.
+      L4: Optimizes quality, robustness, latency, and cost using comparative evidence.
+      L5: Defines prompting standards and leads novel interaction-pattern decisions.
+    evidence_requirements: [Versioned prompts, evaluation set, comparison report]
+  - id: llm-fundamentals
+    name: LLM fundamentals
+    category: model-understanding
+    levels:
+      L0: Cannot yet explain what an LLM predicts or its basic limitations.
+      L1: Explains tokens, context, sampling, hallucination, and major model constraints.
+      L2: Selects model settings for a bounded task and predicts common failure modes.
+      L3: Diagnoses model behavior using controlled experiments and trade-off analysis.
+      L4: Evaluates model choices across quality, safety, latency, privacy, and cost.
+      L5: Sets model-selection principles and guides novel high-impact decisions.
+    evidence_requirements: [Model comparison, controlled experiments, limitations briefing]
+  - id: embedding-retrieval
+    name: Embedding and retrieval
+    category: knowledge-systems
+    levels:
+      L0: Cannot yet distinguish semantic retrieval from generation.
+      L1: Explains embeddings, chunking, indexing, similarity, and retrieval metrics.
+      L2: Builds a bounded semantic index and retrieves relevant items.
+      L3: Tunes chunking, metadata, hybrid retrieval, reranking, and evaluation.
+      L4: Optimizes retrieval quality, freshness, scale, access control, and cost.
+      L5: Defines retrieval architecture standards and leads novel knowledge-system decisions.
+    evidence_requirements: [Indexed corpus, retrieval evaluation, design rationale]
+  - id: rag-engineering
+    name: RAG engineering
+    category: knowledge-systems
+    levels:
+      L0: Cannot yet trace a retrieval-augmented generation flow.
+      L1: Explains ingestion, retrieval, grounding, citation, and common RAG failures.
+      L2: Implements a bounded RAG application with source attribution.
+      L3: Integrates retrieval evaluation, generation evaluation, fallbacks, and freshness controls.
+      L4: Optimizes grounded quality, security, latency, operations, and business fit.
+      L5: Defines RAG governance and leads novel enterprise knowledge decisions.
+    evidence_requirements: [End-to-end RAG system, groundedness tests, failure analysis]
+  - id: tool-calling
+    name: Tool calling
+    category: agent-engineering
+    levels:
+      L0: Cannot yet identify when a model should call a tool.
+      L1: Explains tool schemas, selection, arguments, results, and failure risks.
+      L2: Implements validated tool calls for a bounded task.
+      L3: Coordinates multiple tools with permissions, retries, and deterministic controls.
+      L4: Optimizes tool choice, safety, observability, latency, and recovery.
+      L5: Defines tool-platform standards and leads novel action-system decisions.
+    evidence_requirements: [Tool schemas, integration tests, permission and failure controls]
+  - id: agent-workflow
+    name: Agent workflow
+    category: agent-engineering
+    levels:
+      L0: Cannot yet distinguish an agent loop from a single model call.
+      L1: Explains state, planning, action, observation, termination, and human checkpoints.
+      L2: Implements a bounded stateful agent workflow with explicit termination.
+      L3: Integrates branching, recovery, memory boundaries, and human-in-the-loop decisions.
+      L4: Optimizes workflow reliability and business outcomes with trace evidence.
+      L5: Defines orchestration standards and leads novel high-autonomy workflow decisions.
+    evidence_requirements: [State diagram, workflow traces, termination and recovery tests]
+  - id: mcp-integration
+    name: MCP integration
+    category: interoperability
+    levels:
+      L0: Cannot yet identify MCP client, server, tool, resource, or prompt roles.
+      L1: Explains MCP primitives, capability negotiation, and trust boundaries.
+      L2: Connects and tests a bounded MCP client-server integration.
+      L3: Implements discoverable capabilities, validation, errors, and least-privilege access.
+      L4: Optimizes interoperability, security, observability, and compatibility across servers.
+      L5: Defines MCP platform conventions and leads novel ecosystem integration decisions.
+    evidence_requirements: [Working MCP integration, protocol tests, trust-boundary review]
+  - id: multi-agent-coordination
+    name: Multi-agent coordination
+    category: agent-engineering
+    levels:
+      L0: Cannot yet explain why work might be delegated across agents.
+      L1: Explains roles, handoffs, shared state, conflicts, and coordination overhead.
+      L2: Implements a bounded delegation flow with explicit inputs and outputs.
+      L3: Coordinates specialized agents with state isolation, conflict handling, and evaluation.
+      L4: Optimizes coordination quality, latency, cost, fault containment, and escalation.
+      L5: Defines multi-agent governance and leads novel distributed-agent decisions.
+    evidence_requirements: [Coordination design, trace set, comparative single-agent baseline]
+  - id: evaluation-observability
+    name: Evaluation and observability
+    category: quality-engineering
+    levels:
+      L0: Cannot yet distinguish anecdotal output review from systematic evaluation.
+      L1: Explains test sets, metrics, traces, judges, feedback, and monitoring limitations.
+      L2: Builds a reproducible functional and quality evaluation for a bounded workflow.
+      L3: Integrates offline tests, online signals, traces, error taxonomy, and regression gates.
+      L4: Optimizes measures for reliability, business impact, bias, cost, and incident learning.
+      L5: Defines evaluation governance and leads novel measurement decisions under uncertainty.
+    evidence_requirements: [Versioned evaluation set, dashboards or traces, regression report]
+  - id: deployment-security
+    name: Deployment and security
+    category: operations
+    levels:
+      L0: Cannot yet identify deployment, secret, data, or model security boundaries.
+      L1: Explains environments, secrets, access control, prompt injection, logging, and rollback.
+      L2: Deploys a bounded service with secret handling, health checks, and basic safeguards.
+      L3: Integrates CI checks, least privilege, threat controls, monitoring, and rollback drills.
+      L4: Optimizes reliability, privacy, security, cost, and incident response under policy.
+      L5: Defines production governance and leads novel high-risk deployment decisions.
+    evidence_requirements: [Deployed service, threat model, operations and rollback evidence]
+  - id: business-problem-framing
+    name: Business problem framing
+    category: product-business
+    levels:
+      L0: Cannot yet distinguish a business problem from a preferred AI solution.
+      L1: Explains users, jobs, constraints, value, risk, and success measures.
+      L2: Frames a bounded problem and tests an AI suitability hypothesis with stakeholders.
+      L3: Prioritizes alternatives and translates needs into measurable acceptance criteria.
+      L4: Optimizes scope and investment using outcome, risk, adoption, and economic evidence.
+      L5: Shapes portfolio strategy and leads novel cross-functional value decisions.
+    evidence_requirements: [Dated stakeholder brief, alternatives analysis, value measures]
+  - id: technical-communication
+    name: Technical communication
+    category: professional
+    levels:
+      L0: Cannot yet explain the system to a named audience.
+      L1: Describes purpose, components, and limitations using a provided structure.
+      L2: Produces clear implementation notes and demonstrates a bounded solution.
+      L3: Adapts architecture, trade-offs, incidents, and handover for technical and business audiences.
+      L4: Facilitates ambiguous decisions using concise evidence, diagrams, and recommendations.
+      L5: Defines communication standards and leads novel high-stakes technical narratives.
+    evidence_requirements: [Architecture narrative, live walkthrough, audience feedback]
+
+dependencies:
+  - {from: python-foundation, to: api-integration}
+  - {from: llm-fundamentals, to: prompt-engineering}
+  - {from: llm-fundamentals, to: embedding-retrieval}
+  - {from: python-foundation, to: tool-calling}
+  - {from: api-integration, to: tool-calling}
+  - {from: embedding-retrieval, to: rag-engineering}
+  - {from: prompt-engineering, to: rag-engineering}
+  - {from: prompt-engineering, to: agent-workflow}
+  - {from: tool-calling, to: agent-workflow}
+  - {from: api-integration, to: mcp-integration}
+  - {from: tool-calling, to: mcp-integration}
+  - {from: agent-workflow, to: multi-agent-coordination}
+  - {from: evaluation-observability, to: deployment-security}
+  - {from: agent-workflow, to: deployment-security}
+  - {from: business-problem-framing, to: technical-communication}
+
+project_archetypes:
+  - id: focused-tool
+    level: 1
+    name: Focused tool
+    example: A validated tool-calling utility for one bounded operational task
+    competency_ids: [python-foundation, api-integration, tool-calling]
+    business_value: Reduce repeat manual work while preserving a reviewable action trail.
+    evidence: [Runnable output, automated tests, usage notes, decision explanation]
+  - id: knowledge-application
+    level: 2
+    name: Knowledge application
+    example: A cited question-answer assistant over a controlled knowledge set
+    competency_ids: [llm-fundamentals, prompt-engineering, embedding-retrieval, rag-engineering]
+    business_value: Improve access to trusted knowledge and measure answer-grounding quality.
+    evidence: [Requirements note, provenance, retrieval tests, groundedness evaluation]
+  - id: workflow
+    level: 3
+    name: Workflow
+    example: A multi-step intake, research, action, and review agent
+    competency_ids: [tool-calling, agent-workflow, evaluation-observability, technical-communication]
+    business_value: Shorten cycle time with explicit human checkpoints and failure recovery.
+    evidence: [Interface contract, state diagram, end-to-end tests, operating guide]
+  - id: enterprise-scenario
+    level: 4
+    name: Enterprise scenario
+    example: A governed internal agent connected through MCP to approved systems
+    competency_ids: [mcp-integration, deployment-security, evaluation-observability, business-problem-framing]
+    business_value: Enable controlled organizational automation with measurable reliability and risk.
+    evidence: [Threat model, access controls, service targets, observability, rollback drill]
+  - id: portfolio-case
+    level: 5
+    name: Portfolio case
+    example: A defensible AI agent case study with comparative architecture decisions
+    competency_ids: [business-problem-framing, agent-workflow, evaluation-observability, technical-communication]
+    business_value: Make engineering judgment and outcome evidence legible to evaluators.
+    evidence: [Narrative, alternatives, measures, architecture, demonstration, reflection]
+  - id: real-external-delivery
+    level: 6
+    name: Real external delivery
+    example: An accepted agent workflow for an external stakeholder's bounded need
+    competency_ids: [multi-agent-coordination, deployment-security, business-problem-framing, technical-communication]
+    business_value: Produce verified stakeholder value and adoption evidence in a real context.
+    evidence: [Dated brief, scope agreement, change log, acceptance evidence, handover, feedback]
+
+assessment_patterns:
+  - id: behavior-demonstration
+    evaluator: qualified reviewer
+    artifact: runnable system and trace
+    observed_behavior: Executes the target-level behavior under stated constraints.
+    threshold: All critical checks pass and no critical behavior is unobserved.
+    feedback_loop: Convert failed criteria into the smallest causal practice and reassess with new evidence.
+  - id: comparative-evaluation
+    evaluator: technical reviewer
+    artifact: versioned test set and comparison report
+    observed_behavior: Selects an approach using quality, reliability, latency, cost, and risk evidence.
+    threshold: Recommendation is reproducible and supported by predefined measures.
+    feedback_loop: Expand representative cases or revise the decision when measures contradict the claim.
+  - id: stakeholder-acceptance
+    evaluator: external or role-representative stakeholder
+    artifact: acceptance record and feedback
+    observed_behavior: Delivers agreed business value and communicates limitations and operations.
+    threshold: Named acceptance criteria are met or exceptions are explicitly accepted.
+    feedback_loop: Reframe unmet needs, update scope, and preserve superseded evidence.
+
+outcome_preparation:
+  employment_preparation:
+    minimum_evidence:
+      - One portfolio case with a complete competency coverage matrix
+      - One real or role-representative delivery with independent feedback
+      - A live system walkthrough including one diagnosed failure
+      - A concise architecture, evaluation, security, and business-value narrative
+    artifacts:
+      - Role-targeted resume evidence bullets
+      - Public-safe repository or demonstration package
+      - Case-study narrative with measures and limitations
+      - Interview stories covering decisions, conflict, failure, and iteration
+    readiness_gate: An evaluator can verify target behaviors from artifacts rather than course-completion claims.
+
+market_assumptions:
+  - id: agentic-ai-demand
+    as_of: "2026-07-13"
+    source_name: World Economic Forum, Future of Jobs Report 2025
+    source_url: https://www.weforum.org/publications/the-future-of-jobs-report-2025/
+    assumption: AI-related skill demand will continue to reward candidates who combine technical implementation with analytical and collaborative capabilities.
+    confidence: medium
+    implication: Preserve business framing and communication beside model and agent engineering.
+    next_review_at: "2026-10-11"
+  - id: responsible-production-evidence
+    as_of: "2026-07-13"
+    source_name: NIST AI 600-1, Generative Artificial Intelligence Profile
+    source_url: https://doi.org/10.6028/NIST.AI.600-1
+    assumption: Production AI work will continue to require documented measurement, risk treatment, monitoring, and human oversight.
+    confidence: high
+    implication: Require evaluation, security, observability, and rollback evidence in advanced projects.
+    next_review_at: "2026-10-11"
+  - id: interoperability-value
+    as_of: "2026-07-13"
+    source_name: Model Context Protocol Specification 2025-06-18
+    source_url: https://modelcontextprotocol.io/specification/2025-06-18
+    assumption: Open capability-discovery and tool-integration patterns will remain relevant to agent interoperability, while implementations will continue to change.
+    confidence: medium
+    implication: Teach protocol concepts, trust boundaries, and replaceable integrations rather than one vendor stack.
+    next_review_at: "2026-10-11"
+
+extensions:
+  migration_map: {}
+  resource_catalog_policy:
+    replaceable: true
+    required_fields: [resource_id, coverage, modality, accessibility, cost_band, source, checked_at]
+    paid_course_requirement_allowed: false
