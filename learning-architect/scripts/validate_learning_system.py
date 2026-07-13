@@ -290,6 +290,30 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
     if curriculum and _has_dependency_cycle(curriculum.get("dependencies", [])):
         errors.append("Curriculum dependency cycle detected")
 
+    roadmap = documents.get("learning-roadmap")
+    if roadmap:
+        phases = roadmap.get("phases", [])
+        phase_cost_sum = sum(phase.get("estimated_cost", 0) for phase in phases)
+        total_estimated_cost = roadmap.get("total_estimated_cost", 0)
+        if abs(phase_cost_sum - total_estimated_cost) > 1e-9:
+            errors.append(
+                "Learning roadmap total_estimated_cost must equal phase cost sum"
+            )
+        budget_amount = roadmap.get("budget", {}).get("amount", 0)
+        if total_estimated_cost > budget_amount:
+            errors.append("Learning roadmap estimated cost exceeds budget")
+        roadmap_currency = roadmap.get("currency")
+        mismatched_phases = [
+            phase.get("id", "<unknown>")
+            for phase in phases
+            if phase.get("currency") != roadmap_currency
+        ]
+        if mismatched_phases:
+            errors.append(
+                "Learning roadmap phase currency mismatch: "
+                + ", ".join(mismatched_phases)
+            )
+
     competency_model = documents.get("competency-model")
     evidence = documents.get("evidence")
     if competency_model and evidence:

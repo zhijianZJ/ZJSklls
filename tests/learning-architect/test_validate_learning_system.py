@@ -78,6 +78,14 @@ class LearningSystemValidationTests(unittest.TestCase):
         "independent",
         "transfer",
     }
+    CANONICAL_ASSESSMENT_BEHAVIORS = {
+        "independent",
+        "explain",
+        "modify",
+        "debug",
+        "deploy",
+        "teach",
+    }
     ADAPTIVE_ENGINE_NAMES = [
         "roadmap-engine.md",
         "planner-engine.md",
@@ -247,10 +255,15 @@ class LearningSystemValidationTests(unittest.TestCase):
             self.assertIn(token, assessment)
         for token in [
             "JD matching",
+            "technical interview prep",
             "HR interview",
             "offer analysis",
             "acquisition experiment",
             "unit economics",
+            "competency-gap material",
+            "business impact/performance evidence",
+            "communication material",
+            "negotiation prep",
             "retrospective",
         ]:
             self.assertIn(token, outcome)
@@ -261,6 +274,144 @@ class LearningSystemValidationTests(unittest.TestCase):
             "domain_update` -> Gap, Competency, Curriculum, and Project",
         ]:
             self.assertIn(token, optimization)
+
+    def test_assessment_schema_accepts_all_six_passing_behaviors(self):
+        document = self.make_assessment_document()
+        self.assertEqual(self.schema_issues("assessment", document), [])
+
+        evidence = yaml.safe_load(
+            (self.fixtures / "valid-learner" / "evidence.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertIsInstance(evidence["observed_behaviors"][0], dict)
+        self.assertEqual(self.schema_issues("evidence", evidence), [])
+
+    def test_assessment_schema_rejects_missing_behavior(self):
+        document = self.make_assessment_document()
+        document["behavior_checks"] = document["behavior_checks"][:-1]
+        self.assertTrue(self.schema_issues("assessment", document))
+
+    def test_assessment_schema_accepts_explicit_not_applicable_with_reason(self):
+        document = self.make_assessment_document()
+        teach = document["behavior_checks"][-1]
+        teach.update(
+            applicability="not_applicable",
+            state="not_applicable",
+            evidence_ids=[],
+            reason="The bounded L3 assessment does not make peer instruction decision-relevant.",
+        )
+        self.assertEqual(self.schema_issues("assessment", document), [])
+
+        del teach["reason"]
+        self.assertTrue(self.schema_issues("assessment", document))
+
+    def test_assessment_gate_records_applicable_missing_or_failing_evidence(self):
+        for mutation in ["missing_evidence", "failed_behavior"]:
+            with self.subTest(mutation=mutation):
+                document = self.make_assessment_document()
+                independent = next(
+                    item
+                    for item in document["behavior_checks"]
+                    if item["behavior"] == "independent"
+                )
+                if mutation == "missing_evidence":
+                    independent["evidence_ids"] = []
+                else:
+                    independent["state"] = "fail"
+                document["gate"] = {"passed": False, "missing": ["independent"]}
+                self.assertEqual(self.schema_issues("assessment", document), [])
+
+                document["gate"] = {"passed": True, "missing": []}
+                self.assertTrue(self.schema_issues("assessment", document))
+
+    def test_roadmap_schema_requires_budget_feasibility(self):
+        schemas, _ = self.validator._load_schemas(self.skill_root)
+        roadmap = schemas["learning-roadmap"]
+        self.assertTrue(
+            {"budget", "total_estimated_cost", "currency"}
+            <= set(roadmap["required"])
+        )
+        phase = roadmap["properties"]["phases"]["items"]
+        self.assertTrue({"estimated_cost", "currency"} <= set(phase["required"]))
+        roadmap_text = (
+            self.skill_root / "references" / "roadmap-engine.md"
+        ).read_text(encoding="utf-8")
+        for token in [
+            "total_estimated_cost = sum",
+            "total_estimated_cost <= budget.amount",
+            "budget source",
+            "currency",
+        ]:
+            self.assertIn(token, roadmap_text)
+
+    def test_roadmap_budget_semantics_are_validated(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            learner_dir = Path(temporary_directory) / "learner"
+            shutil.copytree(self.fixtures / "valid-learner", learner_dir)
+            roadmap = {
+                "id": "roadmap-budget-test",
+                "schema_version": "1.0.0",
+                "content_version": "1.0.0",
+                "status": "draft",
+                "source": "budget test",
+                "confidence": "high",
+                "created_at": "2026-07-13T00:00:00Z",
+                "updated_at": "2026-07-13T00:00:00Z",
+                "budget": {"amount": 1000, "source": "learner confirmed"},
+                "currency": "CNY",
+                "total_estimated_cost": 1200,
+                "phases": [
+                    {
+                        "id": "phase-1",
+                        "outcome": "First evidence",
+                        "milestones": [],
+                        "project_ids": [],
+                        "weekly_capacity_hours": 8,
+                        "buffer_ratio": 0.2,
+                        "estimated_cost": 700,
+                        "currency": "CNY",
+                    },
+                    {
+                        "id": "phase-2",
+                        "outcome": "Second evidence",
+                        "milestones": [],
+                        "project_ids": [],
+                        "weekly_capacity_hours": 8,
+                        "buffer_ratio": 0.2,
+                        "estimated_cost": 400,
+                        "currency": "USD",
+                    },
+                ],
+            }
+            (learner_dir / "learning-roadmap.yaml").write_text(
+                yaml.safe_dump(roadmap), encoding="utf-8"
+            )
+            errors = self.validator.validate_learner_system(
+                self.skill_root, learner_dir
+            )
+            self.assertTrue(any("phase cost sum" in error for error in errors), errors)
+            self.assertTrue(any("budget" in error.lower() for error in errors), errors)
+            self.assertTrue(any("currency" in error.lower() for error in errors), errors)
+
+    def test_optimization_trigger_enum_is_exact(self):
+        schemas, registry = self.validator._load_schemas(self.skill_root)
+        schema = schemas["optimization-state"]
+        expected = {"scheduled", "behavioral", "quality", "goal_change", "domain_update"}
+        self.assertEqual(set(schema["properties"]["trigger"]["enum"]), expected)
+
+        progress = yaml.safe_load(
+            (self.skill_root / "assets" / "templates" / "progress-review.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        progress["trigger"] = "unsupported"
+        issues = list(
+            self.validator.Draft202012Validator(
+                schema, registry=registry, format_checker=FormatChecker()
+            ).iter_errors(progress)
+        )
+        self.assertTrue(issues)
 
     def test_adaptive_templates_are_worked_and_match_schema_contracts(self):
         templates = self.skill_root / "assets" / "templates"
@@ -684,6 +835,44 @@ class LearningSystemValidationTests(unittest.TestCase):
             result = self.run_cli(learner_dir)
             self.assertEqual(result.returncode, 1, result)
             self.assertNotIn("Traceback", result.stderr)
+
+    def make_assessment_document(self):
+        return {
+            "id": "assessment-six-behaviors",
+            "schema_version": "1.0.0",
+            "content_version": "1.0.0",
+            "status": "validated",
+            "source": "worked test assessment",
+            "confidence": "high",
+            "created_at": "2026-07-13T00:00:00Z",
+            "updated_at": "2026-07-13T00:00:00Z",
+            "stage": "project",
+            "tasks": ["bounded project demonstration"],
+            "evidence_ids": ["ev-independent", "ev-explain", "ev-modify", "ev-debug", "ev-deploy", "ev-teach"],
+            "behavior_checks": [
+                {
+                    "behavior": behavior,
+                    "applicability": "applicable",
+                    "evidence_ids": [f"ev-{behavior}"],
+                    "state": "pass",
+                }
+                for behavior in sorted(self.CANONICAL_ASSESSMENT_BEHAVIORS)
+            ],
+            "competency_results": [],
+            "decision": "pass",
+            "gate": {"passed": True, "missing": []},
+            "next_action": "Prepare the target-context outcome package.",
+        }
+
+    def schema_issues(self, schema_name, document):
+        schemas, registry = self.validator._load_schemas(self.skill_root)
+        return list(
+            self.validator.Draft202012Validator(
+                schemas[schema_name],
+                registry=registry,
+                format_checker=FormatChecker(),
+            ).iter_errors(document)
+        )
 
     @staticmethod
     def set_confidence(learner_dir, value):

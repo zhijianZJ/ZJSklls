@@ -2,7 +2,57 @@ $schema: https://json-schema.org/draft/2020-12/schema
 title: Learning Assessment
 type: object
 additionalProperties: false
-required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, stage, tasks, evidence_ids, competency_results, decision, next_action]
+$defs:
+  behavior_check:
+    type: object
+    additionalProperties: false
+    required: [behavior, applicability, evidence_ids, state]
+    properties:
+      behavior:
+        type: string
+        enum: [independent, explain, modify, debug, deploy, teach]
+      applicability:
+        type: string
+        enum: [applicable, not_applicable]
+      evidence_ids:
+        type: array
+        uniqueItems: true
+        items: {type: string, minLength: 1}
+      state:
+        type: string
+        enum: [pass, fail, not_applicable]
+      reason: {type: string, minLength: 1}
+    allOf:
+      - if:
+          properties: {applicability: {const: applicable}}
+          required: [applicability]
+        then:
+          properties:
+            state: {enum: [pass, fail]}
+      - if:
+          properties: {applicability: {const: not_applicable}}
+          required: [applicability]
+        then:
+          required: [reason]
+          properties:
+            evidence_ids: {maxItems: 0}
+            state: {const: not_applicable}
+  gate:
+    type: object
+    additionalProperties: false
+    required: [passed, missing]
+    properties:
+      passed: {type: boolean}
+      missing: {type: array, items: {type: string, minLength: 1}}
+    allOf:
+      - if:
+          properties: {passed: {const: true}}
+          required: [passed]
+        then:
+          properties: {missing: {maxItems: 0}}
+        else:
+          properties: {missing: {minItems: 1}}
+required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, stage, tasks, evidence_ids, behavior_checks, competency_results, decision, gate, next_action]
 properties:
   id: {$ref: common.schema.yaml#/$defs/id}
   schema_version: {$ref: common.schema.yaml#/$defs/version}
@@ -15,7 +65,38 @@ properties:
   stage: {type: string}
   tasks: {type: array}
   evidence_ids: {type: array, items: {type: string}}
+  behavior_checks:
+    type: array
+    minItems: 6
+    maxItems: 6
+    items: {$ref: "#/$defs/behavior_check"}
+    allOf:
+      - {contains: {properties: {behavior: {const: independent}}, required: [behavior]}, minContains: 1, maxContains: 1}
+      - {contains: {properties: {behavior: {const: explain}}, required: [behavior]}, minContains: 1, maxContains: 1}
+      - {contains: {properties: {behavior: {const: modify}}, required: [behavior]}, minContains: 1, maxContains: 1}
+      - {contains: {properties: {behavior: {const: debug}}, required: [behavior]}, minContains: 1, maxContains: 1}
+      - {contains: {properties: {behavior: {const: deploy}}, required: [behavior]}, minContains: 1, maxContains: 1}
+      - {contains: {properties: {behavior: {const: teach}}, required: [behavior]}, minContains: 1, maxContains: 1}
   competency_results: {type: array}
   decision: {type: string}
+  gate: {$ref: "#/$defs/gate"}
   next_action: {type: string}
   extensions: {$ref: common.schema.yaml#/$defs/extensions}
+allOf:
+  - if:
+      properties:
+        gate:
+          properties: {passed: {const: true}}
+          required: [passed]
+      required: [gate]
+    then:
+      properties:
+        behavior_checks:
+          items:
+            if:
+              properties: {applicability: {const: applicable}}
+              required: [applicability]
+            then:
+              properties:
+                evidence_ids: {minItems: 1}
+                state: {const: pass}

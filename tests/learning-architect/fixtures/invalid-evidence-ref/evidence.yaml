@@ -11,5 +11,8 @@ artifact: api-project
 competency_ids: [missing-competency]
 evaluator: reviewer
 score: 0.8
-observed_behaviors: [Writes clear Python]
+observed_behaviors:
+  - behavior: independent
+    state: pass
+    observation: Writes and tests the bounded Python component without repair guidance.
 verified_at: "2026-07-13T00:00:00Z"
