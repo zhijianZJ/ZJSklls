@@ -4,12 +4,13 @@
 
 Each scenario was run in a fresh evaluator context. The evaluator received the learner prompt, `learning-architect/SKILL.md`, and only the references recorded for that attempt. The response blocks below are preserved verbatim. Orchestration evaluator IDs are the canonical child task names from Codex session metadata; they are distinct from any model-generated `engine_result.run_id` inside an answer.
 
-The five first runs produced 13/15 behavior passes. The first fixes closed those observations, but review later found that the first goal-pivot retest used `candidate_version: pending`, which is not an auditable version identifier, and that two routing sets were incomplete. That retest is retained and reclassified below. Two new corrected-routing attempts provide the final evidence. Final score from the latest valid attempt for each scenario: 15/15 required behaviors pass.
+The five first runs produced 13/15 behavior passes. The first fixes closed those observations, but review later found that the first goal-pivot retest used `candidate_version: pending`, which is not an auditable version identifier, and that the theory-practice routing sets were incomplete. Those attempts are retained and reclassified below. A corrected goal-pivot attempt and a final full-routing theory-practice attempt provide the final evidence. Final score from the latest routing-valid attempt for each scenario: 15/15 required behaviors pass.
 
 ### No-leakage prompt profiles
 
 - **NL-1 (initial attempts):** included only the scenario prompt, `SKILL.md`, and the references listed in that attempt's section. Evaluator instructions prohibited tests, baseline results, the Task 7 brief, unlisted references, and repository files. First retests additionally prohibited repository history and prior evaluator outputs. Required behaviors and expected answers were not supplied.
 - **NL-2 (review-correction attempts):** included only the scenario prompt, `SKILL.md`, and the corrected reference list recorded below. Evaluator instructions explicitly prohibited tests, scenarios, baseline results, task briefs, unlisted references, repository history, prior evaluator outputs, and grading criteria. Required behaviors and expected answers were not supplied.
+- **NL-3 (final full-routing attempt):** included only the theory-practice scenario prompt, `SKILL.md`, and all observable-condition references recorded in the final attempt below. Evaluator instructions explicitly prohibited tests, scenarios, baseline results, task briefs, any other references or repository files, repository history, prior outputs, grading criteria, expected behaviors, and scoring.
 
 ### Evaluator attempt registry
 
@@ -26,6 +27,7 @@ Timestamps are actual subagent session-start timestamps recovered from local Cod
 | goal-pivot / first retest | `/root/task7_posteval/retest_goal_pivot` | `2026-07-13T16:18:27.913Z` | `goal-pivot-ai-consulting-20260714` | NL-1 |
 | goal-pivot / review-correction retest | `/root/task7_posteval/review_retest_goal_pivot` | `2026-07-13T16:32:28.002Z` | `goal-pivot-ai-consulting-20260714` | NL-2 |
 | theory-practice-gap / review-correction retest | `/root/task7_posteval/review_retest_theory_gap` | `2026-07-13T16:32:45.370Z` | `assessment-theory-transfer-001` | NL-2 |
+| theory-practice-gap / final full-routing retest | `/root/task7_posteval/final_retest_theory_full` | `2026-07-13T16:42:19.404Z` | `assessment-independent-project-20260714` | NL-3 |
 
 ## direct-course-request
 
@@ -625,6 +627,8 @@ engine_result:
 - `learning-architect/references/assessment-engine.md`
 - `learning-architect/references/meta-learning-engine.md`
 
+**Routing validity: INVALID.** This initial attempt omitted `discovery.md` for the absent learner profile, `goal-analysis.md` for the unstated target/success evidence, and `optimization-engine.md` for the repeated behavioral mismatch. Its output and scores remain as historical evidence but do not contribute to the final total.
+
 ### Behavior scores
 
 - **PASS** — 回退到对应能力和项目训练。证据：`rollback_to_gap_analysis`，并要求“先做一次诊断型项目”。
@@ -707,6 +711,8 @@ engine_result:
 - `learning-architect/references/optimization-engine.md`
 - `learning-architect/references/meta-learning-engine.md`
 
+**Routing validity: INVALID.** This review-correction attempt added Discovery and Optimization but still omitted `goal-analysis.md` and `curriculum-engine.md`, even though the target/success evidence was unstated and the requested change concerned learning units and practice. Its output and scores remain preserved but do not contribute to the final total.
+
 #### Behavior scores
 
 - **PASS** — 回退到对应能力和项目训练。证据：`rollback_target: gap-analysis`，并计划“示例演示 → 淡化提示 → 变式练习 → 独立重测”。
@@ -761,6 +767,85 @@ engine_result:
 ```
 ````
 
+### Final full-routing retest
+
+#### Loaded inputs
+
+- `learning-architect/SKILL.md`
+- `learning-architect/references/persona.md`
+- `learning-architect/references/philosophy.md`
+- `learning-architect/references/workflow.md`
+- `learning-architect/references/discovery.md`
+- `learning-architect/references/goal-analysis.md`
+- `learning-architect/references/gap-analysis.md`
+- `learning-architect/references/competency-engine.md`
+- `learning-architect/references/curriculum-engine.md`
+- `learning-architect/references/project-engine.md`
+- `learning-architect/references/assessment-engine.md`
+- `learning-architect/references/optimization-engine.md`
+- `learning-architect/references/meta-learning-engine.md`
+
+**Routing validity: VALID.** This attempt includes the three always-loaded core references and every reference triggered by the absent profile, unclear target/success evidence, capability-evidence conflict, failed project, practice/curriculum change, repeated behavioral mismatch, and meta-learning adaptation.
+
+#### Behavior scores
+
+- **PASS** — 回退到对应能力和项目训练。证据：“当前应回退到差距分析，先定位最早卡点”，且 `rollback_target: "gap-analysis"`。
+- **PASS** — 减少新理论并增加变式实践、调试和复盘。证据：“暂不升级理论”，改为“示范一次 → 逐步撤除提示 → 变式练习 → 故障调试 → 独立重测”，并要求成果、操作与帮助记录用于诊断。
+- **PASS** — 不把失败归因为学习者懒惰。证据：答复区分“前置知识、任务拆解、工具操作、调试、项目设计或练习量问题”，没有努力或人格归因。
+
+#### Verbatim final full-routing output
+
+````text
+暂不升级理论。95 分测验只能说明理论理解较好，不能证明能独立交付；连续三次项目失败更像是从“会解释/照例完成”到“独立完成真实任务”的迁移缺口。当前应回退到差距分析，先定位最早卡点，再安排“示范一次 → 逐步撤除提示 → 变式练习 → 故障调试 → 独立重测”。只有诊断显示确实缺少某项前置知识时，才补对应的最小理论单元。
+
+请选最近一次失败项目，提供任务要求、你的成果或操作记录、获得过的帮助，以及最早无法继续的具体步骤；我将据此区分前置知识、任务拆解、工具操作、调试、项目设计或练习量问题。
+
+```yaml
+engine_result:
+  engine: assessment
+  run_id: assessment-independent-project-20260714
+  status: needs_input
+  summary: "高分测验与连续项目失败形成矛盾证据；暂不升级理论，先诊断独立完成能力的最早因果缺口。"
+  inputs_used:
+    - "学习者自述：测验均为 95 分"
+    - "学习者自述：连续三次无法独立完成项目"
+  decisions:
+    - decision: "needs_remediation"
+      classification: "understanding"
+      source: "user"
+      confidence: "medium"
+    - decision: "rollback"
+      rollback_target: "gap-analysis"
+      reason: "尚不能确定失败源于前置知识、独立执行、调试、项目设计或练习安排。"
+    - decision: "defer_advanced_theory"
+      reason: "项目失败不能自动推出需要更高级理论。"
+  evidence_refs: []
+  assumptions:
+    - assumption: "95 分来自知识型测验，未直接观察独立项目行为。"
+      source: "inference"
+      confidence: "medium"
+    - assumption: "三次项目的任务难度与评价条件大致可比。"
+      source: "inference"
+      confidence: "low"
+  confidence: "medium"
+  artifacts_written: []
+  affected_downstream:
+    - "gap-analysis"
+    - "curriculum-design"
+    - "project-design"
+    - "weekly-planner"
+    - "assessment"
+  gate:
+    passed: false
+    missing:
+      - "最近一次失败项目的任务要求与成果"
+      - "最早卡点及所获帮助记录"
+      - "独立完成、解释、修改、调试、交付、复盘或评审的行为证据"
+      - "项目评价量表及关键维度阈值"
+  next_action: "提交最近一次失败项目的任务、成果或操作记录、帮助记录和最早卡点，完成一次最小判别诊断。"
+```
+````
+
 ## Baseline comparison
 
 | Scenario | Baseline | First post-Skill | Final post-Skill | Failure-mode change |
@@ -769,8 +854,8 @@ engine_result:
 | `completion-is-not-capability` | 2/3 | 3/3 | 3/3 | Completion-as-capability drift removed: public capability claims are withheld, self-report is labeled, and performance evidence is requested. |
 | `impossible-constraint` | 3/3 | 3/3 | 3/3 | Constraint denial remains absent; the response quantifies capacity, rejects an Offer promise, and exposes trade-offs. |
 | `goal-pivot` | 2/3 | 2/3 | 3/3 | The first retest remained 2/3 because `pending` was not a version identifier. The corrected-routing review retest closes version loss with `unknown` plus a deterministic candidate draft ID and an honest empty write list. |
-| `theory-practice-gap` | 3/3 | 3/3 | 3/3 | The corrected-routing review retest confirms theory escalation remains absent; project failure triggers causal rollback and guided-to-independent practice. |
+| `theory-practice-gap` | 3/3 | routing-invalid | 3/3 | Both earlier attempts remain behaviorally aligned but are routing-invalid. The final full-routing attempt confirms theory escalation remains absent and project failure triggers causal rollback and guided-to-independent practice. |
 
 ## Final decision
 
-**PASS — 15/15 required behaviors, using the latest valid attempt for each scenario.** The first failures, the invalidated goal-pivot retest, and the final passing observations are all retained above. The final evidence set is: direct-course first retest 3/3, completion first run 3/3, impossible-constraint first run 3/3, goal-pivot review-correction retest 3/3, and theory-practice review-correction retest 3/3.
+**PASS — 15/15 required behaviors, using the latest routing-valid attempt for each scenario.** The first failures, invalidated goal-pivot retest, and routing-invalid theory attempts are all retained above. The final evidence set is: direct-course first retest 3/3, completion first run 3/3, impossible-constraint first run 3/3, goal-pivot review-correction retest 3/3, and theory-practice final full-routing retest 3/3.
