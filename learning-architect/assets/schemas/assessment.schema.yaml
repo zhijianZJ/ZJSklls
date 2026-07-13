@@ -21,7 +21,7 @@ $defs:
       state:
         type: string
         enum: [pass, fail, not_applicable]
-      reason: {type: string, minLength: 1}
+      reason: {type: string, minLength: 10}
     allOf:
       - if:
           properties: {applicability: {const: applicable}}
@@ -92,6 +92,17 @@ allOf:
     then:
       properties:
         behavior_checks:
+          allOf:
+            - contains:
+                properties:
+                  behavior: {const: independent}
+                  applicability: {const: applicable}
+                required: [behavior, applicability]
+            - contains:
+                properties:
+                  behavior: {const: explain}
+                  applicability: {const: applicable}
+                required: [behavior, applicability]
           items:
             if:
               properties: {applicability: {const: applicable}}

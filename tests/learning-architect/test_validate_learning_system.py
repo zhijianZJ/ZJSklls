@@ -325,6 +325,81 @@ class LearningSystemValidationTests(unittest.TestCase):
                 document["gate"] = {"passed": True, "missing": []}
                 self.assertTrue(self.schema_issues("assessment", document))
 
+    def test_valid_learner_has_semantically_linked_assessment_evidence(self):
+        assessment_path = self.fixtures / "valid-learner" / "assessment.yaml"
+        self.assertTrue(assessment_path.is_file())
+        errors = self.validator.validate_learner_system(
+            self.skill_root, self.fixtures / "valid-learner"
+        )
+        self.assertEqual(errors, [])
+
+    def test_assessment_semantics_reject_fake_evidence_ids(self):
+        for location in ["top_level", "behavior"]:
+            with self.subTest(location=location), tempfile.TemporaryDirectory() as temporary_directory:
+                learner_dir = Path(temporary_directory) / "learner"
+                shutil.copytree(self.fixtures / "valid-learner", learner_dir)
+                assessment_path = learner_dir / "assessment.yaml"
+                assessment = yaml.safe_load(
+                    assessment_path.read_text(encoding="utf-8")
+                )
+                if location == "top_level":
+                    assessment["evidence_ids"] = ["fake-evidence-id"]
+                else:
+                    assessment["behavior_checks"][0]["evidence_ids"] = [
+                        "fake-evidence-id"
+                    ]
+                assessment_path.write_text(
+                    yaml.safe_dump(assessment), encoding="utf-8"
+                )
+                errors = self.validator.validate_learner_system(
+                    self.skill_root, learner_dir
+                )
+                self.assertTrue(
+                    any("unknown Evidence record" in error for error in errors),
+                    errors,
+                )
+
+    def test_assessment_semantics_require_matching_passing_observation(self):
+        for mutation in ["missing_behavior", "failing_observation"]:
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temporary_directory:
+                learner_dir = Path(temporary_directory) / "learner"
+                shutil.copytree(self.fixtures / "valid-learner", learner_dir)
+                evidence_path = learner_dir / "evidence.yaml"
+                evidence = yaml.safe_load(evidence_path.read_text(encoding="utf-8"))
+                explain = next(
+                    item
+                    for item in evidence["observed_behaviors"]
+                    if item["behavior"] == "explain"
+                )
+                if mutation == "missing_behavior":
+                    evidence["observed_behaviors"].remove(explain)
+                else:
+                    explain["state"] = "fail"
+                evidence_path.write_text(
+                    yaml.safe_dump(evidence), encoding="utf-8"
+                )
+                errors = self.validator.validate_learner_system(
+                    self.skill_root, learner_dir
+                )
+                self.assertTrue(
+                    any(
+                        "passing observed behavior: explain" in error
+                        for error in errors
+                    ),
+                    errors,
+                )
+
+    def test_passing_assessment_rejects_all_six_not_applicable(self):
+        document = self.make_assessment_document()
+        for check in document["behavior_checks"]:
+            check.update(
+                applicability="not_applicable",
+                state="not_applicable",
+                evidence_ids=[],
+                reason=f"{check['behavior']} was excluded by the worked counterexample.",
+            )
+        self.assertTrue(self.schema_issues("assessment", document))
+
     def test_roadmap_schema_requires_budget_feasibility(self):
         schemas, _ = self.validator._load_schemas(self.skill_root)
         roadmap = schemas["learning-roadmap"]

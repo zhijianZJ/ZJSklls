@@ -326,6 +326,41 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
                     f"Evidence references unknown competency: {competency_id}"
                 )
 
+    assessment = documents.get("assessment")
+    if assessment:
+        evidence_records = {evidence["id"]: evidence} if evidence else {}
+        for evidence_id in assessment.get("evidence_ids", []):
+            if evidence_id not in evidence_records:
+                errors.append(
+                    "Assessment references unknown Evidence record: "
+                    f"{evidence_id}"
+                )
+        for check in assessment.get("behavior_checks", []):
+            if check.get("applicability") != "applicable":
+                continue
+            behavior = check.get("behavior", "<unknown>")
+            resolved_records = []
+            for evidence_id in check.get("evidence_ids", []):
+                record = evidence_records.get(evidence_id)
+                if record is None:
+                    errors.append(
+                        f"Assessment behavior {behavior} references unknown "
+                        f"Evidence record: {evidence_id}"
+                    )
+                else:
+                    resolved_records.append(record)
+            has_passing_observation = any(
+                observation.get("behavior") == behavior
+                and observation.get("state") == "pass"
+                for record in resolved_records
+                for observation in record.get("observed_behaviors", [])
+            )
+            if resolved_records and not has_passing_observation:
+                errors.append(
+                    "Assessment evidence does not contain passing observed "
+                    f"behavior: {behavior}"
+                )
+
     system_state = documents.get("system-state")
     if system_state:
         for artifact_name in system_state.get("active_versions", {}):

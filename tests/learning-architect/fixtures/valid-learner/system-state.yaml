@@ -15,4 +15,5 @@ active_versions:
   competency-model: 1.0.0
   curriculum-graph: 1.0.0
   evidence: 1.0.0
+  assessment: 1.0.0
 next_action: Complete API integration practice

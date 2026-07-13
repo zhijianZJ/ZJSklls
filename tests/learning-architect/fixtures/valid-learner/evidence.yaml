@@ -15,4 +15,19 @@ observed_behaviors:
   - behavior: independent
     state: pass
     observation: Writes and tests the bounded Python component without repair guidance.
+  - behavior: explain
+    state: pass
+    observation: Explains validation and error-handling trade-offs to the reviewer.
+  - behavior: modify
+    state: pass
+    observation: Adapts the request contract to a changed required field.
+  - behavior: debug
+    state: pass
+    observation: Diagnoses and repairs a controlled timeout failure.
+  - behavior: deploy
+    state: pass
+    observation: Delivers the runnable component with setup and rollback notes.
+  - behavior: teach
+    state: pass
+    observation: Reviews the component and teaches its failure controls to a peer.
 verified_at: "2026-07-13T00:00:00Z"

@@ -1,0 +1,24 @@
+id: assessment-001
+schema_version: 1.0.0
+content_version: 1.0.0
+status: validated
+source: fixture reviewer assessment
+confidence: high
+created_at: "2026-07-13T00:00:00Z"
+updated_at: "2026-07-13T00:00:00Z"
+stage: project
+tasks: [Demonstrate and adapt the API project under controlled failure]
+evidence_ids: [evidence-001]
+behavior_checks:
+  - {behavior: independent, applicability: applicable, evidence_ids: [evidence-001], state: pass}
+  - {behavior: explain, applicability: applicable, evidence_ids: [evidence-001], state: pass}
+  - {behavior: modify, applicability: applicable, evidence_ids: [evidence-001], state: pass}
+  - {behavior: debug, applicability: applicable, evidence_ids: [evidence-001], state: pass}
+  - {behavior: deploy, applicability: applicable, evidence_ids: [evidence-001], state: pass}
+  - {behavior: teach, applicability: applicable, evidence_ids: [evidence-001], state: pass}
+competency_results:
+  - competency_id: api-integration
+    result: independent
+decision: pass
+gate: {passed: true, missing: []}
+next_action: Prepare the verified project for the employment outcome route.
