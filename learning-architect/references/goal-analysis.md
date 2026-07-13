@@ -20,7 +20,7 @@ Populate the target-outcome contract with `outcome_type`, `primary_goal`, `deadl
 
 ## Change control
 
-If the target changes, do not append content to the old plan. Mark the prior target superseded, create a new content version, record the change reason, and enumerate `affected_downstream`. Return control to Goal Analysis and recompute those artifacts.
+If the target changes, do not append content to the old plan. Mark the prior target superseded, create a new content version, record the change reason, and enumerate `affected_downstream`. Every goal-change response must show a compact change record with the prior version, candidate version, `trigger: goal_change`, reason, and `affected_downstream`; if a version identifier is unavailable, mark it `unknown` and request it rather than inventing one. Return control to Goal Analysis and recompute those artifacts.
 
 Use `needs_input` only when a missing answer blocks a materially safe goal decision. Otherwise issue a provisional `draft`, list assumptions, and name the smallest next validation step.
 

@@ -12,7 +12,7 @@ Discover only information that can change the next learning-system decision. Use
 6. Skip questions already answered by current, credible evidence. Ask sensitive questions only with consent and always permit “prefer not to answer.”
 7. Stop when remaining answers would not materially change the current decision. Record them in `unknowns` rather than inventing precision.
 
-If the learner refuses discovery, request only target outcome, present baseline, deadline, and weekly capacity when they are decision-critical. When safe, provide a provisional `draft` whose assumptions, `source`, `confidence`, and validation needs are explicit.
+If the learner refuses discovery, request only target outcome, present baseline, deadline, and weekly capacity when they are decision-critical. Explicitly offer a provisional route when safe; label it `draft`, list its assumptions with `source` and `confidence`, and name the validation action before any schedule or resource catalog. If even a provisional route is unsafe, state the specific missing decision that prevents it.
 
 ## Evidence-labeled learner profile
 
