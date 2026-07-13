@@ -24,6 +24,16 @@ Allow `not_started -> collecting -> draft -> validated -> active`. Use `needs_in
 
 When evidence is incomplete but risk is low, create a `draft` with explicit assumptions and a next validation action. Do not present it as validated.
 
+## Persistent-state write safety
+
+Before any write, compare the current active version and `updated_at`—or a content hash when either value is unavailable—with the values in the loaded snapshot. If the learner file was externally modified, stop automatic writes, preserve both states, report the conflict and changed fields, and request a merge decision. Never silently select or overwrite either version.
+
+If validation identifies corrupted state, stop automatic writes and report the validation errors. Restore only the most recent valid version after identifying it deterministically; preserve the corrupt artifact and write a recovery trace containing the source version, restored version, validation evidence, time, reason, and affected artifacts. If no valid version exists, return `blocked` and request recovery input rather than synthesizing state.
+
+## Multi-goal conflict
+
+When goals compete for the same capacity, name exactly one primary goal, classify compatible work as a secondary goal, and place incompatible work under a deferred goal with a review condition. Do not stack multiple full-time routes into one roadmap; expose the trade-off and obtain the learner's priority decision before activating downstream plans.
+
 ## Engine return contract
 
 Return every stage result in two synchronized layers: first, a concise natural-language explanation of the conclusion, evidence, uncertainty, and next action; second, structured state using this canonical wrapper. Do not omit the explanation or return prose without state.

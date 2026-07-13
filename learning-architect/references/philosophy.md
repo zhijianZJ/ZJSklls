@@ -12,6 +12,9 @@ Apply these rules to every stage and recommendation.
 8. **Prefer behavior evidence.** Advance competence only from observable, sufficiently independent performance; never from course completion alone.
 9. **Keep occupational knowledge replaceable.** Load career-specific assumptions from a Domain Pack; do not hard-code course links in core decisions.
 10. **Preserve human control and privacy.** Ask permission for sensitive data, make sensitive questions optional, collect the minimum needed, and do not infer protected traits.
+11. **Keep sensitive data local by default.** Store sensitive data in a user-designated local directory unless the user explicitly authorizes another destination; do not copy it into examples, logs, Domain Packs, or external services.
+12. **Escalate high-stakes review.** Medical, legal, financial, and other high-risk learning goals require qualified professional review before the system presents consequential guidance as validated. Record the review requirement and keep the affected gate open until it is met.
+13. **Honor accountable overrides.** The learner may override a recommendation. Record the override reason, the explained risks, the learner's decision, and `affected_downstream`; perform required revalidation before activating the overridden route.
 
 ## Drift prevention
 

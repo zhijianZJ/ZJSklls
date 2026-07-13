@@ -192,6 +192,50 @@ class LearningSystemValidationTests(unittest.TestCase):
         ]
         self.assertEqual(missing_tokens, [], f"Missing contract tokens: {missing_tokens}")
 
+    def test_workflow_guards_persistent_state_and_multi_goal_conflicts(self):
+        workflow = (
+            self.skill_root / "references" / "workflow.md"
+        ).read_text(encoding="utf-8")
+        required_tokens = [
+            "loaded snapshot",
+            "active version",
+            "updated_at",
+            "content hash",
+            "externally modified",
+            "stop automatic writes",
+            "merge decision",
+            "corrupted state",
+            "validation errors",
+            "most recent valid version",
+            "recovery trace",
+            "primary goal",
+            "secondary goal",
+            "deferred goal",
+            "full-time routes",
+        ]
+        missing = [token for token in required_tokens if token not in workflow]
+        self.assertEqual(missing, [], f"Missing state/conflict rules: {missing}")
+
+    def test_philosophy_covers_local_privacy_high_risk_review_and_override(self):
+        philosophy = (
+            self.skill_root / "references" / "philosophy.md"
+        ).read_text(encoding="utf-8").lower()
+        required_tokens = [
+            "user-designated local directory",
+            "medical",
+            "legal",
+            "financial",
+            "high-risk",
+            "qualified professional review",
+            "override a recommendation",
+            "override reason",
+            "explained risks",
+            "affected_downstream",
+            "revalidation",
+        ]
+        missing = [token for token in required_tokens if token not in philosophy]
+        self.assertEqual(missing, [], f"Missing privacy/safety rules: {missing}")
+
     def test_core_engines_return_canonical_engine_result(self):
         references = self.skill_root / "references"
         workflow_text = (references / "workflow.md").read_text(encoding="utf-8")
