@@ -8,7 +8,7 @@ from pathlib import Path
 import sys
 from typing import Any
 
-from jsonschema import Draft202012Validator
+from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import SchemaError
 from referencing import Registry, Resource
 import yaml
@@ -28,6 +28,32 @@ SCHEMA_NAMES = (
     "evidence",
     "optimization-state",
     "domain-pack",
+)
+
+REQUIRED_PROJECT_ARCHETYPES = {
+    "focused-tool",
+    "knowledge-application",
+    "workflow",
+    "enterprise-scenario",
+    "portfolio-case",
+    "real-external-delivery",
+}
+REQUIRED_ASSESSMENT_CHECKS = {
+    "independent-completion",
+    "explain-trade-offs",
+    "modify-requirements",
+    "debug",
+    "deploy-deliver",
+    "teach-review",
+}
+PAID_COURSE_MARKERS = (
+    "udemy.com/course/",
+    "coursera.org/learn/",
+    "edx.org/learn/",
+    "buy this course",
+    "enroll in this paid course",
+    "purchase this course",
+    "recommended paid course",
 )
 
 
@@ -66,6 +92,113 @@ def validate_skill_assets(skill_root: Path) -> list[str]:
             Draft202012Validator.check_schema(schema)
         except (OSError, yaml.YAMLError, SchemaError) as exc:
             errors.append(f"Invalid schema {path}: {exc}")
+    if errors:
+        return errors
+
+    try:
+        schemas, registry = _load_schemas(skill_root)
+    except (OSError, yaml.YAMLError) as exc:
+        return [f"Unable to load schemas: {exc}"]
+
+    pack_dir = skill_root / "assets" / "domain-packs"
+    pack_paths = sorted(pack_dir.glob("*.yaml")) if pack_dir.is_dir() else []
+    if not pack_paths:
+        return [f"Missing Domain Pack: {pack_dir}"]
+
+    for path in pack_paths:
+        try:
+            pack = _load_yaml(path)
+        except (OSError, yaml.YAMLError) as exc:
+            errors.append(f"Invalid Domain Pack {path}: {exc}")
+            continue
+        if not isinstance(pack, dict):
+            errors.append(f"Domain Pack is not an object: {path}")
+            continue
+        validator = Draft202012Validator(
+            schemas["domain-pack"],
+            registry=registry,
+            format_checker=FormatChecker(),
+        )
+        issues = sorted(validator.iter_errors(pack), key=lambda item: list(item.path))
+        for issue in issues:
+            location = ".".join(str(part) for part in issue.path) or "<root>"
+            errors.append(f"Domain Pack {path.name}:{location}: {issue.message}")
+        if not issues:
+            errors.extend(_validate_domain_pack_semantics(path.name, pack))
+    return errors
+
+
+def _validate_domain_pack_semantics(
+    pack_name: str, pack: dict[str, Any]
+) -> list[str]:
+    errors: list[str] = []
+    competencies = pack["competencies"]
+    competency_ids = [competency["id"] for competency in competencies]
+    competency_id_set = set(competency_ids)
+    if len(competency_ids) != len(competency_id_set):
+        errors.append(f"Domain Pack {pack_name}: duplicate competency IDs")
+
+    dependencies = pack["dependencies"]
+    unknown_endpoints = sorted(
+        {
+            endpoint
+            for dependency in dependencies
+            for endpoint in (dependency["from"], dependency["to"])
+            if endpoint not in competency_id_set
+        }
+    )
+    if unknown_endpoints:
+        errors.append(
+            f"Domain Pack {pack_name}: unknown dependency endpoints: "
+            f"{', '.join(unknown_endpoints)}"
+        )
+    if _has_dependency_cycle(dependencies):
+        errors.append(f"Domain Pack dependency cycle detected: {pack_name}")
+
+    archetypes = pack["project_archetypes"]
+    archetype_ids = {archetype["id"] for archetype in archetypes}
+    if archetype_ids != REQUIRED_PROJECT_ARCHETYPES:
+        errors.append(
+            f"Domain Pack {pack_name}: project archetypes must be exactly "
+            f"{sorted(REQUIRED_PROJECT_ARCHETYPES)}"
+        )
+    covered_ids = {
+        competency_id
+        for archetype in archetypes
+        for competency_id in archetype["competency_ids"]
+    }
+    if covered_ids != competency_id_set:
+        errors.append(
+            f"Domain Pack {pack_name}: project competency coverage mismatch"
+        )
+
+    assessment_checks = {
+        check
+        for pattern in pack["assessment_patterns"]
+        for check in pattern["capability_checks"]
+    }
+    if assessment_checks != REQUIRED_ASSESSMENT_CHECKS:
+        errors.append(
+            f"Domain Pack {pack_name}: assessment capability coverage mismatch"
+        )
+
+    pack_text = yaml.safe_dump(pack, sort_keys=True).lower()
+    if any(marker in pack_text for marker in PAID_COURSE_MARKERS):
+        errors.append(
+            f"Domain Pack {pack_name}: paid course URL or recommendation is forbidden"
+        )
+
+    if pack.get("id") == "ai-agent-engineer":
+        expected_metadata = {
+            "version": "1.0.0",
+            "last_reviewed_at": "2026-07-13",
+            "review_interval_days": 90,
+        }
+        for field, expected in expected_metadata.items():
+            if pack.get(field) != expected:
+                errors.append(
+                    f"Domain Pack {pack_name}: {field} must be {expected!r}"
+                )
     return errors
 
 

@@ -31,155 +31,155 @@ competencies:
     name: Python foundation
     category: software-engineering
     levels:
-      L0: Cannot yet identify or modify Python program structure.
-      L1: Explains basic syntax and follows a demonstrated script with prompts.
-      L2: Implements and tests a bounded Python module independently.
-      L3: Integrates typed modules, dependencies, errors, and tests in an application.
-      L4: Profiles and improves maintainability, performance, and reliability under constraints.
-      L5: Defines Python engineering standards and guides novel cross-service decisions.
+      L0: "No exposure: has not encountered Python concepts or practice."
+      L1: "Recognize and explain basics: describes Python syntax, modules, tests, and errors."
+      L2: "Complete with example/template/guidance: implements a demonstrated Python module using scaffolding."
+      L3: "Independently complete a bounded real task: implements and tests a maintainable Python component."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves Python reliability, performance, dependencies, and error paths."
+      L5: "Architect, review, and teach: defines Python engineering standards and guides cross-service decisions."
     evidence_requirements: [Runnable repository, automated tests, dependency and error-handling rationale]
   - id: api-integration
     name: API integration
     category: software-engineering
     levels:
-      L0: Cannot yet identify an API request-response contract.
-      L1: Explains endpoints, authentication, payloads, and status codes from an example.
-      L2: Calls a documented API and handles a bounded success and error path.
-      L3: Integrates multiple APIs with validation, retries, timeouts, and idempotency controls.
-      L4: Optimizes integration reliability, latency, cost, rate limits, and degradation behavior.
-      L5: Defines interface standards and leads novel multi-system integration decisions.
+      L0: "No exposure: has not encountered API request-response concepts or practice."
+      L1: "Recognize and explain basics: describes endpoints, authentication, payloads, and status codes."
+      L2: "Complete with example/template/guidance: calls a documented API using a provided client pattern."
+      L3: "Independently complete a bounded real task: integrates an API with validation, timeouts, and errors."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves retries, idempotency, rate limits, latency, and degradation."
+      L5: "Architect, review, and teach: defines interface standards and guides multi-system integration decisions."
     evidence_requirements: [Contract tests, failure simulation, integration decision record]
   - id: prompt-engineering
     name: Prompt engineering
     category: model-interaction
     levels:
-      L0: Cannot yet distinguish instructions, context, examples, and outputs.
-      L1: Explains prompt components and adapts a demonstrated prompt with guidance.
-      L2: Produces a structured prompt for a bounded task and checks representative outputs.
-      L3: Designs prompt variants, schemas, context boundaries, and regression evaluations.
-      L4: Optimizes quality, robustness, latency, and cost using comparative evidence.
-      L5: Defines prompting standards and leads novel interaction-pattern decisions.
+      L0: "No exposure: has not encountered prompt design concepts or practice."
+      L1: "Recognize and explain basics: describes instructions, context, examples, outputs, and limitations."
+      L2: "Complete with example/template/guidance: adapts a demonstrated structured prompt using guidance."
+      L3: "Independently complete a bounded real task: designs and evaluates prompts for a real workflow."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves prompt robustness, schemas, latency, cost, and edge cases."
+      L5: "Architect, review, and teach: defines prompting standards and guides interaction-pattern decisions."
     evidence_requirements: [Versioned prompts, evaluation set, comparison report]
   - id: llm-fundamentals
     name: LLM fundamentals
     category: model-understanding
     levels:
-      L0: Cannot yet explain what an LLM predicts or its basic limitations.
-      L1: Explains tokens, context, sampling, hallucination, and major model constraints.
-      L2: Selects model settings for a bounded task and predicts common failure modes.
-      L3: Diagnoses model behavior using controlled experiments and trade-off analysis.
-      L4: Evaluates model choices across quality, safety, latency, privacy, and cost.
-      L5: Sets model-selection principles and guides novel high-impact decisions.
+      L0: "No exposure: has not encountered LLM concepts or practice."
+      L1: "Recognize and explain basics: describes tokens, context, sampling, hallucination, and constraints."
+      L2: "Complete with example/template/guidance: selects settings for a demonstrated task using a comparison guide."
+      L3: "Independently complete a bounded real task: selects a model and justifies settings with controlled evidence."
+      L4: "Debug, optimize, migrate, and handle exceptions: diagnoses behavior and improves quality, safety, latency, privacy, and cost."
+      L5: "Architect, review, and teach: defines model-selection principles and guides high-impact decisions."
     evidence_requirements: [Model comparison, controlled experiments, limitations briefing]
   - id: embedding-retrieval
     name: Embedding and retrieval
     category: knowledge-systems
     levels:
-      L0: Cannot yet distinguish semantic retrieval from generation.
-      L1: Explains embeddings, chunking, indexing, similarity, and retrieval metrics.
-      L2: Builds a bounded semantic index and retrieves relevant items.
-      L3: Tunes chunking, metadata, hybrid retrieval, reranking, and evaluation.
-      L4: Optimizes retrieval quality, freshness, scale, access control, and cost.
-      L5: Defines retrieval architecture standards and leads novel knowledge-system decisions.
+      L0: "No exposure: has not encountered embedding or retrieval concepts or practice."
+      L1: "Recognize and explain basics: describes embeddings, chunking, indexing, similarity, and metrics."
+      L2: "Complete with example/template/guidance: builds a demonstrated semantic index using a provided pattern."
+      L3: "Independently complete a bounded real task: builds and evaluates retrieval for a real knowledge set."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves chunking, reranking, freshness, scale, access, and cost."
+      L5: "Architect, review, and teach: defines retrieval standards and guides knowledge-system decisions."
     evidence_requirements: [Indexed corpus, retrieval evaluation, design rationale]
   - id: rag-engineering
     name: RAG engineering
     category: knowledge-systems
     levels:
-      L0: Cannot yet trace a retrieval-augmented generation flow.
-      L1: Explains ingestion, retrieval, grounding, citation, and common RAG failures.
-      L2: Implements a bounded RAG application with source attribution.
-      L3: Integrates retrieval evaluation, generation evaluation, fallbacks, and freshness controls.
-      L4: Optimizes grounded quality, security, latency, operations, and business fit.
-      L5: Defines RAG governance and leads novel enterprise knowledge decisions.
+      L0: "No exposure: has not encountered RAG concepts or practice."
+      L1: "Recognize and explain basics: describes ingestion, retrieval, grounding, citation, and common failures."
+      L2: "Complete with example/template/guidance: assembles a demonstrated cited RAG flow using scaffolding."
+      L3: "Independently complete a bounded real task: delivers and evaluates RAG for a real knowledge need."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves grounding, security, latency, freshness, and fallbacks."
+      L5: "Architect, review, and teach: defines RAG governance and guides enterprise knowledge decisions."
     evidence_requirements: [End-to-end RAG system, groundedness tests, failure analysis]
   - id: tool-calling
     name: Tool calling
     category: agent-engineering
     levels:
-      L0: Cannot yet identify when a model should call a tool.
-      L1: Explains tool schemas, selection, arguments, results, and failure risks.
-      L2: Implements validated tool calls for a bounded task.
-      L3: Coordinates multiple tools with permissions, retries, and deterministic controls.
-      L4: Optimizes tool choice, safety, observability, latency, and recovery.
-      L5: Defines tool-platform standards and leads novel action-system decisions.
+      L0: "No exposure: has not encountered tool-calling concepts or practice."
+      L1: "Recognize and explain basics: describes schemas, selection, arguments, results, and failure risks."
+      L2: "Complete with example/template/guidance: implements a demonstrated validated tool call using a template."
+      L3: "Independently complete a bounded real task: delivers a permissioned tool flow with tests."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves tool choice, safety, observability, latency, and recovery."
+      L5: "Architect, review, and teach: defines tool-platform standards and guides action-system decisions."
     evidence_requirements: [Tool schemas, integration tests, permission and failure controls]
   - id: agent-workflow
     name: Agent workflow
     category: agent-engineering
     levels:
-      L0: Cannot yet distinguish an agent loop from a single model call.
-      L1: Explains state, planning, action, observation, termination, and human checkpoints.
-      L2: Implements a bounded stateful agent workflow with explicit termination.
-      L3: Integrates branching, recovery, memory boundaries, and human-in-the-loop decisions.
-      L4: Optimizes workflow reliability and business outcomes with trace evidence.
-      L5: Defines orchestration standards and leads novel high-autonomy workflow decisions.
+      L0: "No exposure: has not encountered agent workflow concepts or practice."
+      L1: "Recognize and explain basics: describes state, planning, action, observation, termination, and checkpoints."
+      L2: "Complete with example/template/guidance: assembles a demonstrated stateful loop using a workflow template."
+      L3: "Independently complete a bounded real task: delivers an agent workflow with explicit termination and recovery."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves branching, memory, reliability, traces, and human escalation."
+      L5: "Architect, review, and teach: defines orchestration standards and guides high-autonomy workflow decisions."
     evidence_requirements: [State diagram, workflow traces, termination and recovery tests]
   - id: mcp-integration
     name: MCP integration
     category: interoperability
     levels:
-      L0: Cannot yet identify MCP client, server, tool, resource, or prompt roles.
-      L1: Explains MCP primitives, capability negotiation, and trust boundaries.
-      L2: Connects and tests a bounded MCP client-server integration.
-      L3: Implements discoverable capabilities, validation, errors, and least-privilege access.
-      L4: Optimizes interoperability, security, observability, and compatibility across servers.
-      L5: Defines MCP platform conventions and leads novel ecosystem integration decisions.
+      L0: "No exposure: has not encountered MCP concepts or practice."
+      L1: "Recognize and explain basics: describes clients, servers, capabilities, negotiation, and trust boundaries."
+      L2: "Complete with example/template/guidance: connects a demonstrated MCP client and server using guidance."
+      L3: "Independently complete a bounded real task: delivers a tested least-privilege MCP integration."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves interoperability, security, observability, and compatibility."
+      L5: "Architect, review, and teach: defines MCP platform conventions and guides ecosystem decisions."
     evidence_requirements: [Working MCP integration, protocol tests, trust-boundary review]
   - id: multi-agent-coordination
     name: Multi-agent coordination
     category: agent-engineering
     levels:
-      L0: Cannot yet explain why work might be delegated across agents.
-      L1: Explains roles, handoffs, shared state, conflicts, and coordination overhead.
-      L2: Implements a bounded delegation flow with explicit inputs and outputs.
-      L3: Coordinates specialized agents with state isolation, conflict handling, and evaluation.
-      L4: Optimizes coordination quality, latency, cost, fault containment, and escalation.
-      L5: Defines multi-agent governance and leads novel distributed-agent decisions.
+      L0: "No exposure: has not encountered multi-agent coordination concepts or practice."
+      L1: "Recognize and explain basics: describes roles, handoffs, state, conflicts, and coordination overhead."
+      L2: "Complete with example/template/guidance: assembles a demonstrated delegation flow using a handoff template."
+      L3: "Independently complete a bounded real task: delivers evaluated coordination among specialized agents."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves conflicts, latency, cost, fault containment, and escalation."
+      L5: "Architect, review, and teach: defines multi-agent governance and guides distributed-agent decisions."
     evidence_requirements: [Coordination design, trace set, comparative single-agent baseline]
   - id: evaluation-observability
     name: Evaluation and observability
     category: quality-engineering
     levels:
-      L0: Cannot yet distinguish anecdotal output review from systematic evaluation.
-      L1: Explains test sets, metrics, traces, judges, feedback, and monitoring limitations.
-      L2: Builds a reproducible functional and quality evaluation for a bounded workflow.
-      L3: Integrates offline tests, online signals, traces, error taxonomy, and regression gates.
-      L4: Optimizes measures for reliability, business impact, bias, cost, and incident learning.
-      L5: Defines evaluation governance and leads novel measurement decisions under uncertainty.
+      L0: "No exposure: has not encountered evaluation or observability concepts or practice."
+      L1: "Recognize and explain basics: describes test sets, metrics, traces, judges, feedback, and limits."
+      L2: "Complete with example/template/guidance: runs a demonstrated evaluation using a provided test template."
+      L3: "Independently complete a bounded real task: builds reproducible evaluations and traces for a real workflow."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves metrics, regression gates, monitoring, bias, cost, and incidents."
+      L5: "Architect, review, and teach: defines evaluation governance and guides measurement under uncertainty."
     evidence_requirements: [Versioned evaluation set, dashboards or traces, regression report]
   - id: deployment-security
     name: Deployment and security
     category: operations
     levels:
-      L0: Cannot yet identify deployment, secret, data, or model security boundaries.
-      L1: Explains environments, secrets, access control, prompt injection, logging, and rollback.
-      L2: Deploys a bounded service with secret handling, health checks, and basic safeguards.
-      L3: Integrates CI checks, least privilege, threat controls, monitoring, and rollback drills.
-      L4: Optimizes reliability, privacy, security, cost, and incident response under policy.
-      L5: Defines production governance and leads novel high-risk deployment decisions.
+      L0: "No exposure: has not encountered deployment or security concepts or practice."
+      L1: "Recognize and explain basics: describes environments, secrets, access, injection, logging, and rollback."
+      L2: "Complete with example/template/guidance: deploys a demonstrated service using a secure template and checklist."
+      L3: "Independently complete a bounded real task: deploys a guarded service with monitoring and rollback evidence."
+      L4: "Debug, optimize, migrate, and handle exceptions: improves reliability, privacy, security, cost, and incident response."
+      L5: "Architect, review, and teach: defines production governance and guides high-risk deployment decisions."
     evidence_requirements: [Deployed service, threat model, operations and rollback evidence]
   - id: business-problem-framing
     name: Business problem framing
     category: product-business
     levels:
-      L0: Cannot yet distinguish a business problem from a preferred AI solution.
-      L1: Explains users, jobs, constraints, value, risk, and success measures.
-      L2: Frames a bounded problem and tests an AI suitability hypothesis with stakeholders.
-      L3: Prioritizes alternatives and translates needs into measurable acceptance criteria.
-      L4: Optimizes scope and investment using outcome, risk, adoption, and economic evidence.
-      L5: Shapes portfolio strategy and leads novel cross-functional value decisions.
+      L0: "No exposure: has not encountered business problem framing concepts or practice."
+      L1: "Recognize and explain basics: describes users, jobs, constraints, value, risk, and success measures."
+      L2: "Complete with example/template/guidance: frames a demonstrated problem using a stakeholder brief template."
+      L3: "Independently complete a bounded real task: validates a real problem and measurable acceptance criteria."
+      L4: "Debug, optimize, migrate, and handle exceptions: reframes weak assumptions and improves scope, adoption, risk, and economics."
+      L5: "Architect, review, and teach: defines framing standards and guides cross-functional portfolio decisions."
     evidence_requirements: [Dated stakeholder brief, alternatives analysis, value measures]
   - id: technical-communication
     name: Technical communication
     category: professional
     levels:
-      L0: Cannot yet explain the system to a named audience.
-      L1: Describes purpose, components, and limitations using a provided structure.
-      L2: Produces clear implementation notes and demonstrates a bounded solution.
-      L3: Adapts architecture, trade-offs, incidents, and handover for technical and business audiences.
-      L4: Facilitates ambiguous decisions using concise evidence, diagrams, and recommendations.
-      L5: Defines communication standards and leads novel high-stakes technical narratives.
+      L0: "No exposure: has not encountered technical communication concepts or practice."
+      L1: "Recognize and explain basics: describes purpose, audience, components, evidence, and limitations."
+      L2: "Complete with example/template/guidance: produces a demonstrated technical note using a provided structure."
+      L3: "Independently complete a bounded real task: delivers a clear architecture, demo, and handover for named audiences."
+      L4: "Debug, optimize, migrate, and handle exceptions: repairs misunderstandings and improves trade-off, incident, and decision communication."
+      L5: "Architect, review, and teach: defines communication standards and guides high-stakes technical narratives."
     evidence_requirements: [Architecture narrative, live walkthrough, audience feedback]
 
 dependencies:
@@ -204,44 +204,98 @@ project_archetypes:
     level: 1
     name: Focused tool
     example: A validated tool-calling utility for one bounded operational task
+    inputs: [Bounded task brief, sample valid and invalid requests, tool contract]
+    deliverables: [Runnable utility, tests, usage note]
     competency_ids: [python-foundation, api-integration, tool-calling]
     business_value: Reduce repeat manual work while preserving a reviewable action trail.
     evidence: [Runnable output, automated tests, usage notes, decision explanation]
+    common_failure_modes: [Invalid arguments pass through, API failure is silent, tool permissions are too broad]
+    demonstration_requirements: [Run a success case and a controlled tool or API failure without hidden manual repair]
+    documentation_requirements: [Document setup, tool contract, limitations, and recovery behavior]
+    retrospective_requirements: [Identify one failed assumption and the next reliability improvement]
+    rubric_criteria:
+      - {id: focused-correctness, criterion: Tool behavior is correct and validated, threshold: All critical success and error tests pass}
+      - {id: focused-explanation, criterion: Implementation decisions and limits are explained, threshold: Reviewer can reproduce and challenge the decision}
   - id: knowledge-application
     level: 2
     name: Knowledge application
     example: A cited question-answer assistant over a controlled knowledge set
+    inputs: [Representative source set, user questions, provenance constraints]
+    deliverables: [Cited assistant, retrieval evaluation, requirements note]
     competency_ids: [llm-fundamentals, prompt-engineering, embedding-retrieval, rag-engineering]
     business_value: Improve access to trusted knowledge and measure answer-grounding quality.
     evidence: [Requirements note, provenance, retrieval tests, groundedness evaluation]
+    common_failure_modes: [Unsupported answers, weak retrieval coverage, stale or untraceable sources]
+    demonstration_requirements: [Answer representative and adversarial questions while exposing citations and abstentions]
+    documentation_requirements: [Document corpus provenance, retrieval design, measures, and known coverage gaps]
+    retrospective_requirements: [Analyze one retrieval and one generation failure and prioritize corrective experiments]
+    rubric_criteria:
+      - {id: knowledge-grounding, criterion: Answers remain grounded in traceable evidence, threshold: Grounding and citation gates pass on the agreed set}
+      - {id: knowledge-tradeoffs, criterion: Retrieval and generation trade-offs are justified, threshold: Comparative evidence supports the chosen design}
   - id: workflow
     level: 3
     name: Workflow
     example: A multi-step intake, research, action, and review agent
+    inputs: [Workflow brief, interface contracts, exception scenarios]
+    deliverables: [Stateful workflow, trace set, operating guide]
     competency_ids: [tool-calling, agent-workflow, evaluation-observability, technical-communication]
     business_value: Shorten cycle time with explicit human checkpoints and failure recovery.
     evidence: [Interface contract, state diagram, end-to-end tests, operating guide]
+    common_failure_modes: [Non-terminating loops, lost state, unsafe automatic action, unrecoverable partial failure]
+    demonstration_requirements: [Complete the workflow independently and recover from a forced intermediate failure]
+    documentation_requirements: [Document state transitions, interfaces, checkpoints, monitoring, and recovery]
+    retrospective_requirements: [Compare expected and observed traces and explain one workflow redesign]
+    rubric_criteria:
+      - {id: workflow-independence, criterion: Workflow completes independently within stated boundaries, threshold: End-to-end and recovery scenarios pass}
+      - {id: workflow-observability, criterion: Decisions and failures are traceable, threshold: Reviewer can locate and explain every critical transition}
   - id: enterprise-scenario
     level: 4
     name: Enterprise scenario
     example: A governed internal agent connected through MCP to approved systems
+    inputs: [Organizational policy, service contracts, risk and service targets]
+    deliverables: [Governed integration, threat model, operations package]
     competency_ids: [mcp-integration, deployment-security, evaluation-observability, business-problem-framing]
     business_value: Enable controlled organizational automation with measurable reliability and risk.
     evidence: [Threat model, access controls, service targets, observability, rollback drill]
+    common_failure_modes: [Privilege escalation, sensitive-data leakage, missing audit trail, unsafe migration]
+    demonstration_requirements: [Demonstrate least privilege, monitoring, exception handling, and a rollback drill]
+    documentation_requirements: [Document architecture, threat controls, service objectives, ownership, and runbooks]
+    retrospective_requirements: [Analyze one simulated incident and revise a control using trace evidence]
+    rubric_criteria:
+      - {id: enterprise-governance, criterion: Security and operational controls match stated risks, threshold: No critical threat lacks an owner and tested control}
+      - {id: enterprise-resilience, criterion: Exceptions and rollback are handled safely, threshold: Forced-failure and rollback demonstrations meet service targets}
   - id: portfolio-case
     level: 5
     name: Portfolio case
     example: A defensible AI agent case study with comparative architecture decisions
+    inputs: [Verified project evidence, audience needs, alternative designs]
+    deliverables: [Case narrative, public-safe demo, architecture and evaluation package]
     competency_ids: [business-problem-framing, agent-workflow, evaluation-observability, technical-communication]
     business_value: Make engineering judgment and outcome evidence legible to evaluators.
     evidence: [Narrative, alternatives, measures, architecture, demonstration, reflection]
+    common_failure_modes: [Unverified claims, decorative metrics, missing alternatives, confidential-data exposure]
+    demonstration_requirements: [Present the system live and answer evidence-based architecture and failure questions]
+    documentation_requirements: [Document problem, alternatives, measures, architecture, limits, and safe reproduction]
+    retrospective_requirements: [Explain how evidence changed the design and what would be done differently next]
+    rubric_criteria:
+      - {id: portfolio-evidence, criterion: Every capability and value claim links to verifiable evidence, threshold: Reviewer finds no unsupported material claim}
+      - {id: portfolio-review, criterion: Trade-offs and limitations withstand review, threshold: Responses remain consistent with artifacts and measures}
   - id: real-external-delivery
     level: 6
     name: Real external delivery
     example: An accepted agent workflow for an external stakeholder's bounded need
+    inputs: [Dated stakeholder brief, agreed scope, real operating constraints]
+    deliverables: [Accepted system, handover package, feedback and change record]
     competency_ids: [multi-agent-coordination, deployment-security, business-problem-framing, technical-communication]
     business_value: Produce verified stakeholder value and adoption evidence in a real context.
     evidence: [Dated brief, scope agreement, change log, acceptance evidence, handover, feedback]
+    common_failure_modes: [Scope drift, hidden manual work, weak acceptance evidence, incomplete handover]
+    demonstration_requirements: [Deploy or deliver in the agreed context and demonstrate acceptance and recovery behavior]
+    documentation_requirements: [Document scope, changes, operations, ownership, privacy, and handover acceptance]
+    retrospective_requirements: [Compare promised and realized value and incorporate stakeholder feedback into next actions]
+    rubric_criteria:
+      - {id: delivery-acceptance, criterion: Delivery meets agreed stakeholder acceptance criteria, threshold: Stakeholder records acceptance or explicit approved exceptions}
+      - {id: delivery-transfer, criterion: Another responsible person can operate or continue the work, threshold: Handover rehearsal succeeds without undocumented intervention}
 
 assessment_patterns:
   - id: behavior-demonstration
@@ -250,18 +304,36 @@ assessment_patterns:
     observed_behavior: Executes the target-level behavior under stated constraints.
     threshold: All critical checks pass and no critical behavior is unobserved.
     feedback_loop: Convert failed criteria into the smallest causal practice and reassess with new evidence.
+    capability_checks: [independent-completion, debug]
+    result_levels:
+      understanding: Explains concepts and predicts behavior but does not yet complete the task.
+      guided: Completes with an example, template, prompts, or evaluator guidance.
+      independent: Independently completes the bounded real task under stated constraints.
+      transfer: Modifies requirements and resolves a novel failure without step-by-step guidance.
   - id: comparative-evaluation
     evaluator: technical reviewer
     artifact: versioned test set and comparison report
     observed_behavior: Selects an approach using quality, reliability, latency, cost, and risk evidence.
     threshold: Recommendation is reproducible and supported by predefined measures.
     feedback_loop: Expand representative cases or revise the decision when measures contradict the claim.
+    capability_checks: [explain-trade-offs, modify-requirements]
+    result_levels:
+      understanding: Explains evaluation concepts and candidate trade-offs without executing the comparison.
+      guided: Completes the comparison with a supplied test set, template, or evaluator guidance.
+      independent: Independently completes a bounded real comparison and defends the selected trade-offs.
+      transfer: Revises requirements, measures, or architecture when new evidence changes the decision.
   - id: stakeholder-acceptance
     evaluator: external or role-representative stakeholder
     artifact: acceptance record and feedback
     observed_behavior: Delivers agreed business value and communicates limitations and operations.
     threshold: Named acceptance criteria are met or exceptions are explicitly accepted.
     feedback_loop: Reframe unmet needs, update scope, and preserve superseded evidence.
+    capability_checks: [deploy-deliver, teach-review]
+    result_levels:
+      understanding: Explains delivery, review, and handover expectations without completing delivery.
+      guided: Delivers a representative artifact with a checklist, template, or stakeholder guidance.
+      independent: Independently deploys or delivers the bounded real outcome and completes handover.
+      transfer: Teaches or reviews the work and adapts delivery to changed stakeholder requirements.
 
 outcome_preparation:
   employment_preparation:

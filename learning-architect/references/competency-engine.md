@@ -6,14 +6,14 @@ The Competency Engine turns a target outcome, learner evidence, and a versioned 
 
 ## Competency contract
 
-Each competency has a stable, kebab-case `id`, category, weight, target level, observable behaviors, and evidence requirements. IDs survive wording changes; replacements require a migration map. Levels are behavioral rather than time-served:
+Each competency has a stable, kebab-case `id`, category, weight, target level, observable behaviors, and evidence requirements. IDs survive wording changes; replacements require a migration map. Use this canonical behavioral scale everywhere without redefining, skipping, or shifting a level:
 
-- **L0 — unaware:** cannot yet recognize the concept or perform the behavior.
-- **L1 — recognize:** explains terms and follows a demonstrated example with prompts.
-- **L2 — execute:** completes a bounded task independently under familiar constraints.
-- **L3 — integrate:** combines the capability with adjacent skills, diagnoses routine failures, and explains trade-offs.
-- **L4 — optimize:** handles ambiguous constraints, evaluates alternatives with evidence, and improves quality, reliability, cost, or business value.
-- **L5 — lead:** defines standards, handles novel cases, mentors others, and makes accountable cross-system decisions.
+- **L0 — no exposure:** has not encountered the capability's concepts or practice.
+- **L1 — recognize/describe/explain basics:** recognizes the capability and describes or explains its basic terms, purpose, and limits.
+- **L2 — complete with example/template/guidance:** completes a representative exercise using an example, template, prompts, or guidance.
+- **L3 — independently complete a bounded real task:** independently completes a bounded real task under stated constraints and supplies evidence.
+- **L4 — debug/optimize/migrate/handle exceptions:** debugs failures, optimizes trade-offs, migrates an implementation, and handles important exceptions.
+- **L5 — architect/review/teach:** architects a solution or standard, reviews others' work, and teaches the capability with accountable judgment.
 
 Every level statement must begin with an observable action. Level evidence is cumulative: evidence for L4 must also demonstrate the required L0–L3 behaviors. A target level without a behavior and evidence requirement fails the gate.
 

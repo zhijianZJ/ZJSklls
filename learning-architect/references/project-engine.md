@@ -17,9 +17,9 @@ Advanced learners may combine projects or deliver one artifact across multiple l
 
 ## Project contract
 
-Every project has a stable ID, problem, users, inputs, constraints, deliverables, competency targets with levels, business value hypothesis, success measures, risks, evidence plan, and analytic rubric. Business value must be concrete—such as time saved, error reduction, decision quality, revenue enablement, risk reduction, or stakeholder adoption—and must identify the beneficiary and measurement method.
+Every project and Domain Pack archetype has a stable ID, problem, users, inputs, constraints, deliverables, competency targets with levels, business value hypothesis, success measures, risks, evidence plan, and analytic rubric. It must explicitly include `common_failure_modes`, `demonstration_requirements`, `documentation_requirements`, `retrospective_requirements`, and `rubric_criteria`; these are required evidence contracts, not optional authoring hints. Business value must be concrete—such as time saved, error reduction, decision quality, revenue enablement, risk reduction, or stakeholder adoption—and must identify the beneficiary and measurement method.
 
-Rubrics use observable criteria with thresholds for insufficient, developing, proficient, and strong performance. At minimum score correctness, capability behavior, reliability, responsible practice, business value, and technical communication. Store evaluator, evidence IDs, score, feedback, and verification date separately from the project brief.
+Rubric criteria use stable IDs, observable criteria, and explicit thresholds for insufficient, developing, proficient, and strong performance. At minimum score correctness, capability behavior, reliability, responsible practice, business value, and technical communication. Demonstration requirements state what must be shown live or reproducibly; documentation requirements identify durable handover artifacts; retrospective requirements require evidence-based analysis of failures, decisions, and next changes. Store evaluator, evidence IDs, score, feedback, and verification date separately from the project brief.
 
 ## Coverage matrix
 

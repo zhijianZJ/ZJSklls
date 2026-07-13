@@ -14,7 +14,9 @@ A Domain Pack is a reusable, versioned occupational reference. It supplies targe
 
 ## Content rules
 
-Competencies define observable L0–L5 behaviors and evidence expectations. Dependencies are a directed acyclic graph. Project archetypes cover focused tool, knowledge application, workflow, enterprise scenario, portfolio case, and real external delivery; combining them cannot delete evidence. Assessment patterns state evaluator, artifact, observed behavior, threshold, and feedback loop. Outcome preparation is route-specific and never equates course completion with readiness.
+Competencies use the unchanged canonical L0–L5 scale in `competency-engine.md` and define domain-specific observable behavior and evidence at each level. Dependencies are a directed acyclic graph. Project archetypes cover focused tool, knowledge application, workflow, enterprise scenario, portfolio case, and real external delivery; combining them cannot delete evidence. Each archetype includes inputs, deliverables, competencies, business value, common failure modes, demonstration, documentation and retrospective requirements, and rubric criteria.
+
+Assessment patterns state evaluator, artifact, observed behavior, threshold, feedback loop, and named capability checks. Across the pack they explicitly assess independent completion, explanation of trade-offs, modification for changed requirements, debugging, deployment or delivery, and teaching or review. Every pattern distinguishes `understanding` (can explain), `guided` (completes with example/template/guidance), `independent` (completes a bounded real task unaided), and `transfer` (adapts the capability to changed or novel conditions). Outcome preparation is route-specific and never equates course completion with readiness.
 
 Resource catalogs are optional and replaceable. Entries describe coverage, constraints, freshness, accessibility, and selection rationale; no specific paid course may be a required recommendation. Projects include business value, rubrics, and a competency coverage matrix.
 

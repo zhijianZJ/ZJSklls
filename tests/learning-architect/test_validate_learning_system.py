@@ -22,6 +22,48 @@ def load_validator():
 
 
 class LearningSystemValidationTests(unittest.TestCase):
+    CANONICAL_LEVEL_MARKERS = {
+        "L0": ("no exposure",),
+        "L1": ("recognize", "explain basics"),
+        "L2": ("complete with example/template/guidance",),
+        "L3": ("independently complete a bounded real task",),
+        "L4": ("debug", "optimize", "migrate", "handle exceptions"),
+        "L5": ("architect", "review", "teach"),
+    }
+    PROJECT_ARCHETYPE_IDS = {
+        "focused-tool",
+        "knowledge-application",
+        "workflow",
+        "enterprise-scenario",
+        "portfolio-case",
+        "real-external-delivery",
+    }
+    PROJECT_EVIDENCE_FIELDS = {
+        "inputs",
+        "deliverables",
+        "competency_ids",
+        "business_value",
+        "common_failure_modes",
+        "demonstration_requirements",
+        "documentation_requirements",
+        "retrospective_requirements",
+        "rubric_criteria",
+    }
+    ASSESSMENT_CAPABILITY_CHECKS = {
+        "independent-completion",
+        "explain-trade-offs",
+        "modify-requirements",
+        "debug",
+        "deploy-deliver",
+        "teach-review",
+    }
+    ASSESSMENT_RESULT_LEVELS = {
+        "understanding",
+        "guided",
+        "independent",
+        "transfer",
+    }
+
     @classmethod
     def setUpClass(cls):
         cls.validator = load_validator()
@@ -224,6 +266,115 @@ class LearningSystemValidationTests(unittest.TestCase):
             "technical-communication",
         }
         self.assertEqual(sorted(required_ids - competency_ids), [])
+
+    def test_ai_agent_competencies_use_canonical_behavior_levels(self):
+        pack = self.load_ai_agent_domain_pack()
+        for competency in pack["competencies"]:
+            with self.subTest(competency=competency["id"]):
+                levels = competency["levels"]
+                self.assertEqual(set(levels), set(self.CANONICAL_LEVEL_MARKERS))
+                for level, markers in self.CANONICAL_LEVEL_MARKERS.items():
+                    behavior = levels[level].lower()
+                    for marker in markers:
+                        self.assertIn(marker, behavior)
+
+    def test_project_contracts_require_complete_evidence_fields(self):
+        project_schema = yaml.safe_load(
+            (self.skill_root / "assets/schemas/project.schema.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertTrue(
+            self.PROJECT_EVIDENCE_FIELDS <= set(project_schema["required"])
+        )
+
+        pack = self.load_ai_agent_domain_pack()
+        for archetype in pack["project_archetypes"]:
+            with self.subTest(archetype=archetype["id"]):
+                self.assertTrue(
+                    self.PROJECT_EVIDENCE_FIELDS <= archetype.keys(), archetype
+                )
+                self.assertTrue(archetype["rubric_criteria"])
+
+    def test_assessment_patterns_cover_capability_checks_and_result_levels(self):
+        pack = self.load_ai_agent_domain_pack()
+        covered_checks = set()
+        for pattern in pack["assessment_patterns"]:
+            with self.subTest(pattern=pattern["id"]):
+                self.assertIn("capability_checks", pattern)
+                self.assertIn("result_levels", pattern)
+            covered_checks.update(pattern.get("capability_checks", []))
+        self.assertEqual(covered_checks, self.ASSESSMENT_CAPABILITY_CHECKS)
+        for pattern in pack["assessment_patterns"]:
+            with self.subTest(pattern=pattern["id"]):
+                self.assertEqual(
+                    set(pattern.get("result_levels", {})),
+                    self.ASSESSMENT_RESULT_LEVELS,
+                )
+
+    def test_ai_agent_pack_has_exact_metadata_archetypes_and_coverage(self):
+        pack = self.load_ai_agent_domain_pack()
+        self.assertEqual(pack["id"], "ai-agent-engineer")
+        self.assertEqual(pack["version"], "1.0.0")
+        self.assertEqual(pack["last_reviewed_at"], "2026-07-13")
+        self.assertEqual(pack["review_interval_days"], 90)
+        self.assertEqual(
+            {archetype["id"] for archetype in pack["project_archetypes"]},
+            self.PROJECT_ARCHETYPE_IDS,
+        )
+        competency_ids = {
+            competency["id"] for competency in pack["competencies"]
+        }
+        covered_ids = {
+            competency_id
+            for archetype in pack["project_archetypes"]
+            for competency_id in archetype["competency_ids"]
+        }
+        self.assertEqual(covered_ids, competency_ids)
+
+    def test_ai_agent_pack_is_acyclic_and_has_no_paid_course_recommendations(self):
+        pack = self.load_ai_agent_domain_pack()
+        self.assertFalse(self.validator._has_dependency_cycle(pack["dependencies"]))
+        pack_text = yaml.safe_dump(pack).lower()
+        for forbidden in [
+            "udemy.com/course/",
+            "coursera.org/learn/",
+            "edx.org/learn/",
+            "buy this course",
+            "enroll in this paid course",
+        ]:
+            self.assertNotIn(forbidden, pack_text)
+
+    def test_skill_asset_validator_reports_domain_pack_cycle(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            skill_root = Path(temporary_directory) / "learning-architect"
+            shutil.copytree(self.skill_root, skill_root)
+            pack_path = skill_root / "assets/domain-packs/ai-agent.yaml"
+            pack = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
+            pack["dependencies"].append(
+                {"from": "agent-workflow", "to": "python-foundation"}
+            )
+            pack_path.write_text(yaml.safe_dump(pack), encoding="utf-8")
+            errors = self.validator.validate_skill_assets(skill_root)
+            self.assertTrue(
+                any("domain pack dependency cycle" in error.lower() for error in errors),
+                errors,
+            )
+
+    def test_skill_asset_validator_rejects_paid_course_recommendation(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            skill_root = Path(temporary_directory) / "learning-architect"
+            shutil.copytree(self.skill_root, skill_root)
+            pack_path = skill_root / "assets/domain-packs/ai-agent.yaml"
+            pack = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
+            pack["target_outcomes"][0]["description"] += (
+                " Enroll in this paid course: https://www.udemy.com/course/example"
+            )
+            pack_path.write_text(yaml.safe_dump(pack), encoding="utf-8")
+            errors = self.validator.validate_skill_assets(skill_root)
+            self.assertTrue(
+                any("paid course" in error.lower() for error in errors), errors
+            )
 
     def test_confidence_enum_is_accepted(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
