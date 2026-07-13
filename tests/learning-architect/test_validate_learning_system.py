@@ -40,6 +40,7 @@ class LearningSystemValidationTests(unittest.TestCase):
     }
     PROJECT_EVIDENCE_FIELDS = {
         "inputs",
+        "constraints",
         "deliverables",
         "competency_ids",
         "business_value",
@@ -47,7 +48,21 @@ class LearningSystemValidationTests(unittest.TestCase):
         "demonstration_requirements",
         "documentation_requirements",
         "retrospective_requirements",
-        "rubric_criteria",
+        "rubric",
+    }
+    RUBRIC_DIMENSIONS = {
+        "correctness",
+        "capability_behavior",
+        "reliability",
+        "responsible_practice",
+        "business_value",
+        "technical_communication",
+    }
+    PERFORMANCE_BANDS = {
+        "insufficient",
+        "developing",
+        "proficient",
+        "strong",
     }
     ASSESSMENT_CAPABILITY_CHECKS = {
         "independent-completion",
@@ -287,6 +302,14 @@ class LearningSystemValidationTests(unittest.TestCase):
         self.assertTrue(
             self.PROJECT_EVIDENCE_FIELDS <= set(project_schema["required"])
         )
+        self.assertGreaterEqual(
+            project_schema["properties"]["constraints"].get("minItems", 0), 1
+        )
+        rubric_schema = project_schema.get("$defs", {}).get("analytic_rubric", {})
+        self.assertEqual(
+            set(rubric_schema.get("required", [])),
+            self.RUBRIC_DIMENSIONS,
+        )
 
         pack = self.load_ai_agent_domain_pack()
         for archetype in pack["project_archetypes"]:
@@ -294,7 +317,17 @@ class LearningSystemValidationTests(unittest.TestCase):
                 self.assertTrue(
                     self.PROJECT_EVIDENCE_FIELDS <= archetype.keys(), archetype
                 )
-                self.assertTrue(archetype["rubric_criteria"])
+                self.assertTrue(archetype.get("constraints"))
+                rubric = archetype.get("rubric", {})
+                self.assertEqual(set(rubric), self.RUBRIC_DIMENSIONS)
+                self.assertEqual(
+                    sum(item.get("weight", 0) for item in rubric.values()), 100
+                )
+                for dimension in rubric.values():
+                    self.assertEqual(
+                        set(dimension.get("performance_bands", {})),
+                        self.PERFORMANCE_BANDS,
+                    )
 
     def test_assessment_patterns_cover_capability_checks_and_result_levels(self):
         pack = self.load_ai_agent_domain_pack()
@@ -368,13 +401,32 @@ class LearningSystemValidationTests(unittest.TestCase):
             pack_path = skill_root / "assets/domain-packs/ai-agent.yaml"
             pack = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
             pack["target_outcomes"][0]["description"] += (
-                " Enroll in this paid course: https://www.udemy.com/course/example"
+                " See https://training.example.org/program/agent-engineering"
             )
             pack_path.write_text(yaml.safe_dump(pack), encoding="utf-8")
             errors = self.validator.validate_skill_assets(skill_root)
             self.assertTrue(
-                any("paid course" in error.lower() for error in errors), errors
+                any("url" in error.lower() for error in errors), errors
             )
+
+    def test_skill_asset_validator_rejects_general_course_purchase_language(self):
+        for phrase in [
+            "Choose this paid course",
+            "推荐这门付费课程",
+            "建议购买这个 Agent 课程",
+            "现在报名高级 Agent 课程",
+        ]:
+            with self.subTest(phrase=phrase), tempfile.TemporaryDirectory() as temporary_directory:
+                skill_root = Path(temporary_directory) / "learning-architect"
+                shutil.copytree(self.skill_root, skill_root)
+                pack_path = skill_root / "assets/domain-packs/ai-agent.yaml"
+                pack = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
+                pack["target_outcomes"][0]["description"] += f" {phrase}"
+                pack_path.write_text(yaml.safe_dump(pack), encoding="utf-8")
+                errors = self.validator.validate_skill_assets(skill_root)
+                self.assertTrue(
+                    any("paid course" in error.lower() for error in errors), errors
+                )
 
     def test_confidence_enum_is_accepted(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

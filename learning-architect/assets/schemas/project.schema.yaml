@@ -2,7 +2,34 @@ $schema: https://json-schema.org/draft/2020-12/schema
 title: Learning Project
 type: object
 additionalProperties: false
-required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, problem, inputs, constraints, deliverables, competency_ids, business_value, common_failure_modes, demonstration_requirements, documentation_requirements, retrospective_requirements, rubric_criteria, rubric]
+$defs:
+  rubric_dimension:
+    type: object
+    additionalProperties: false
+    required: [weight, performance_bands]
+    properties:
+      weight: {type: number, exclusiveMinimum: 0, maximum: 100}
+      performance_bands:
+        type: object
+        additionalProperties: false
+        required: [insufficient, developing, proficient, strong]
+        properties:
+          insufficient: {type: string, minLength: 1}
+          developing: {type: string, minLength: 1}
+          proficient: {type: string, minLength: 1}
+          strong: {type: string, minLength: 1}
+  analytic_rubric:
+    type: object
+    additionalProperties: false
+    required: [correctness, capability_behavior, reliability, responsible_practice, business_value, technical_communication]
+    properties:
+      correctness: {$ref: "#/$defs/rubric_dimension"}
+      capability_behavior: {$ref: "#/$defs/rubric_dimension"}
+      reliability: {$ref: "#/$defs/rubric_dimension"}
+      responsible_practice: {$ref: "#/$defs/rubric_dimension"}
+      business_value: {$ref: "#/$defs/rubric_dimension"}
+      technical_communication: {$ref: "#/$defs/rubric_dimension"}
+required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, problem, inputs, constraints, deliverables, competency_ids, business_value, common_failure_modes, demonstration_requirements, documentation_requirements, retrospective_requirements, rubric]
 properties:
   id: {$ref: common.schema.yaml#/$defs/id}
   schema_version: {$ref: common.schema.yaml#/$defs/version}
@@ -14,7 +41,7 @@ properties:
   updated_at: {$ref: common.schema.yaml#/$defs/timestamp}
   problem: {type: string}
   inputs: {type: array}
-  constraints: {type: array}
+  constraints: {type: array, minItems: 1, items: {type: string}}
   deliverables: {type: array}
   competency_ids: {type: array, items: {type: string}}
   business_value: {type: string}
@@ -22,16 +49,5 @@ properties:
   demonstration_requirements: {type: array, minItems: 1, items: {type: string}}
   documentation_requirements: {type: array, minItems: 1, items: {type: string}}
   retrospective_requirements: {type: array, minItems: 1, items: {type: string}}
-  rubric_criteria:
-    type: array
-    minItems: 1
-    items:
-      type: object
-      additionalProperties: false
-      required: [id, criterion, threshold]
-      properties:
-        id: {$ref: common.schema.yaml#/$defs/id}
-        criterion: {type: string, minLength: 1}
-        threshold: {type: string, minLength: 1}
-  rubric: {type: object}
+  rubric: {$ref: "#/$defs/analytic_rubric"}
   extensions: {$ref: common.schema.yaml#/$defs/extensions}

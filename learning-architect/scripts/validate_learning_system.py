@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import re
 import sys
 from typing import Any
 
@@ -46,20 +47,30 @@ REQUIRED_ASSESSMENT_CHECKS = {
     "deploy-deliver",
     "teach-review",
 }
-PAID_COURSE_MARKERS = (
-    "udemy.com/course/",
-    "coursera.org/learn/",
-    "edx.org/learn/",
-    "buy this course",
-    "enroll in this paid course",
-    "purchase this course",
-    "recommended paid course",
+COURSE_PURCHASE_PATTERNS = (
+    r"\bpaid\s+course\b",
+    r"\b(?:buy|purchase|enroll(?:ment)?(?:\s+in)?)\b.{0,60}\bcourse\b",
+    r"\bcourse\b.{0,30}\b(?:purchase|enrollment)\b",
+    r"付费\s*课程",
+    r"购买[^。！？.!?\n]{0,60}课程",
+    r"报名[^。！？.!?\n]{0,60}课程",
 )
 
 
 def _load_yaml(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as stream:
         return yaml.safe_load(stream)
+
+
+def _iter_strings(value: Any):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for item in value.values():
+            yield from _iter_strings(item)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _iter_strings(item)
 
 
 def _load_schemas(skill_root: Path) -> tuple[dict[str, dict[str, Any]], Registry]:
@@ -171,6 +182,15 @@ def _validate_domain_pack_semantics(
         errors.append(
             f"Domain Pack {pack_name}: project competency coverage mismatch"
         )
+    for archetype in archetypes:
+        rubric_weight = sum(
+            dimension["weight"] for dimension in archetype["rubric"].values()
+        )
+        if abs(rubric_weight - 100) > 1e-9:
+            errors.append(
+                f"Domain Pack {pack_name}: project {archetype['id']} rubric "
+                f"weights must total 100"
+            )
 
     assessment_checks = {
         check
@@ -182,10 +202,19 @@ def _validate_domain_pack_semantics(
             f"Domain Pack {pack_name}: assessment capability coverage mismatch"
         )
 
-    pack_text = yaml.safe_dump(pack, sort_keys=True).lower()
-    if any(marker in pack_text for marker in PAID_COURSE_MARKERS):
+    pack_strings = list(_iter_strings(pack))
+    if any(re.search(r"https?://", value, flags=re.IGNORECASE) for value in pack_strings):
         errors.append(
-            f"Domain Pack {pack_name}: paid course URL or recommendation is forbidden"
+            f"Domain Pack {pack_name}: HTTP/HTTPS URL is forbidden"
+        )
+    if any(
+        re.search(pattern, value, flags=re.IGNORECASE)
+        for value in pack_strings
+        for pattern in COURSE_PURCHASE_PATTERNS
+    ):
+        errors.append(
+            f"Domain Pack {pack_name}: paid course purchase or enrollment "
+            "recommendation is forbidden"
         )
 
     if pack.get("id") == "ai-agent-engineer":
