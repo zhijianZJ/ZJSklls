@@ -1,0 +1,30 @@
+id: optimization-ticket-intake-w01
+schema_version: 1.0.0
+content_version: 1.0.0
+status: draft
+source: weekly plan review and assessment asmt-ticket-intake-01
+confidence: medium
+created_at: "2026-07-19T18:00:00+08:00"
+updated_at: "2026-07-19T18:00:00+08:00"
+trigger: quality
+evidence:
+  - id: ev-ticket-tests
+    observation: Contract tests passed without guidance
+  - id: ev-ticket-demo
+    observation: Mentor prompted the timeout recovery step
+diagnosis: Timeout recovery was completed only with guidance; API failure practice was too narrow, while contract validation evidence met its threshold.
+changes:
+  - Create weekly-plan-ai-agent-w02 content version 1.1.0 with two varied timeout and retry cases
+  - Move the independent failure demonstration before optional output-formatting work
+affected_artifacts:
+  - weekly-plan-ai-agent-w02@1.1.0
+  - asmt-ticket-intake-02@1.0.0
+expected_effect: Learner independently diagnoses and recovers from two unseen API failures within 20 minutes while preserving request state.
+review_at: "2026-07-26T18:00:00+08:00"
+extensions:
+  assumptions:
+    - Two varied cases are sufficient to test whether the recovery pattern transfers
+  previous_versions:
+    - weekly-plan-ai-agent-w02@1.0.0
+  rollback_target: weekly-planner
+  activation_rule: Keep version 1.0.0 active until version 1.1.0 passes capacity and dependency checks

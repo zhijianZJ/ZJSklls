@@ -78,6 +78,20 @@ class LearningSystemValidationTests(unittest.TestCase):
         "independent",
         "transfer",
     }
+    ADAPTIVE_ENGINE_NAMES = [
+        "roadmap-engine.md",
+        "planner-engine.md",
+        "assessment-engine.md",
+        "outcome-engine.md",
+        "optimization-engine.md",
+        "meta-learning-engine.md",
+    ]
+    ADAPTIVE_TEMPLATE_NAMES = [
+        "discovery.yaml",
+        "weekly-plan.yaml",
+        "project-brief.yaml",
+        "progress-review.yaml",
+    ]
 
     @classmethod
     def setUpClass(cls):
@@ -166,6 +180,181 @@ class LearningSystemValidationTests(unittest.TestCase):
                 text = (references / name).read_text(encoding="utf-8")
                 self.assertIn("engine_result", text)
                 self.assertIn("natural-language explanation", text)
+
+    def test_adaptive_engines_and_worked_templates_exist(self):
+        references = self.skill_root / "references"
+        templates = self.skill_root / "assets" / "templates"
+        missing_engines = [
+            name for name in self.ADAPTIVE_ENGINE_NAMES
+            if not (references / name).is_file()
+        ]
+        missing_templates = [
+            name for name in self.ADAPTIVE_TEMPLATE_NAMES
+            if not (templates / name).is_file()
+        ]
+        self.assertEqual(missing_engines, [], f"Missing adaptive engines: {missing_engines}")
+        self.assertEqual(missing_templates, [], f"Missing worked templates: {missing_templates}")
+
+    def test_adaptive_engines_expose_required_contracts(self):
+        references = self.skill_root / "references"
+        combined_text = "\n".join(
+            (references / name).read_text(encoding="utf-8")
+            for name in self.ADAPTIVE_ENGINE_NAMES
+        )
+        required_tokens = [
+            "buffer_ratio",
+            "minimum_delivery",
+            "independent",
+            "explain",
+            "modify",
+            "debug",
+            "deploy",
+            "teach",
+            "employment",
+            "entrepreneurship",
+            "promotion",
+            "project_delivery",
+            "scheduled",
+            "behavioral",
+            "quality",
+            "goal_change",
+            "domain_update",
+            "retrieval practice",
+            "spaced review",
+        ]
+        missing_tokens = [token for token in required_tokens if token not in combined_text]
+        self.assertEqual(missing_tokens, [], f"Missing adaptive-engine tokens: {missing_tokens}")
+        for name in self.ADAPTIVE_ENGINE_NAMES:
+            with self.subTest(reference=name):
+                text = (references / name).read_text(encoding="utf-8")
+                self.assertIn("engine_result", text)
+                self.assertIn("natural-language explanation", text)
+
+    def test_adaptive_engine_semantics_are_executable(self):
+        references = self.skill_root / "references"
+        roadmap = (references / "roadmap-engine.md").read_text(encoding="utf-8")
+        assessment = (references / "assessment-engine.md").read_text(encoding="utf-8")
+        outcome = (references / "outcome-engine.md").read_text(encoding="utf-8")
+        optimization = (references / "optimization-engine.md").read_text(encoding="utf-8")
+
+        for token in [
+            "weekly_delivery_hours[week]",
+            "phase_delivery_hours = sum",
+            "milestone_buffer_hours",
+        ]:
+            self.assertIn(token, roadmap)
+        for token in ["critical", "passing_threshold", "gate.missing"]:
+            self.assertIn(token, assessment)
+        for token in [
+            "JD matching",
+            "HR interview",
+            "offer analysis",
+            "acquisition experiment",
+            "unit economics",
+            "retrospective",
+        ]:
+            self.assertIn(token, outcome)
+        for token in [
+            "Never overwrite active history",
+            "active -> superseded -> archived",
+            "goal_change` -> Goal Analysis",
+            "domain_update` -> Gap, Competency, Curriculum, and Project",
+        ]:
+            self.assertIn(token, optimization)
+
+    def test_adaptive_templates_are_worked_and_match_schema_contracts(self):
+        templates = self.skill_root / "assets" / "templates"
+        template_to_schema = {
+            "discovery.yaml": "learner-profile",
+            "weekly-plan.yaml": "weekly-plan",
+            "project-brief.yaml": "project",
+            "progress-review.yaml": "optimization-state",
+        }
+        schemas, registry = self.validator._load_schemas(self.skill_root)
+        documents = {}
+        for name, schema_name in template_to_schema.items():
+            with self.subTest(template=name):
+                document = yaml.safe_load((templates / name).read_text(encoding="utf-8"))
+                documents[name] = document
+                self.assertIsInstance(document, dict)
+                self.assertNotIn(None, document.values())
+                issues = list(
+                    self.validator.Draft202012Validator(
+                        schemas[schema_name],
+                        registry=registry,
+                        format_checker=FormatChecker(),
+                    ).iter_errors(document)
+                )
+                self.assertEqual([issue.message for issue in issues], [])
+
+        weekly_plan = documents["weekly-plan.yaml"]
+        self.assertTrue(
+            {
+                "capacity_hours",
+                "weekly_outcome",
+                "tasks",
+                "retrieval_practice",
+                "project_work",
+                "minimum_delivery",
+                "risk",
+                "review",
+            }
+            <= weekly_plan.keys()
+        )
+        self.assertTrue(
+            {"project_work", "risk", "review"}
+            <= set(schemas["weekly-plan"]["required"])
+        )
+        task_hours = sum(task["estimated_hours"] for task in weekly_plan["tasks"])
+        retrieval_hours = sum(
+            item["estimated_hours"] for item in weekly_plan["retrieval_practice"]
+        )
+        worked_hours = (
+            task_hours
+            + retrieval_hours
+            + weekly_plan["project_work"]["estimated_hours"]
+            + weekly_plan["review"]["estimated_hours"]
+        )
+        self.assertEqual(worked_hours, weekly_plan["extensions"]["planned_load_hours"])
+        self.assertLessEqual(
+            worked_hours, weekly_plan["extensions"]["usable_capacity_hours"]
+        )
+
+        project_brief = documents["project-brief.yaml"]
+        rubric_dimension_schema = schemas["project"]["$defs"]["rubric_dimension"]
+        self.assertTrue(
+            {"critical", "passing_threshold"}
+            <= rubric_dimension_schema["properties"].keys()
+        )
+        self.assertTrue(
+            {"critical", "passing_threshold"}
+            <= set(rubric_dimension_schema["required"])
+        )
+        self.assertEqual(
+            set(rubric_dimension_schema["properties"]["passing_threshold"]["enum"]),
+            {"developing", "proficient", "strong"},
+        )
+        assessment_text = (
+            self.skill_root / "references" / "assessment-engine.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("no dimension declares `critical: true`", assessment_text)
+        self.assertTrue(any(item["critical"] for item in project_brief["rubric"].values()))
+        for name, dimension in project_brief["rubric"].items():
+            with self.subTest(rubric_dimension=name):
+                self.assertIn("critical", dimension)
+                self.assertIn(
+                    dimension["passing_threshold"],
+                    {"developing", "proficient", "strong"},
+                )
+
+        progress_review = documents["progress-review.yaml"]
+        self.assertTrue(
+            {"trigger", "evidence", "diagnosis", "changes", "expected_effect", "review_at"}
+            <= progress_review.keys()
+        )
+        self.assertTrue(progress_review["evidence"])
+        self.assertIn("evidence", schemas["optimization-state"]["required"])
+        self.assertNotIn("review_date", progress_review)
 
     def test_discovery_starts_with_eight_to_twelve_questions(self):
         text = (

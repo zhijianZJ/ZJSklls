@@ -2,7 +2,7 @@ $schema: https://json-schema.org/draft/2020-12/schema
 title: Weekly Plan
 type: object
 additionalProperties: false
-required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, week_id, weekly_outcome, capacity_hours, tasks, retrieval_practice, minimum_delivery]
+required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, week_id, weekly_outcome, capacity_hours, tasks, retrieval_practice, project_work, minimum_delivery, risk, review]
 properties:
   id: {$ref: common.schema.yaml#/$defs/id}
   schema_version: {$ref: common.schema.yaml#/$defs/version}
@@ -17,5 +17,30 @@ properties:
   capacity_hours: {type: number, minimum: 0}
   tasks: {type: array}
   retrieval_practice: {type: array}
+  project_work:
+    type: object
+    additionalProperties: false
+    required: [project_id, milestone, estimated_hours, scheduled]
+    properties:
+      project_id: {type: string, minLength: 1}
+      milestone: {type: string, minLength: 1}
+      estimated_hours: {type: number, minimum: 0}
+      scheduled: {type: string, minLength: 1}
   minimum_delivery: {type: string}
+  risk:
+    type: object
+    additionalProperties: false
+    required: [condition, early_warning, mitigation]
+    properties:
+      condition: {type: string, minLength: 1}
+      early_warning: {type: string, minLength: 1}
+      mitigation: {type: string, minLength: 1}
+  review:
+    type: object
+    additionalProperties: false
+    required: [scheduled, estimated_hours, questions]
+    properties:
+      scheduled: {$ref: common.schema.yaml#/$defs/timestamp}
+      estimated_hours: {type: number, minimum: 0}
+      questions: {type: array, minItems: 1, items: {type: string, minLength: 1}}
   extensions: {$ref: common.schema.yaml#/$defs/extensions}

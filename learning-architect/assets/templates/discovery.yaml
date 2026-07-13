@@ -1,0 +1,45 @@
+id: learner-ai-agent-example
+schema_version: 1.0.0
+content_version: 1.0.0
+status: draft
+source: learner interview on 2026-07-13 and linked work sample
+confidence: medium
+created_at: "2026-07-13T09:00:00+08:00"
+updated_at: "2026-07-13T09:00:00+08:00"
+personal:
+  role: Operations analyst
+  location_timezone: Asia/Shanghai
+  target_context: Internal AI workflow role
+experience:
+  education: Business analytics diploma
+  work: Three years improving customer-support operations
+  technical: Built two Python scripts with guidance; no production deployment evidence yet
+  projects:
+    - id: sample-ticket-triage
+      evidence: Runnable local classifier and a short usage note
+learning_preferences:
+  language: Chinese with English technical terms
+  formats: [worked examples, documentation, code review]
+  accessibility: Needs sessions that fit into 60-minute weekday blocks
+motivation:
+  primary: Qualify for an internal AI workflow role by delivering a useful agent project
+  success_signal: Hiring manager accepts a live workflow demonstration and evidence map
+constraints:
+  weekly_hours: 8
+  budget: Use free or employer-provided tools for the first eight weeks
+  schedule: Four weekday sessions and one weekend project block
+  privacy: No customer records may leave the approved test environment
+swot:
+  Strength:
+    - Understands the support workflow and its business measures
+  Weakness:
+    - Production debugging and deployment are not yet independently evidenced
+  Opportunity:
+    - Employer has an approved synthetic ticket dataset and a pilot sponsor
+  Risk:
+    - Quarter-end workload may reduce two planned study weeks
+unknowns:
+  - Whether the target team requires cloud-specific deployment evidence
+extensions:
+  next_validation_action: Ask the hiring manager which deployment environment is evaluated
+  affected_downstream: [target-outcome, competency-model, learning-roadmap]

@@ -1,0 +1,98 @@
+id: focused-tool-ticket-intake
+schema_version: 1.0.0
+content_version: 1.0.0
+status: validated
+source: learner target outcome and ai-agent-engineer domain pack 1.0.0
+confidence: high
+created_at: "2026-07-13T10:30:00+08:00"
+updated_at: "2026-07-13T10:30:00+08:00"
+problem: Support analysts need a safe, repeatable way to validate and route synthetic ticket requests before manual review.
+inputs:
+  - Approved synthetic ticket examples
+  - Routing rules and API contract
+  - Valid and invalid request cases
+constraints:
+  - Use synthetic data only
+  - Tool access is least privilege and read-only
+  - Invalid input and API failure must be visible and recoverable
+deliverables:
+  - Runnable ticket-intake utility
+  - Automated contract and failure-path tests
+  - Usage, decision, and limitation note
+competency_ids: [python-foundation, api-integration, tool-calling, technical-communication]
+business_value: Reduce manual intake rework for the support operations team; compare invalid tickets caught before and after the pilot.
+common_failure_modes:
+  - Invalid fields pass silently
+  - API timeout loses the request state
+  - Tool permissions exceed the routing need
+demonstration_requirements:
+  - Run one valid request and show the reviewable routing result
+  - Trigger invalid input and an API timeout without hidden manual repair
+documentation_requirements:
+  - Document setup, interface contract, permissions, limitations, and recovery
+retrospective_requirements:
+  - Identify one failed assumption using test evidence and prioritize the next reliability change
+rubric:
+  correctness:
+    weight: 25
+    critical: true
+    passing_threshold: proficient
+    performance_bands:
+      insufficient: A critical success or error path fails.
+      developing: Main routing works but material validation gaps remain.
+      proficient: All critical success and error-path tests pass.
+      strong: Adversarial inputs also pass precise contracts.
+  capability_behavior:
+    weight: 20
+    critical: true
+    passing_threshold: proficient
+    performance_bands:
+      insufficient: Cannot complete the bounded tool flow.
+      developing: Completes only with repair guidance.
+      proficient: Independently completes and explains the flow.
+      strong: Modifies the flow correctly for a changed contract.
+  reliability:
+    weight: 20
+    critical: true
+    passing_threshold: proficient
+    performance_bands:
+      insufficient: Failures are silent or destructive.
+      developing: Some failures are visible without recovery.
+      proficient: Validation, timeout, and recovery paths are tested.
+      strong: Fault injection demonstrates graceful degradation.
+  responsible_practice:
+    weight: 15
+    critical: true
+    passing_threshold: proficient
+    performance_bands:
+      insufficient: Sensitive data or unrestricted access is used.
+      developing: Basic controls exist with material gaps.
+      proficient: Synthetic data and least privilege are demonstrated.
+      strong: Threat cases and auditability exceed stated needs.
+  business_value:
+    weight: 10
+    critical: true
+    passing_threshold: proficient
+    performance_bands:
+      insufficient: No beneficiary or value measure is stated.
+      developing: Reduced rework is plausible but unmeasured.
+      proficient: Invalid tickets caught before review are measured.
+      strong: Pilot evidence supports adoption or next investment.
+  technical_communication:
+    weight: 10
+    critical: true
+    passing_threshold: proficient
+    performance_bands:
+      insufficient: Setup and decisions cannot be reproduced.
+      developing: Notes omit important limits or recovery steps.
+      proficient: Usage, decisions, and limits are reproducible.
+      strong: A new operator succeeds and explains trade-offs.
+extensions:
+  users: [Support operations analyst, Pilot sponsor]
+  success_measures:
+    - All critical contract and recovery tests pass
+    - Pilot reviewer reproduces the demonstration from the documentation
+  evidence_plan:
+    evaluator: Engineering mentor independent of implementation
+    threshold: Proficient or stronger in every critical rubric dimension
+    evidence_ids: [ev-ticket-tests, ev-ticket-demo, ev-ticket-review]
