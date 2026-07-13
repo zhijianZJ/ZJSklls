@@ -9,6 +9,7 @@ import sys
 from typing import Any
 
 from jsonschema import Draft202012Validator
+from jsonschema.exceptions import SchemaError
 from referencing import Registry, Resource
 import yaml
 
@@ -63,7 +64,7 @@ def validate_skill_assets(skill_root: Path) -> list[str]:
                 errors.append(f"Schema is not an object: {path}")
                 continue
             Draft202012Validator.check_schema(schema)
-        except (OSError, yaml.YAMLError, Exception) as exc:
+        except (OSError, yaml.YAMLError, SchemaError) as exc:
             errors.append(f"Invalid schema {path}: {exc}")
     return errors
 
@@ -97,7 +98,7 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
 
     try:
         schemas, registry = _load_schemas(skill_root)
-    except (OSError, yaml.YAMLError, Exception) as exc:
+    except (OSError, yaml.YAMLError) as exc:
         return [f"Unable to load schemas: {exc}"]
 
     documents: dict[str, dict[str, Any]] = {}
@@ -113,11 +114,15 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
         if not isinstance(document, dict):
             errors.append(f"Learner document is not an object: {path}")
             continue
-        documents[name] = document
         validator = Draft202012Validator(schemas[name], registry=registry)
-        for issue in sorted(validator.iter_errors(document), key=lambda item: list(item.path)):
+        issues = sorted(
+            validator.iter_errors(document), key=lambda item: list(item.path)
+        )
+        for issue in issues:
             location = ".".join(str(part) for part in issue.path) or "<root>"
             errors.append(f"{path.name}:{location}: {issue.message}")
+        if not issues:
+            documents[name] = document
 
     curriculum = documents.get("curriculum-graph")
     if curriculum and _has_dependency_cycle(curriculum.get("dependencies", [])):
