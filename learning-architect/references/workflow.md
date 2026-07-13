@@ -24,6 +24,31 @@ Allow `not_started -> collecting -> draft -> validated -> active`. Use `needs_in
 
 When evidence is incomplete but risk is low, create a `draft` with explicit assumptions and a next validation action. Do not present it as validated.
 
+## Engine return contract
+
+Return every stage result in two synchronized layers: first, a concise natural-language explanation of the conclusion, evidence, uncertainty, and next action; second, structured state using this canonical wrapper. Do not omit the explanation or return prose without state.
+
+```yaml
+engine_result:
+  engine: discovery | goal-analysis | gap-analysis | other-stage-engine
+  run_id: unique-run-id
+  status: draft | validated | active | needs_input | blocked | not_applicable
+  summary: concise decision summary
+  inputs_used: []
+  decisions: []
+  evidence_refs: []
+  assumptions: []
+  confidence: low | medium | high
+  artifacts_written: []
+  affected_downstream: []
+  gate:
+    passed: false
+    missing: []
+  next_action: single concrete action
+```
+
+Keep `gate.passed` false whenever `gate.missing` is non-empty. List only inputs actually consulted, evidence identifiers that exist, artifacts actually persisted, and downstream artifacts that require validation or recomputation.
+
 ## Rollback protocol
 
 - On target change, return to Goal Analysis; create a new content version and recompute every item in `affected_downstream`.

@@ -27,3 +27,5 @@ Do not collapse “knows,” “can follow,” “can complete with help,” and
 ## Output contract
 
 For each prioritized gap emit: `competency_id`, `current_level`, `target_level`, `level_gap`, `baseline_class`, `source`, `confidence`, `evidence_ids`, `priority`, `priority_factors`, `blocking_dependencies`, `required_evidence`, `next_validation`, and `affected_downstream`. Mark missing decision-critical evidence as `needs_input`; otherwise retain it as an explicit low-confidence hypothesis.
+
+Return a concise natural-language explanation plus a structured `engine_result` conforming to the canonical wrapper in `workflow.md`. Set `engine: gap-analysis`; identify the competency-model artifact, cite only verified evidence identifiers in `evidence_refs`, and place missing discriminating evidence in `gate.missing`.

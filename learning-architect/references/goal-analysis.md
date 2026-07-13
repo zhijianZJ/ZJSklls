@@ -23,3 +23,5 @@ Populate the target-outcome contract with `outcome_type`, `primary_goal`, `deadl
 If the target changes, do not append content to the old plan. Mark the prior target superseded, create a new content version, record the change reason, and enumerate `affected_downstream`. Return control to Goal Analysis and recompute those artifacts.
 
 Use `needs_input` only when a missing answer blocks a materially safe goal decision. Otherwise issue a provisional `draft`, list assumptions, and name the smallest next validation step.
+
+Return a concise natural-language explanation plus a structured `engine_result` conforming to the canonical wrapper in `workflow.md`. Set `engine: goal-analysis`; identify the target-outcome artifact, include every assumption affecting feasibility, and report unmet goal conditions in `gate.missing`.

@@ -1,4 +1,5 @@
 from pathlib import Path
+from collections import Counter
 import importlib.util
 import shutil
 import subprocess
@@ -74,6 +75,104 @@ class LearningSystemValidationTests(unittest.TestCase):
         ]
         self.assertEqual(missing_tokens, [], f"Missing contract tokens: {missing_tokens}")
 
+    def test_core_engines_return_canonical_engine_result(self):
+        references = self.skill_root / "references"
+        workflow_text = (references / "workflow.md").read_text(encoding="utf-8")
+        wrapper_fields = [
+            "engine",
+            "run_id",
+            "status",
+            "summary",
+            "inputs_used",
+            "decisions",
+            "evidence_refs",
+            "assumptions",
+            "confidence",
+            "artifacts_written",
+            "affected_downstream",
+            "gate",
+            "next_action",
+        ]
+        contract_text = workflow_text.split("```yaml", 1)[1].split("```", 1)[0]
+        engine_result = yaml.safe_load(contract_text)["engine_result"]
+        missing_fields = [field for field in wrapper_fields if field not in engine_result]
+        missing_fields.extend(
+            f"gate.{field}"
+            for field in ["passed", "missing"]
+            if field not in engine_result.get("gate", {})
+        )
+        self.assertEqual(missing_fields, [], f"Missing engine_result fields: {missing_fields}")
+
+        for name in ["discovery.md", "goal-analysis.md", "gap-analysis.md"]:
+            with self.subTest(reference=name):
+                text = (references / name).read_text(encoding="utf-8")
+                self.assertIn("engine_result", text)
+                self.assertIn("natural-language explanation", text)
+
+    def test_discovery_starts_with_eight_to_twelve_questions(self):
+        text = (
+            self.skill_root / "references" / "discovery.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("8–12", text)
+        self.assertIn("adaptive follow-up", text)
+
+    def test_discovery_question_bank_contract(self):
+        path = self.skill_root / "assets" / "question-banks" / "discovery.yaml"
+        questions = yaml.safe_load(path.read_text(encoding="utf-8"))["questions"]
+        required_fields = {
+            "id",
+            "category",
+            "question",
+            "answer_type",
+            "decision_impact",
+            "required_when",
+            "sensitivity",
+        }
+        expected_categories = {
+            "personal",
+            "education",
+            "work",
+            "technical",
+            "projects",
+            "learning",
+            "motivation",
+            "constraints",
+        }
+
+        self.assertEqual(len(questions), 48)
+        self.assertEqual(len({question["id"] for question in questions}), 48)
+        for question in questions:
+            with self.subTest(question=question["id"]):
+                self.assertTrue(required_fields <= question.keys())
+                if question["sensitivity"] == "sensitive":
+                    self.assertTrue(question["required_when"].startswith("optional;"))
+
+        category_counts = Counter(question["category"] for question in questions)
+        self.assertEqual(set(category_counts), expected_categories)
+        self.assertEqual(set(category_counts.values()), {6})
+
+    def test_confidence_enum_is_accepted(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            learner_dir = Path(temporary_directory) / "learner"
+            shutil.copytree(self.fixtures / "valid-learner", learner_dir)
+            self.set_confidence(learner_dir, "high")
+
+            errors = self.validator.validate_learner_system(
+                self.skill_root, learner_dir
+            )
+            self.assertEqual(errors, [])
+
+    def test_numeric_confidence_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            learner_dir = Path(temporary_directory) / "learner"
+            shutil.copytree(self.fixtures / "valid-learner", learner_dir)
+            self.set_confidence(learner_dir, 1.0)
+
+            errors = self.validator.validate_learner_system(
+                self.skill_root, learner_dir
+            )
+            self.assertTrue(any("confidence" in error for error in errors), errors)
+
     def test_curriculum_cycle_is_rejected(self):
         errors = self.validator.validate_learner_system(
             self.skill_root, self.fixtures / "invalid-cycle"
@@ -119,6 +218,13 @@ class LearningSystemValidationTests(unittest.TestCase):
             result = self.run_cli(learner_dir)
             self.assertEqual(result.returncode, 1, result)
             self.assertNotIn("Traceback", result.stderr)
+
+    @staticmethod
+    def set_confidence(learner_dir, value):
+        for path in learner_dir.glob("*.yaml"):
+            document = yaml.safe_load(path.read_text(encoding="utf-8"))
+            document["confidence"] = value
+            path.write_text(yaml.safe_dump(document), encoding="utf-8")
 
     def run_cli(self, learner_dir):
         return subprocess.run(
