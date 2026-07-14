@@ -1,8 +1,10 @@
 # Learning Architect
 
+[中文文档](README.zh-CN.md)
+
 **Build personalized learning systems, not just learning plans.**
 
-Learning Architect is an outcome-driven Education OS skill for designing, validating, and continuously improving a learner's path to a real result: employment, promotion, entrepreneurship, or project delivery.
+Learning Architect is an outcome-driven Education OS (Education Operating System) skill for designing, validating, and continuously improving a learner's path to a real result: employment, promotion, entrepreneurship, or project delivery.
 
 It treats learning as capability building. Courses and resources are optional inputs; demonstrated behavior, authentic projects, assessment evidence, and feasible practice are the system's outputs.
 
@@ -42,14 +44,14 @@ Once installed in Codex, ask naturally, for example:
 
 > I want an AI Agent Engineer job in six months. I can study 12 hours per week, have basic Python, and need a project-first path. Use Learning Architect.
 
-The skill starts with only the questions that can change the current decision. It then returns both a concise explanation and traceable structured state.
+The skill starts with only the questions that can change the current decision. It then returns both a concise explanation and traceable `engine_result` structured state.
 
 ## Validation
 
-Run from the repository root:
+For repository regression checks, run these commands from the repository root:
 
 ```bash
-python3 /Users/wangshucheng/.codex/skills/.system/skill-creator/scripts/quick_validate.py learning-architect
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" learning-architect
 python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
 python3 learning-architect/scripts/validate_learning_system.py \
   --skill-root learning-architect \
@@ -57,6 +59,13 @@ python3 learning-architect/scripts/validate_learning_system.py \
 ```
 
 The current suite contains 84 tests covering schema validation, dependency cycles, evidence references, active-version governance, project contracts, and Domain Pack scoring gates.
+
+To check an installed copy's skill structure without the repository fixtures (this is not the full regression suite):
+
+```bash
+SKILL_ROOT="${CODEX_HOME:-$HOME/.codex}/skills/learning-architect"
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" "$SKILL_ROOT"
+```
 
 ## Add another domain
 
