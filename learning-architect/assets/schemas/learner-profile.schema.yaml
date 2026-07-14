@@ -32,12 +32,13 @@ $defs:
   material_item:
     type: object
     additionalProperties: false
-    required: [value, source, confidence, evidence_ids, decision_impact]
+    required: [value, epistemic_class, source, confidence, evidence_ids, decision_impact]
     properties:
       value: {}
-      source:
+      epistemic_class:
         type: string
-        enum: [fact, self-report, inference]
+        enum: [fact, self-report, inference, assumption, evidence]
+      source: {$ref: common.schema.yaml#/$defs/operational_source}
       confidence: {$ref: common.schema.yaml#/$defs/confidence}
       evidence_ids:
         type: array

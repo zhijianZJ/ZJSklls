@@ -6,9 +6,13 @@ $defs:
   rubric_dimension:
     type: object
     additionalProperties: false
-    required: [weight, performance_bands]
+    required: [weight, critical, passing_threshold, performance_bands]
     properties:
       weight: {type: number, exclusiveMinimum: 0, maximum: 100}
+      critical: {type: boolean}
+      passing_threshold:
+        type: string
+        enum: [developing, proficient, strong]
       performance_bands:
         type: object
         additionalProperties: false

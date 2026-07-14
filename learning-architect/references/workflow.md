@@ -16,11 +16,15 @@ Use this file as the sole full enumeration of the workflow. Persist progress in 
 10. **Outcome Preparation** — produce route-specific minimum viable materials or performance. Pass when the target context can evaluate the learner's evidence.
 11. **Continuous Optimization** — produce diagnosis, versioned changes, expected effect, and review date. Pass when the change is explainable and all affected artifacts are rechecked.
 
-Do not silently skip a stage. When genuinely irrelevant, persist status `not_applicable`, the reason, supporting `source`, `confidence`, and `affected_downstream`.
+Do not silently skip a stage. When genuinely irrelevant, persist a stage record containing `state: not_applicable`, a nonempty `reason`, operational `source`, `confidence`, and `affected_downstream`. All five fields are required and machine-validated.
 
 ## State transitions
 
 Allow `not_started -> collecting -> draft -> validated -> active`. Use `needs_input` when missing information can materially change the decision; use `blocked` only for a substantive condition that prevents safe progress. Allow `active -> superseded -> archived` while retaining history.
+
+Retain the stable artifact `id` across content revisions. Version identity is `(artifact_type, id, content_version)`: reject an exact duplicate tuple, allow the same `(artifact_type, id)` at different content versions, and permit at most one `status: active` record in that identity group. Singleton artifact types (`system-state`, `learner-profile`, `target-outcome`, `competency-model`, `curriculum-graph`, `learning-roadmap`, and `optimization-state`) additionally permit at most one active record across the entire type, regardless of ID. `active_versions` must uniquely cover every active singleton except `system-state` itself and select its one active record whose `content_version` equals the recorded value.
+
+Build one resolved active-artifact view before any cross-artifact semantic check. Use only the unique active competency, curriculum, project, roadmap, weekly plan, evidence, assessment, and Domain Pack selection for current-state references. Validate historical and superseded artifacts only for schema, version identity, duplicate tuples, and the one-active invariant; never let a superseded competency or project satisfy a current reference.
 
 When evidence is incomplete but risk is low, create a `draft` with explicit assumptions and a next validation action. Do not present it as validated.
 

@@ -86,11 +86,24 @@ properties:
       properties:
         competency_id: {type: string, minLength: 1}
         result: {type: string, enum: [understanding, guided, independent, transfer]}
-  decision: {type: string, enum: [pass, fail]}
+  decision: {type: string, enum: [pass, fail, needs_remediation]}
   gate: {$ref: "#/$defs/gate"}
   next_action: {type: string}
   extensions: {$ref: common.schema.yaml#/$defs/extensions}
 allOf:
+  - if:
+      properties: {decision: {const: pass}}
+      required: [decision]
+    then:
+      properties:
+        gate:
+          properties: {passed: {const: true}}
+          required: [passed]
+    else:
+      properties:
+        gate:
+          properties: {passed: {const: false}}
+          required: [passed]
   - if:
       properties:
         gate:

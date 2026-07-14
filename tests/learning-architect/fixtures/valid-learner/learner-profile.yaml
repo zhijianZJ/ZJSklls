@@ -7,18 +7,18 @@ confidence: high
 created_at: "2026-07-13T00:00:00Z"
 updated_at: "2026-07-13T00:00:00Z"
 personal:
-  name: {value: Test Learner, source: self-report, confidence: high, evidence_ids: [], decision_impact: Personalizes communication.}
+  name: {value: Test Learner, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Personalizes communication.}
 experience:
-  python: {value: beginner, source: self-report, confidence: medium, evidence_ids: [], decision_impact: Sets the initial practice level.}
+  python: {value: beginner, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Sets the initial practice level.}
 learning_preferences:
-  mode: {value: project-based, source: self-report, confidence: medium, evidence_ids: [], decision_impact: Favors evidence-producing tasks.}
+  mode: {value: project-based, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Favors evidence-producing tasks.}
 motivation:
-  goal: {value: employment, source: self-report, confidence: high, evidence_ids: [], decision_impact: Selects the employment outcome route.}
+  goal: {value: employment, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Selects the employment outcome route.}
 constraints:
-  hours_per_week: {value: 8, source: self-report, confidence: high, evidence_ids: [], decision_impact: Caps weekly planned load.}
+  hours_per_week: {value: 8, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Caps weekly planned load.}
 swot:
   Strength:
-    - {value: persistence, source: self-report, confidence: medium, evidence_ids: [], decision_impact: Supports a project-based cadence.}
+    - {value: persistence, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Supports a project-based cadence.}
   Weakness: []
   Opportunity: []
   Risk: []

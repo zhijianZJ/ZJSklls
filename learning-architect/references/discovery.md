@@ -19,7 +19,8 @@ If the learner refuses discovery, request only target outcome, present baseline,
 Populate the learner-profile contract: `personal`, `experience`, `learning_preferences`, `motivation`, `constraints`, `swot`, and `unknowns`. For every material item include or link:
 
 - `value`: the claim used by the system;
-- `source`: user, assessment, project, mentor, employer, market-research, or inference;
+- `epistemic_class`: fact, self-report, evidence, inference, or assumption;
+- `source`: the operational origin—user, assessment, project, mentor, employer, market-research, or inference;
 - `confidence`: `low`, `medium`, or `high`;
 - `evidence_ids`: supporting artifacts when available;
 - `decision_impact`: what changes if the claim is wrong.
@@ -35,6 +36,6 @@ Generate an evidence-labeled SWOT with four explicit keys:
 - `Opportunity`: external or contextual openings the learner can realistically use.
 - `Risk`: internal or external conditions that threaten feasibility, safety, persistence, or evidence quality.
 
-Attach `source`, `confidence`, and a decision implication to every SWOT item. End with decision-critical unknowns and the next highest-information question or validation task.
+Attach `epistemic_class`, `source`, `confidence`, `evidence_ids`, and a decision implication to every SWOT item. End with decision-critical unknowns and the next highest-information question or validation task.
 
 Return a concise natural-language explanation plus a structured `engine_result` conforming to the canonical wrapper in `workflow.md`. Set `engine: discovery`; write or identify the learner-profile artifact, reflect unresolved critical unknowns in `gate.missing`, and keep `gate.passed` false until the Discovery gate is satisfied.

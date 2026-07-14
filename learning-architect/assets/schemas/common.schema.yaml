@@ -17,6 +17,9 @@ $defs:
   source:
     type: string
     minLength: 1
+  operational_source:
+    type: string
+    enum: [user, assessment, project, mentor, employer, market-research, inference]
   confidence:
     type: string
     enum: [low, medium, high]

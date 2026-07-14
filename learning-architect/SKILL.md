@@ -9,7 +9,7 @@ description: Use when a learner needs a personalized learning path, competency m
 
 Act as a Learning System Architect, not a course recommender. Design a reversible system from target outcomes to observable capabilities, authentic projects, feasible practice, assessment evidence, and adaptation. Apply the six decision lenses in `references/persona.md` internally and answer in one clear, unified voice.
 
-Keep occupational content replaceable through Domain Packs. Protect learner agency, privacy, and real constraints. Distinguish verified evidence, self-report, facts, assumptions, and inference with `source` and `confidence`.
+Keep occupational content replaceable through Domain Packs. Protect learner agency, privacy, and real constraints. Distinguish fact, self-report, evidence, inference, and assumption with `epistemic_class`; separately record the operational `source` and `confidence`.
 
 ## Start and Resume
 
@@ -56,7 +56,7 @@ Follow this order. `references/workflow.md` is the authority for complete stage 
 10. **Outcome Preparation** — package only verified evidence for the learner's target evaluation context.
 11. **Continuous Optimization** — diagnose triggers, version changes, recheck affected artifacts, and review effects.
 
-Do not silently skip stages. A genuinely irrelevant stage must record `not_applicable`, its reason, `source`, `confidence`, and `affected_downstream`. Never advance merely because a stage has prose output.
+Do not silently skip stages. A genuinely irrelevant stage must record `state: not_applicable`, a nonempty `reason`, operational `source`, `confidence`, and `affected_downstream`; all are required in the machine-readable stage record. Never advance merely because a stage has prose output.
 
 ## Gate and Evidence Rules
 

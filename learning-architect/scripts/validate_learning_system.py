@@ -83,6 +83,15 @@ SINGLETON_ARTIFACTS = {
     "weekly-plan.yaml": "weekly-plan",
     "project.yaml": "project",
 }
+SINGLETON_ARTIFACT_TYPES = {
+    "system-state",
+    "learner-profile",
+    "target-outcome",
+    "competency-model",
+    "curriculum-graph",
+    "learning-roadmap",
+    "optimization-state",
+}
 DIRECTORY_ARTIFACTS = {
     "weekly-plans": "weekly-plan",
     "projects": "project",
@@ -216,6 +225,11 @@ def _validate_domain_pack_semantics(
     pack_name: str, pack: dict[str, Any]
 ) -> list[str]:
     errors: list[str] = []
+    target_outcome_ids = [
+        outcome["id"] for outcome in pack.get("target_outcomes", [])
+    ]
+    if len(target_outcome_ids) != len(set(target_outcome_ids)):
+        errors.append(f"Domain Pack {pack_name}: duplicate target outcome IDs")
     competencies = pack["competencies"]
     competency_ids = [competency["id"] for competency in competencies]
     competency_id_set = set(competency_ids)
@@ -267,6 +281,14 @@ def _validate_domain_pack_semantics(
                 f"Domain Pack {pack_name}: project {archetype['id']} rubric "
                 f"weights must total 100"
             )
+        if not any(
+            dimension.get("critical") is True
+            for dimension in archetype["rubric"].values()
+        ):
+            errors.append(
+                f"Domain Pack {pack_name}: project {archetype['id']} rubric "
+                "requires at least one critical dimension"
+            )
 
     pattern_ids = [pattern["id"] for pattern in pack["assessment_patterns"]]
     if len(pattern_ids) != len(set(pattern_ids)):
@@ -313,7 +335,11 @@ def _validate_domain_pack_semantics(
     except (KeyError, TypeError, ValueError):
         errors.append(f"Domain Pack {pack_name}: invalid review governance")
 
-    for assumption in pack.get("market_assumptions", []):
+    assumptions = pack.get("market_assumptions", [])
+    assumption_ids = [assumption.get("id") for assumption in assumptions]
+    if len(assumption_ids) != len(set(assumption_ids)):
+        errors.append(f"Domain Pack {pack_name}: duplicate market assumption IDs")
+    for assumption in assumptions:
         assumption_id = assumption.get("id", "<unknown>")
         if not assumption.get("source_name") or not assumption.get("as_of"):
             errors.append(
@@ -322,21 +348,47 @@ def _validate_domain_pack_semantics(
             )
             continue
         try:
-            date.fromisoformat(assumption["as_of"])
+            as_of = date.fromisoformat(assumption["as_of"])
+            next_review = date.fromisoformat(assumption["next_review_at"])
+            if next_review < as_of:
+                errors.append(
+                    f"Domain Pack {pack_name}: market assumption {assumption_id} "
+                    "next_review_at precedes as_of"
+                )
+            if next_review < date.today():
+                errors.append(
+                    f"Domain Pack {pack_name}: market assumption {assumption_id} "
+                    "review is expired"
+                )
         except (TypeError, ValueError):
             errors.append(
                 f"Domain Pack {pack_name}: market assumption {assumption_id} "
-                "has invalid as_of date"
+                "has invalid as_of or next_review_at date"
             )
 
     migration_map = pack.get("extensions", {}).get("migration_map", {})
     if not isinstance(migration_map, dict):
         errors.append(f"Domain Pack {pack_name}: migration_map must be an object")
     else:
-        for old_id, new_ids in migration_map.items():
+        for old_id, migration in migration_map.items():
+            documented_retirement = False
+            if isinstance(migration, dict):
+                destination = migration.get("to")
+                documented_retirement = (
+                    destination == "retired"
+                    and isinstance(migration.get("reason"), str)
+                    and bool(migration["reason"].strip())
+                )
+                new_ids = destination
+            else:
+                new_ids = migration
             targets = new_ids if isinstance(new_ids, list) else [new_ids]
             if not old_id or not targets or any(
-                not isinstance(target, str) or target not in competency_id_set
+                not isinstance(target, str)
+                or (
+                    target not in competency_id_set
+                    and not (target == "retired" and documented_retirement)
+                )
                 for target in targets
             ):
                 errors.append(
@@ -380,7 +432,10 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
 
     artifacts: dict[str, list[tuple[Path, dict[str, Any]]]] = {}
     artifact_by_key: dict[str, tuple[str, Path, dict[str, Any]]] = {}
-    seen_document_ids: dict[str, Path] = {}
+    seen_artifact_versions: dict[tuple[str, str, int], Path] = {}
+    artifact_identity_groups: dict[
+        tuple[str, str], list[tuple[Path, dict[str, Any]]]
+    ] = {}
     for path in sorted(learner_dir.rglob("*.yaml")):
         name = _artifact_schema_name(learner_dir, path)
         if name is None or name == "common":
@@ -425,6 +480,10 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
             errors.append(
                 f"{path.relative_to(learner_dir)}:{location}: {issue.message}"
             )
+            if name == "project" and list(issue.path)[:1] == ["rubric"]:
+                errors.append(
+                    f"Project rubric schema invalid: {path.relative_to(learner_dir)}"
+                )
         if not issues and not format_invalid:
             artifacts.setdefault(name, []).append((path, document))
             relative_key = path.relative_to(learner_dir).with_suffix("").as_posix()
@@ -432,18 +491,52 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
             if path.parent == learner_dir:
                 artifact_by_key[path.stem] = (name, path, document)
             document_id = document["id"]
-            previous = seen_document_ids.get(document_id)
+            version_key = (name, document_id, document["content_version"])
+            previous = seen_artifact_versions.get(version_key)
             if previous is not None:
                 errors.append(
-                    f"Duplicate global artifact ID {document_id}: "
+                    f"Duplicate artifact version {name}/{document_id}@"
+                    f"{document['content_version']}: "
                     f"{previous.relative_to(learner_dir)} and {path.relative_to(learner_dir)}"
                 )
             else:
-                seen_document_ids[document_id] = path
+                seen_artifact_versions[version_key] = path
+            artifact_identity_groups.setdefault((name, document_id), []).append(
+                (path, document)
+            )
+
+    current_artifacts: dict[str, list[tuple[Path, dict[str, Any]]]] = {}
+    for (name, document_id), records in artifact_identity_groups.items():
+        active_record_pairs = [
+            (path, document)
+            for path, document in records
+            if document.get("status") == "active"
+        ]
+        active_records = [path for path, _ in active_record_pairs]
+        if len(active_records) > 1:
+            errors.append(
+                f"Multiple active versions for {name}/{document_id}: "
+                + ", ".join(
+                    str(path.relative_to(learner_dir)) for path in active_records
+                )
+            )
+        elif len(active_record_pairs) == 1:
+            current_artifacts.setdefault(name, []).append(active_record_pairs[0])
+
+    for name in SINGLETON_ARTIFACT_TYPES:
+        active_records = current_artifacts.get(name, [])
+        if len(active_records) > 1:
+            errors.append(
+                f"Multiple active singleton artifacts for {name}: "
+                + ", ".join(
+                    f"{document['id']} ({path.relative_to(learner_dir)})"
+                    for path, document in active_records
+                )
+            )
 
     def first(name: str) -> dict[str, Any] | None:
-        records = artifacts.get(name, [])
-        return records[0][1] if records else None
+        records = current_artifacts.get(name, [])
+        return records[0][1] if len(records) == 1 else None
 
     curriculum = first("curriculum-graph")
     if curriculum and _has_dependency_cycle(curriculum.get("dependencies", [])):
@@ -507,7 +600,7 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
         )
 
     evidence_records: dict[str, dict[str, Any]] = {}
-    for _, evidence in artifacts.get("evidence", []):
+    for _, evidence in current_artifacts.get("evidence", []):
         evidence_records[evidence["id"]] = evidence
         for competency_id in evidence.get("competency_ids", []):
             if competency_id not in competency_ids:
@@ -539,16 +632,32 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
                         f"Learner profile references unknown Evidence record: {evidence_id}"
                     )
 
-    for project_path, project in artifacts.get("project", []):
+    for project_path, project in current_artifacts.get("project", []):
         for competency_id in project.get("competency_ids", []):
             if competency_id not in competency_ids:
                 errors.append(
                     f"Project references unknown competency: {competency_id} "
                     f"({project_path.relative_to(learner_dir)})"
                 )
+        rubric = project.get("rubric", {})
+        rubric_weight = sum(
+            dimension.get("weight", 0) for dimension in rubric.values()
+        )
+        if abs(rubric_weight - 100) > 1e-9:
+            errors.append(
+                f"Project rubric weights must total 100: "
+                f"{project_path.relative_to(learner_dir)}"
+            )
+        if rubric and not any(
+            dimension.get("critical") is True for dimension in rubric.values()
+        ):
+            errors.append(
+                f"Project rubric requires at least one critical dimension: "
+                f"{project_path.relative_to(learner_dir)}"
+            )
 
     project_ids = {
-        project["id"] for _, project in artifacts.get("project", [])
+        project["id"] for _, project in current_artifacts.get("project", [])
     }
     if roadmap:
         for phase in roadmap.get("phases", []):
@@ -556,7 +665,7 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
                 if project_id not in project_ids:
                     errors.append(f"Roadmap references unknown project: {project_id}")
 
-    for weekly_path, weekly in artifacts.get("weekly-plan", []):
+    for weekly_path, weekly in current_artifacts.get("weekly-plan", []):
         task_ids = {task["id"] for task in weekly.get("tasks", [])}
         for task in weekly.get("tasks", []):
             dependency = task.get("dependency")
@@ -597,7 +706,7 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
         if declared_usable is not None and abs(declared_usable - usable_capacity) > 1e-9:
             errors.append("Weekly usable_capacity_hours does not equal capacity arithmetic")
 
-    for _, assessment in artifacts.get("assessment", []):
+    for _, assessment in current_artifacts.get("assessment", []):
         for evidence_id in assessment.get("evidence_ids", []):
             if evidence_id not in evidence_records:
                 errors.append(
@@ -672,6 +781,7 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
         if illegal:
             errors.append("Illegal stage progression: " + ", ".join(illegal))
 
+        singleton_coverage: dict[tuple[str, str, int], int] = {}
         for artifact_name, active_version in system_state.get("active_versions", {}).items():
             resolved = artifact_by_key.get(artifact_name)
             if resolved is None:
@@ -683,22 +793,56 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
             expected_schema = SINGLETON_ARTIFACTS.get(f"{artifact_name}.yaml")
             if expected_schema and schema_name != expected_schema:
                 errors.append(f"Active version has wrong artifact type: {artifact_name}")
-            if artifact.get("content_version") != active_version:
-                errors.append(
-                    f"Active version mismatch for {artifact_name}: state={active_version!r}, "
-                    f"artifact={artifact.get('content_version')!r}"
+            matching_active = [
+                candidate
+                for _, candidate in artifact_identity_groups.get(
+                    (schema_name, artifact.get("id")), []
                 )
-            if artifact.get("status") != "active":
-                errors.append(f"Active version points to non-active artifact: {artifact_name}")
-            artifact_id = str(artifact.get("id", ""))
+                if candidate.get("content_version") == active_version
+                and candidate.get("status") == "active"
+            ]
+            if len(matching_active) != 1:
+                errors.append(
+                    f"Active version mismatch for {artifact_name}: "
+                    f"no unique active content_version {active_version!r}"
+                )
+                active_artifact = artifact
+            else:
+                active_artifact = matching_active[0]
+                if schema_name in SINGLETON_ARTIFACT_TYPES:
+                    coverage_key = (
+                        schema_name,
+                        active_artifact["id"],
+                        active_artifact["content_version"],
+                    )
+                    singleton_coverage[coverage_key] = (
+                        singleton_coverage.get(coverage_key, 0) + 1
+                    )
+            artifact_id = str(active_artifact.get("id", ""))
             expected_id = Path(artifact_name).name
+            history_or_version_key = artifact_name.split("/", 1)[0] in {
+                "history", "versions", "version-history"
+            }
             id_matches = (
-                artifact_id == expected_id
-                if "/" in artifact_name
-                else artifact_id.startswith(artifact_name)
+                artifact_id.startswith(expected_id)
+                if history_or_version_key or "/" not in artifact_name
+                else artifact_id == expected_id
             )
             if not id_matches:
                 errors.append(f"Active version has wrong artifact ID/type: {artifact_name}")
+
+        for schema_name in SINGLETON_ARTIFACT_TYPES - {"system-state"}:
+            for _, artifact in current_artifacts.get(schema_name, []):
+                coverage_key = (
+                    schema_name,
+                    artifact["id"],
+                    artifact["content_version"],
+                )
+                if singleton_coverage.get(coverage_key, 0) != 1:
+                    errors.append(
+                        "active_versions must uniquely cover active singleton "
+                        f"{schema_name}/{artifact['id']}@{artifact['content_version']}"
+                    )
 
     return errors
 

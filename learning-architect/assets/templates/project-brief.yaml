@@ -7,6 +7,7 @@ confidence: high
 created_at: "2026-07-13T10:30:00+08:00"
 updated_at: "2026-07-13T10:30:00+08:00"
 problem: Support analysts need a safe, repeatable way to validate and route synthetic ticket requests before manual review.
+users: [Support operations analyst, Pilot sponsor]
 inputs:
   - Approved synthetic ticket examples
   - Routing rules and API contract
@@ -21,6 +22,16 @@ deliverables:
   - Usage, decision, and limitation note
 competency_ids: [python-foundation, api-integration, tool-calling, technical-communication]
 business_value: Reduce manual intake rework for the support operations team; compare invalid tickets caught before and after the pilot.
+success_measures:
+  - All critical contract and recovery tests pass
+  - Pilot reviewer reproduces the demonstration from the documentation
+risks:
+  - Invalid requests may bypass validation
+  - Timeout recovery may lose request state
+evidence_plan:
+  evaluator: Engineering mentor independent of implementation
+  threshold: Proficient or stronger in every critical rubric dimension
+  evidence_ids: [ev-ticket-tests, ev-ticket-demo, ev-ticket-review]
 common_failure_modes:
   - Invalid fields pass silently
   - API timeout loses the request state

@@ -7,37 +7,37 @@ confidence: medium
 created_at: "2026-07-13T09:00:00+08:00"
 updated_at: "2026-07-13T09:00:00+08:00"
 personal:
-  role: {value: Operations analyst, source: self-report, confidence: high, evidence_ids: [], decision_impact: Anchors examples in operations work.}
-  location_timezone: {value: Asia/Shanghai, source: fact, confidence: high, evidence_ids: [], decision_impact: Determines feasible scheduling windows.}
-  target_context: {value: Internal AI workflow role, source: self-report, confidence: high, evidence_ids: [], decision_impact: Selects the employment outcome route.}
+  role: {value: Operations analyst, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Anchors examples in operations work.}
+  location_timezone: {value: Asia/Shanghai, epistemic_class: fact, source: user, confidence: high, evidence_ids: [], decision_impact: Determines feasible scheduling windows.}
+  target_context: {value: Internal AI workflow role, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Selects the employment outcome route.}
 experience:
-  education: {value: Business analytics diploma, source: self-report, confidence: medium, evidence_ids: [], decision_impact: Avoids assuming formal computer-science prerequisites.}
-  work: {value: Three years improving customer-support operations, source: self-report, confidence: medium, evidence_ids: [], decision_impact: Makes support operations the first project context.}
-  technical: {value: Built two Python scripts with guidance; no production deployment evidence yet, source: self-report, confidence: medium, evidence_ids: [sample-ticket-triage], decision_impact: Starts Python at guided performance and requires independent evidence.}
-  projects: {value: [sample-ticket-triage], source: fact, confidence: high, evidence_ids: [sample-ticket-triage], decision_impact: Supplies a baseline artifact for assessment.}
+  education: {value: Business analytics diploma, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Avoids assuming formal computer-science prerequisites.}
+  work: {value: Three years improving customer-support operations, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Makes support operations the first project context.}
+  technical: {value: Built two Python scripts with guidance; no production deployment evidence yet, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [sample-ticket-triage], decision_impact: Starts Python at guided performance and requires independent evidence.}
+  projects: {value: [sample-ticket-triage], epistemic_class: fact, source: project, confidence: high, evidence_ids: [sample-ticket-triage], decision_impact: Supplies a baseline artifact for assessment.}
 learning_preferences:
-  language: {value: Chinese with English technical terms, source: self-report, confidence: high, evidence_ids: [], decision_impact: Determines explanation language.}
-  formats: {value: [worked examples, documentation, code review], source: self-report, confidence: medium, evidence_ids: [], decision_impact: Shapes practice formats.}
-  accessibility: {value: Needs sessions that fit into 60-minute weekday blocks, source: self-report, confidence: high, evidence_ids: [], decision_impact: Caps individual task duration.}
+  language: {value: Chinese with English technical terms, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Determines explanation language.}
+  formats: {value: [worked examples, documentation, code review], epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Shapes practice formats.}
+  accessibility: {value: Needs sessions that fit into 60-minute weekday blocks, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Caps individual task duration.}
 motivation:
-  primary: {value: Qualify for an internal AI workflow role by delivering a useful agent project, source: self-report, confidence: high, evidence_ids: [], decision_impact: Prioritizes employability evidence.}
-  success_signal: {value: Hiring manager accepts a live workflow demonstration and evidence map, source: inference, confidence: medium, evidence_ids: [], decision_impact: Requires manager validation before activation.}
+  primary: {value: Qualify for an internal AI workflow role by delivering a useful agent project, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Prioritizes employability evidence.}
+  success_signal: {value: Hiring manager accepts a live workflow demonstration and evidence map, epistemic_class: inference, source: inference, confidence: medium, evidence_ids: [], decision_impact: Requires manager validation before activation.}
 constraints:
-  weekly_hours: {value: 8, source: self-report, confidence: high, evidence_ids: [], decision_impact: Caps planned weekly load.}
-  budget: {value: Use free or employer-provided tools for the first eight weeks, source: self-report, confidence: high, evidence_ids: [], decision_impact: Excludes paid dependencies from the initial route.}
-  schedule: {value: Four weekday sessions and one weekend project block, source: self-report, confidence: high, evidence_ids: [], decision_impact: Determines task placement.}
-  privacy: {value: No customer records may leave the approved test environment, source: fact, confidence: high, evidence_ids: [], decision_impact: Requires synthetic data and local processing.}
+  weekly_hours: {value: 8, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Caps planned weekly load.}
+  budget: {value: Use free or employer-provided tools for the first eight weeks, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Excludes paid dependencies from the initial route.}
+  schedule: {value: Four weekday sessions and one weekend project block, epistemic_class: self-report, source: user, confidence: high, evidence_ids: [], decision_impact: Determines task placement.}
+  privacy: {value: No customer records may leave the approved test environment, epistemic_class: fact, source: employer, confidence: high, evidence_ids: [], decision_impact: Requires synthetic data and local processing.}
 swot:
   Strength:
-    - {value: Understands the support workflow and its business measures, source: inference, confidence: medium, evidence_ids: [], decision_impact: Uses operations scenarios while requesting work evidence.}
+    - {value: Understands the support workflow and its business measures, epistemic_class: inference, source: inference, confidence: medium, evidence_ids: [], decision_impact: Uses operations scenarios while requesting work evidence.}
   Weakness:
-    - {value: Production debugging and deployment are not yet independently evidenced, source: fact, confidence: high, evidence_ids: [], decision_impact: Blocks L3 advancement until assessed.}
+    - {value: Production debugging and deployment are not yet independently evidenced, epistemic_class: fact, source: assessment, confidence: high, evidence_ids: [], decision_impact: Blocks L3 advancement until assessed.}
   Opportunity:
-    - {value: Employer has an approved synthetic ticket dataset and a pilot sponsor, source: self-report, confidence: medium, evidence_ids: [], decision_impact: Enables a role-representative project if confirmed.}
+    - {value: Employer has an approved synthetic ticket dataset and a pilot sponsor, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Enables a role-representative project if confirmed.}
   Risk:
-    - {value: Quarter-end workload may reduce two planned study weeks, source: self-report, confidence: medium, evidence_ids: [], decision_impact: Adds roadmap buffer and minimum delivery.}
+    - {value: Quarter-end workload may reduce two planned study weeks, epistemic_class: self-report, source: user, confidence: medium, evidence_ids: [], decision_impact: Adds roadmap buffer and minimum delivery.}
 unknowns:
-  - {value: Whether the target team requires cloud-specific deployment evidence, source: inference, confidence: low, evidence_ids: [], decision_impact: May change the deployment competency target.}
+  - {value: Whether the target team requires cloud-specific deployment evidence, epistemic_class: assumption, source: inference, confidence: low, evidence_ids: [], decision_impact: May change the deployment competency target.}
 extensions:
   next_validation_action: Ask the hiring manager which deployment environment is evaluated
   affected_downstream: [target-outcome, competency-model, learning-roadmap]

@@ -49,8 +49,14 @@ $defs:
         type: string
         enum: [not_started, collecting, draft, validated, active, needs_input, blocked, not_applicable, superseded, archived]
       reason: {type: string, minLength: 1}
+      source: {$ref: common.schema.yaml#/$defs/operational_source}
+      confidence: {$ref: common.schema.yaml#/$defs/confidence}
+      affected_downstream:
+        type: array
+        uniqueItems: true
+        items: {type: string, minLength: 1}
     if:
       properties: {state: {const: not_applicable}}
       required: [state]
     then:
-      required: [reason]
+      required: [reason, source, confidence, affected_downstream]

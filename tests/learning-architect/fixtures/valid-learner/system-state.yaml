@@ -14,9 +14,9 @@ stage_states:
   gap-analysis: {state: validated}
   competency-design: {state: validated}
   curriculum-design: {state: validated}
-  project-design: {state: not_applicable, reason: Minimal fixture has no project artifact.}
-  roadmap: {state: not_applicable, reason: Minimal fixture has no roadmap artifact.}
-  weekly-planner: {state: not_applicable, reason: Minimal fixture has no weekly plan artifact.}
+  project-design: {state: not_applicable, reason: Minimal fixture has no project artifact., source: user, confidence: high, affected_downstream: []}
+  roadmap: {state: not_applicable, reason: Minimal fixture has no roadmap artifact., source: user, confidence: high, affected_downstream: []}
+  weekly-planner: {state: not_applicable, reason: Minimal fixture has no weekly plan artifact., source: user, confidence: high, affected_downstream: []}
   assessment: {state: active}
   outcome-preparation: {state: not_started}
   continuous-optimization: {state: not_started}

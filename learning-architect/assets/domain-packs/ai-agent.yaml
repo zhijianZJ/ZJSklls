@@ -220,21 +220,33 @@ project_archetypes:
     retrospective_requirements: [Identify one failed assumption and the next reliability improvement]
     rubric:
       correctness:
+        critical: true
+        passing_threshold: proficient
         weight: 25
         performance_bands: {insufficient: Critical success or error paths fail, developing: Main path works but validation gaps remain, proficient: All critical success and error tests pass, strong: Adversarial cases also pass with precise contracts}
       capability_behavior:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Cannot complete the tool flow, developing: Completes only with repair guidance, proficient: Independently completes and explains the bounded flow, strong: Adapts the flow to a changed tool contract}
       reliability:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Failures are silent or destructive, developing: Some failures are caught without recovery, proficient: Timeouts validation and recovery are tested, strong: Fault injection demonstrates graceful degradation}
       responsible_practice:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Access is unrestricted or secrets leak, developing: Basic controls exist with material gaps, proficient: Least privilege and secret handling are demonstrated, strong: Threat cases and auditability exceed stated needs}
       business_value:
+        critical: false
+        passing_threshold: proficient
         weight: 10
         performance_bands: {insufficient: No beneficiary or value measure, developing: Value is asserted but not measured, proficient: Time or error value is measured for the bounded task, strong: Evidence supports adoption and next investment}
       technical_communication:
+        critical: false
+        passing_threshold: proficient
         weight: 10
         performance_bands: {insufficient: Setup and decisions cannot be reproduced, developing: Notes omit important limits, proficient: Usage decisions and limits are reproducible, strong: A new operator succeeds and explains trade-offs}
   - id: knowledge-application
@@ -253,21 +265,33 @@ project_archetypes:
     retrospective_requirements: [Analyze one retrieval and one generation failure and prioritize corrective experiments]
     rubric:
       correctness:
+        critical: true
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Answers contradict or lack sources, developing: Basic answers work with grounding gaps, proficient: Grounding and citation gates pass, strong: Adversarial questions are answered or safely refused}
       capability_behavior:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Cannot assemble the knowledge flow, developing: Completes only from a supplied implementation, proficient: Independently builds and evaluates the bounded application, strong: Transfers the design to changed corpus requirements}
       reliability:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Retrieval failures are unobserved, developing: Failures are visible but inconsistent, proficient: Retrieval generation and abstention are reproducibly tested, strong: Drift and freshness cases have tested responses}
       responsible_practice:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Provenance or access rules are ignored, developing: Provenance exists but gaps remain, proficient: Sources access and limitations are explicit, strong: Sensitive and conflicting sources are handled defensibly}
       business_value:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: No knowledge-use outcome is named, developing: Outcome is plausible but unmeasured, proficient: Access quality or cycle-time value is measured, strong: Stakeholder evidence supports broader use}
       technical_communication:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Corpus and evaluation cannot be reproduced, developing: Documentation omits key design choices, proficient: Provenance measures and trade-offs are clear, strong: Reviewer can challenge and extend the design}
   - id: workflow
@@ -286,21 +310,33 @@ project_archetypes:
     retrospective_requirements: [Compare expected and observed traces and explain one workflow redesign]
     rubric:
       correctness:
+        critical: true
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Critical workflow outcomes are wrong, developing: Happy path works with transition errors, proficient: End-to-end acceptance paths pass, strong: Changed inputs preserve correct state transitions}
       capability_behavior:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Cannot complete the workflow, developing: Requires step-by-step repair, proficient: Independently completes and explains the bounded workflow, strong: Modifies requirements without losing evidence or controls}
       reliability:
+        critical: false
+        passing_threshold: proficient
         weight: 25
         performance_bands: {insufficient: Loops or partial failures are unrecoverable, developing: Some failures terminate safely, proficient: Termination recovery and traces are tested, strong: Fault injection meets stated recovery targets}
       responsible_practice:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Consequential actions lack approval controls, developing: Checkpoints exist with bypass gaps, proficient: Boundaries approvals and data handling are enforced, strong: Abuse cases and escalation paths are demonstrated}
       business_value:
+        critical: false
+        passing_threshold: proficient
         weight: 10
         performance_bands: {insufficient: Workflow value is unspecified, developing: Cycle benefit is estimated only, proficient: Cycle time or quality improvement is measured, strong: Adoption evidence supports scaling the workflow}
       technical_communication:
+        critical: false
+        passing_threshold: proficient
         weight: 10
         performance_bands: {insufficient: State and operations are opaque, developing: Diagram or guide is incomplete, proficient: Interfaces state and recovery are reproducible, strong: Another operator diagnoses a forced failure}
   - id: enterprise-scenario
@@ -319,21 +355,33 @@ project_archetypes:
     retrospective_requirements: [Analyze one simulated incident and revise a control using trace evidence]
     rubric:
       correctness:
+        critical: true
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Critical organizational use cases fail, developing: Main scenario works with integration gaps, proficient: Acceptance scenarios and contracts pass, strong: Cross-system exceptions preserve correct outcomes}
       capability_behavior:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Cannot integrate the governed scenario, developing: Completes with substantial expert repair, proficient: Independently delivers and explains the bounded enterprise scenario, strong: Migrates the design under changed policy or service constraints}
       reliability:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Incidents cannot be detected or recovered, developing: Monitoring exists without tested recovery, proficient: Service targets rollback and incident paths are tested, strong: Fault and migration drills meet documented objectives}
       responsible_practice:
+        critical: false
+        passing_threshold: proficient
         weight: 25
         performance_bands: {insufficient: Critical threat lacks a control or owner, developing: Controls exist but material gaps remain, proficient: Threats access data and audit controls are verified, strong: Red-team cases improve governance and operating policy}
       business_value:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Organizational value is undefined, developing: Value is estimated without stakeholder evidence, proficient: Reliability risk and outcome measures support the scenario, strong: Stakeholder evidence supports governed expansion}
       technical_communication:
+        critical: false
+        passing_threshold: proficient
         weight: 10
         performance_bands: {insufficient: Architecture and ownership are unclear, developing: Handover omits critical operations, proficient: Architecture controls and runbooks support review, strong: Operators execute incident and migration procedures unaided}
   - id: portfolio-case
@@ -352,21 +400,33 @@ project_archetypes:
     retrospective_requirements: [Explain how evidence changed the design and what would be done differently next]
     rubric:
       correctness:
+        critical: true
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Material claims conflict with artifacts, developing: Main claims are accurate with evidence gaps, proficient: All material claims match reproducible evidence, strong: Independent review confirms claims across edge cases}
       capability_behavior:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Cannot demonstrate claimed capabilities, developing: Demonstrates with prompting or repair, proficient: Independently demonstrates and defends bounded capabilities, strong: Adapts the case to changed evaluator requirements}
       reliability:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Demo is fragile or unrecoverable, developing: Main demo works without failure evidence, proficient: Demo evaluation and recovery are repeatable, strong: Live failure diagnosis is precise and evidence-backed}
       responsible_practice:
+        critical: false
+        passing_threshold: proficient
         weight: 10
         performance_bands: {insufficient: Confidential or misleading content is exposed, developing: Safety review leaves material gaps, proficient: Disclosure privacy and limitations are handled, strong: Public-safe transformation preserves auditability and nuance}
       business_value:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: No verified beneficiary or outcome, developing: Value claim is weakly measured, proficient: Before-after evidence supports meaningful value, strong: Alternatives and adoption evidence strengthen the investment case}
       technical_communication:
+        critical: false
+        passing_threshold: proficient
         weight: 25
         performance_bands: {insufficient: Narrative obscures decisions and limits, developing: Case is understandable but incomplete, proficient: Architecture trade-offs evidence and limits are clear, strong: Review questions produce concise teachable and defensible answers}
   - id: real-external-delivery
@@ -385,21 +445,33 @@ project_archetypes:
     retrospective_requirements: [Compare promised and realized value and incorporate stakeholder feedback into next actions]
     rubric:
       correctness:
+        critical: true
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Delivery fails critical acceptance criteria, developing: Partial criteria pass with unresolved defects, proficient: All critical criteria pass or have approved exceptions, strong: Real use confirms correctness beyond the acceptance set}
       capability_behavior:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Delivery depends on hidden expert intervention, developing: Completes with repeated stakeholder or mentor repair, proficient: Independently delivers the bounded agreed outcome, strong: Adapts delivery to a justified scope change}
       reliability:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Operational failure lacks recovery or owner, developing: Basic operations exist without tested continuity, proficient: Monitoring recovery and handover rehearsal pass, strong: Real or simulated incidents improve service resilience}
       responsible_practice:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Scope privacy or consent is violated, developing: Controls exist with unresolved exposure, proficient: Scope data consent and limitations are respected, strong: Stakeholder review confirms responsible operation and escalation}
       business_value:
+        critical: false
+        passing_threshold: proficient
         weight: 20
         performance_bands: {insufficient: Stakeholder reports no usable value, developing: Value is anecdotal or below target, proficient: Acceptance and measures verify agreed value, strong: Sustained use or expansion evidence exceeds the target}
       technical_communication:
+        critical: false
+        passing_threshold: proficient
         weight: 15
         performance_bands: {insufficient: Stakeholder cannot operate or evaluate delivery, developing: Handover needs undocumented intervention, proficient: Stakeholder can operate and explain limits, strong: Stakeholder teaches operation or reviews future changes confidently}
 

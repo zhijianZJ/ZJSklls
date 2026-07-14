@@ -401,6 +401,7 @@ class LearningSystemValidationTests(unittest.TestCase):
                     independent["evidence_ids"] = []
                 else:
                     independent["state"] = "fail"
+                document["decision"] = "needs_remediation"
                 document["gate"] = {"passed": False, "missing": ["independent"]}
                 self.assertEqual(self.schema_issues("assessment", document), [])
 
@@ -564,7 +565,7 @@ class LearningSystemValidationTests(unittest.TestCase):
                 "id": "roadmap-budget-test",
                 "schema_version": "1.0.0",
                 "content_version": 1,
-                "status": "draft",
+                "status": "active",
                 "source": "budget test",
                 "confidence": "high",
                 "created_at": "2026-07-13T00:00:00Z",
@@ -1083,6 +1084,25 @@ class LearningSystemValidationTests(unittest.TestCase):
             errors = self.validator.validate_learner_system(self.skill_root, learner_dir)
             self.assertTrue(any("active version" in error.lower() and "learner-profile" in error for error in errors), errors)
 
+    def test_active_versions_must_uniquely_cover_active_singletons(self):
+        with self.copied_valid_learner() as learner_dir:
+            state_path = learner_dir / "system-state.yaml"
+            state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+            del state["active_versions"]["competency-model"]
+            state_path.write_text(yaml.safe_dump(state), encoding="utf-8")
+
+            errors = self.validator.validate_learner_system(
+                self.skill_root, learner_dir
+            )
+            self.assertTrue(
+                any(
+                    "active_versions must uniquely cover active singleton competency-model"
+                    in error.lower()
+                    for error in errors
+                ),
+                errors,
+            )
+
     def test_system_state_rejects_empty_and_nonsense_stage_state(self):
         for mutation in ["empty", "nonsense"]:
             with self.subTest(mutation=mutation), self.copied_valid_learner() as learner_dir:
@@ -1233,6 +1253,7 @@ class LearningSystemValidationTests(unittest.TestCase):
             project_path.parent.mkdir(parents=True)
             project = yaml.safe_load((self.skill_root / "assets/templates/project-brief.yaml").read_text(encoding="utf-8"))
             project["competency_ids"] = ["missing-competency"]
+            project["status"] = "active"
             project_path.write_text(yaml.safe_dump(project), encoding="utf-8")
             errors = self.validator.validate_learner_system(self.skill_root, learner_dir)
             self.assertTrue(any("project references unknown competency" in error.lower() for error in errors), errors)
@@ -1277,6 +1298,240 @@ class LearningSystemValidationTests(unittest.TestCase):
         state = yaml.safe_load((self.fixtures / "valid-learner" / "system-state.yaml").read_text(encoding="utf-8"))
         del state["stage_states"]["project-design"]["reason"]
         self.assertTrue(self.schema_issues("system-state", state))
+
+    def test_not_applicable_stage_requires_complete_audit_record(self):
+        state = yaml.safe_load((self.fixtures / "valid-learner" / "system-state.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(self.schema_issues("system-state", state), [])
+        for field in ["source", "confidence", "affected_downstream"]:
+            with self.subTest(field=field):
+                invalid = yaml.safe_load(yaml.safe_dump(state))
+                invalid["stage_states"]["project-design"].pop(field, None)
+                self.assertTrue(self.schema_issues("system-state", invalid))
+
+    def test_history_allows_stable_id_across_distinct_content_versions(self):
+        with self.copied_valid_learner() as learner_dir:
+            current_path = learner_dir / "learner-profile.yaml"
+            current = yaml.safe_load(current_path.read_text(encoding="utf-8"))
+            current["content_version"] = 2
+            current_path.write_text(yaml.safe_dump(current), encoding="utf-8")
+            history_path = learner_dir / "history" / "learner-profile.yaml"
+            history_path.parent.mkdir(parents=True)
+            historical = yaml.safe_load(yaml.safe_dump(current))
+            historical["content_version"] = 1
+            historical["status"] = "superseded"
+            history_path.write_text(yaml.safe_dump(historical), encoding="utf-8")
+            state_path = learner_dir / "system-state.yaml"
+            state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+            state["active_versions"]["learner-profile"] = 2
+            state_path.write_text(yaml.safe_dump(state), encoding="utf-8")
+            self.assertEqual(self.validator.validate_learner_system(self.skill_root, learner_dir), [])
+
+    def test_history_rejects_duplicate_version_and_multiple_active_versions(self):
+        for mutation in ["duplicate", "multiple_active"]:
+            with self.subTest(mutation=mutation), self.copied_valid_learner() as learner_dir:
+                current = yaml.safe_load((learner_dir / "learner-profile.yaml").read_text(encoding="utf-8"))
+                history_path = learner_dir / "history" / "learner-profile.yaml"
+                history_path.parent.mkdir(parents=True)
+                historical = yaml.safe_load(yaml.safe_dump(current))
+                if mutation == "multiple_active":
+                    historical["content_version"] = 2
+                else:
+                    historical["status"] = "superseded"
+                history_path.write_text(yaml.safe_dump(historical), encoding="utf-8")
+                errors = self.validator.validate_learner_system(self.skill_root, learner_dir)
+                expected = "multiple active" if mutation == "multiple_active" else "duplicate artifact version"
+                self.assertTrue(any(expected in error.lower() for error in errors), errors)
+
+    def test_singleton_type_rejects_second_active_artifact_with_different_id(self):
+        with self.copied_valid_learner() as learner_dir:
+            original = yaml.safe_load(
+                (learner_dir / "competency-model.yaml").read_text(encoding="utf-8")
+            )
+            second = yaml.safe_load(yaml.safe_dump(original))
+            second["id"] = "competency-model-learner-002"
+            second_path = learner_dir / "versions" / "alternate" / "competency-model.yaml"
+            second_path.parent.mkdir(parents=True)
+            second_path.write_text(yaml.safe_dump(second), encoding="utf-8")
+
+            errors = self.validator.validate_learner_system(
+                self.skill_root, learner_dir
+            )
+            self.assertTrue(
+                any(
+                    "multiple active singleton artifacts for competency-model"
+                    in error.lower()
+                    for error in errors
+                ),
+                errors,
+            )
+
+    def test_cross_artifact_refs_use_active_competency_not_superseded_history(self):
+        with self.copied_valid_learner() as learner_dir:
+            competency_path = learner_dir / "competency-model.yaml"
+            historical = yaml.safe_load(competency_path.read_text(encoding="utf-8"))
+            historical["status"] = "superseded"
+            competency_path.write_text(yaml.safe_dump(historical), encoding="utf-8")
+            active = yaml.safe_load(yaml.safe_dump(historical))
+            active["content_version"] = 2
+            active["status"] = "active"
+            active["competencies"] = [
+                item for item in active["competencies"] if item["id"] != "api-integration"
+            ]
+            active_path = learner_dir / "versions" / "competency-model.yaml"
+            active_path.parent.mkdir(parents=True)
+            active_path.write_text(yaml.safe_dump(active), encoding="utf-8")
+            state_path = learner_dir / "system-state.yaml"
+            state = yaml.safe_load(state_path.read_text(encoding="utf-8"))
+            del state["active_versions"]["competency-model"]
+            state["active_versions"]["versions/competency-model"] = 2
+            state_path.write_text(yaml.safe_dump(state), encoding="utf-8")
+            errors = self.validator.validate_learner_system(self.skill_root, learner_dir)
+            self.assertTrue(any("evidence references unknown competency: api-integration" in error.lower() for error in errors), errors)
+            self.assertTrue(any("assessment references unknown competency: api-integration" in error.lower() for error in errors), errors)
+
+    def test_assessment_decision_and_gate_are_biconditional(self):
+        cases = [
+            ("pass", False, ["independent"]),
+            ("fail", True, []),
+            ("needs_remediation", True, []),
+        ]
+        for decision, passed, missing in cases:
+            with self.subTest(decision=decision, passed=passed):
+                document = self.make_assessment_document()
+                document["decision"] = decision
+                document["gate"] = {"passed": passed, "missing": missing}
+                self.assertTrue(self.schema_issues("assessment", document))
+
+        remediation = self.make_assessment_document()
+        independent = next(item for item in remediation["behavior_checks"] if item["behavior"] == "independent")
+        independent["state"] = "fail"
+        remediation["decision"] = "needs_remediation"
+        remediation["gate"] = {"passed": False, "missing": ["independent"]}
+        self.assertEqual(self.schema_issues("assessment", remediation), [])
+
+    def test_learner_project_requires_nonempty_evidence_inputs(self):
+        for field in ["inputs", "deliverables", "competency_ids"]:
+            with self.subTest(field=field):
+                project = yaml.safe_load((self.skill_root / "assets/templates/project-brief.yaml").read_text(encoding="utf-8"))
+                project[field] = []
+                self.assertTrue(self.schema_issues("project", project))
+
+    def test_learner_project_requires_complete_typed_delivery_contract(self):
+        fields = ["problem", "business_value", "users", "success_measures", "risks", "evidence_plan"]
+        for field in fields:
+            for mutation in ["missing", "empty"]:
+                with self.subTest(field=field, mutation=mutation):
+                    project = yaml.safe_load((self.skill_root / "assets/templates/project-brief.yaml").read_text(encoding="utf-8"))
+                    if mutation == "missing":
+                        project.pop(field, None)
+                    elif isinstance(project.get(field), str):
+                        project[field] = ""
+                    elif isinstance(project.get(field), list):
+                        project[field] = []
+                    else:
+                        project[field] = {}
+                    self.assertTrue(self.schema_issues("project", project))
+
+    def test_learner_project_rejects_invalid_rubric_semantics(self):
+        for mutation in ["wrong_total", "zero_weight", "no_critical"]:
+            with self.subTest(mutation=mutation), self.copied_valid_learner() as learner_dir:
+                project_path = learner_dir / "projects" / "focused-tool-ticket-intake.yaml"
+                project_path.parent.mkdir(parents=True)
+                project = yaml.safe_load((self.skill_root / "assets/templates/project-brief.yaml").read_text(encoding="utf-8"))
+                project["competency_ids"] = ["python-foundation", "api-integration"]
+                project["status"] = "active"
+                if mutation == "wrong_total":
+                    project["rubric"]["correctness"]["weight"] = 99
+                elif mutation == "zero_weight":
+                    project["rubric"]["correctness"]["weight"] = 0
+                else:
+                    for dimension in project["rubric"].values():
+                        dimension["critical"] = False
+                project_path.write_text(yaml.safe_dump(project), encoding="utf-8")
+                errors = self.validator.validate_learner_system(self.skill_root, learner_dir)
+                self.assertTrue(any("project rubric" in error.lower() for error in errors), errors)
+
+    def test_domain_pack_market_assumption_ids_and_review_dates_are_governed(self):
+        for mutation in ["duplicate_id", "expired_review"]:
+            with self.subTest(mutation=mutation):
+                pack = self.load_ai_agent_domain_pack()
+                if mutation == "duplicate_id":
+                    pack["market_assumptions"][1]["id"] = pack["market_assumptions"][0]["id"]
+                else:
+                    pack["market_assumptions"][0]["next_review_at"] = "2020-01-01"
+                errors = self.validator._validate_domain_pack_semantics("governance.yaml", pack)
+                self.assertTrue(any("market assumption" in error.lower() for error in errors), errors)
+
+    def test_domain_pack_target_outcome_ids_are_unique(self):
+        pack = self.load_ai_agent_domain_pack()
+        pack["target_outcomes"][1]["id"] = pack["target_outcomes"][0]["id"]
+        errors = self.validator._validate_domain_pack_semantics("targets.yaml", pack)
+        self.assertTrue(any("duplicate target outcome" in error.lower() for error in errors), errors)
+
+    def test_domain_pack_each_project_rubric_requires_critical_dimension(self):
+        pack = self.load_ai_agent_domain_pack()
+        for dimension in pack["project_archetypes"][0]["rubric"].values():
+            dimension["critical"] = False
+        errors = self.validator._validate_domain_pack_semantics("critical.yaml", pack)
+        self.assertTrue(any("critical dimension" in error.lower() for error in errors), errors)
+
+    def test_domain_pack_rubric_dimensions_require_typed_gate_fields(self):
+        schemas, registry = self.validator._load_schemas(self.skill_root)
+        rubric_dimension = schemas["domain-pack"]["$defs"]["rubric_dimension"]
+        self.assertTrue(
+            {"critical", "passing_threshold"}
+            <= set(rubric_dimension.get("required", []))
+        )
+        self.assertEqual(
+            set(rubric_dimension["properties"]["passing_threshold"]["enum"]),
+            {"developing", "proficient", "strong"},
+        )
+
+        pack = self.load_ai_agent_domain_pack()
+        validator = self.validator.Draft202012Validator(
+            schemas["domain-pack"],
+            registry=registry,
+            format_checker=self.validator.LEARNER_FORMAT_CHECKER,
+        )
+        self.assertEqual(list(validator.iter_errors(pack)), [])
+        for archetype in pack["project_archetypes"]:
+            for name, dimension in archetype["rubric"].items():
+                with self.subTest(archetype=archetype["id"], dimension=name):
+                    self.assertIs(type(dimension.get("critical")), bool)
+                    self.assertIn(
+                        dimension.get("passing_threshold"),
+                        {"developing", "proficient", "strong"},
+                    )
+
+    def test_domain_pack_migration_accepts_documented_retired_sentinel(self):
+        pack = self.load_ai_agent_domain_pack()
+        pack["extensions"]["migration_map"] = {
+            "legacy-competency": {"to": "retired", "reason": "Merged into the current competency model."}
+        }
+        self.assertEqual(self.validator._validate_domain_pack_semantics("retired.yaml", pack), [])
+
+    def test_learner_profile_separates_epistemic_class_from_operational_source(self):
+        profile = yaml.safe_load((self.skill_root / "assets/templates/discovery.yaml").read_text(encoding="utf-8"))
+        items = [
+            profile["experience"]["technical"],
+            profile["swot"]["Strength"][0],
+            profile["constraints"]["privacy"],
+        ]
+        for item, source in zip(items, ["assessment", "project", "mentor"]):
+            item["source"] = source
+        self.assertEqual(self.schema_issues("learner-profile", profile), [])
+        profile["personal"]["role"]["epistemic_class"] = "belief"
+        self.assertTrue(self.schema_issues("learner-profile", profile))
+
+    def test_learner_profile_accepts_evidence_epistemic_class(self):
+        profile = yaml.safe_load((self.skill_root / "assets/templates/discovery.yaml").read_text(encoding="utf-8"))
+        profile["experience"]["technical"].update(
+            epistemic_class="evidence", source="assessment"
+        )
+        profile["experience"]["projects"].update(
+            epistemic_class="evidence", source="project"
+        )
+        self.assertEqual(self.schema_issues("learner-profile", profile), [])
 
     def make_assessment_document(self):
         return {
