@@ -1,0 +1,24 @@
+id: competency-model-001
+schema_version: 1.0.0
+content_version: 1
+status: active
+source: fixture
+confidence: high
+created_at: "2026-07-13T00:00:00Z"
+updated_at: "2026-07-13T00:00:00Z"
+domain_pack_id: ai-agent-engineer
+competencies:
+  - id: python-foundation
+    category: technical
+    current_level: 1
+    target_level: 3
+    weight: 0.5
+    behaviors: [Writes clear Python]
+    evidence_requirements: [Working program]
+  - id: api-integration
+    category: technical
+    current_level: 0
+    target_level: 3
+    weight: 0.5
+    behaviors: [Integrates APIs]
+    evidence_requirements: [Working integration]

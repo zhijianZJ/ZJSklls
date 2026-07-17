@@ -10,6 +10,13 @@
 
 ## Global Constraints
 
+- Before running any Python command in this plan, configure and verify the documented Python environment in the same shell session:
+
+  ```bash
+  export PATH="/Users/wangshucheng/miniconda3/bin:$PATH"
+  python3 -c 'from importlib.metadata import version; import yaml, jsonschema; assert yaml.__version__ == "6.0.3"; assert version("jsonschema") == "4.26.0"; print("PyYAML {}; jsonschema {}".format(yaml.__version__, version("jsonschema")))'
+  ```
+
 - Implement the approved specification at `docs/superpowers/specs/2026-07-13-learning-architect-education-os-design.md`.
 - Do not add databases, network APIs, live recruitment scraping, course-platform integration, or user-account infrastructure.
 - Do not hard-code course links into the core Skill.

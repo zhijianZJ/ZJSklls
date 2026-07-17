@@ -1,0 +1,33 @@
+id: evidence-001
+schema_version: 1.0.0
+content_version: 1
+status: active
+source: fixture
+confidence: high
+created_at: "2026-07-13T00:00:00Z"
+updated_at: "2026-07-13T00:00:00Z"
+type: project
+artifact: api-project
+competency_ids: [python-foundation, api-integration]
+evaluator: reviewer
+score: 0.8
+observed_behaviors:
+  - behavior: independent
+    state: pass
+    observation: Writes and tests the bounded Python component without repair guidance.
+  - behavior: explain
+    state: pass
+    observation: Explains validation and error-handling trade-offs to the reviewer.
+  - behavior: modify
+    state: pass
+    observation: Adapts the request contract to a changed required field.
+  - behavior: debug
+    state: pass
+    observation: Diagnoses and repairs a controlled timeout failure.
+  - behavior: deploy
+    state: pass
+    observation: Delivers the runnable component with setup and rollback notes.
+  - behavior: teach
+    state: pass
+    observation: Reviews the component and teaches its failure controls to a peer.
+verified_at: "2026-07-13T00:00:00Z"

@@ -1,0 +1,345 @@
+schema_version: 1.0.0
+questions:
+  - id: personal-01
+    category: personal
+    question: What name or form of address should the learning system use?
+    answer_type: short_text
+    decision_impact: Personalizes communication without changing competency decisions.
+    required_when: Ask only when no preferred form of address is known.
+    sensitivity: personal
+  - id: personal-02
+    category: personal
+    question: Which language should explanations, practice, and deliverables primarily use?
+    answer_type: single_select
+    decision_impact: Changes resource language, scaffolding, and assessment wording.
+    required_when: Ask when the working language is unknown or multiple languages are plausible.
+    sensitivity: personal
+  - id: personal-03
+    category: personal
+    question: Which time zone and typical study windows should scheduling use?
+    answer_type: structured_schedule
+    decision_impact: Changes session timing and the feasibility of synchronous support.
+    required_when: Ask before creating a calendar-bound weekly plan.
+    sensitivity: personal
+  - id: personal-04
+    category: personal
+    question: Is there an age or career-stage context you want the plan to account for?
+    answer_type: optional_short_text
+    decision_impact: May change examples, transition assumptions, and available pathways, but is never used to limit opportunity.
+    required_when: optional; ask only with consent when the learner says life stage materially affects the route.
+    sensitivity: sensitive
+  - id: personal-05
+    category: personal
+    question: Is there a location or work-authorization context you want considered?
+    answer_type: optional_short_text
+    decision_impact: Changes which outcome constraints and market assumptions require validation.
+    required_when: optional; ask only with consent for location-dependent employment or delivery goals.
+    sensitivity: sensitive
+  - id: personal-06
+    category: personal
+    question: Do you want any accessibility needs or accommodations reflected in the learning format?
+    answer_type: optional_multiselect
+    decision_impact: Changes format, pacing, tools, breaks, and assessment accommodations.
+    required_when: optional; ask only with consent when format or access barriers may affect participation.
+    sensitivity: sensitive
+
+  - id: education-01
+    category: education
+    question: What is the highest level or type of formal education relevant to this goal?
+    answer_type: short_text
+    decision_impact: Calibrates assumed academic foundations without treating credentials as capability.
+    required_when: Ask when formal prerequisites may affect the target route.
+    sensitivity: personal
+  - id: education-02
+    category: education
+    question: Which relevant subjects have you studied, and how recently?
+    answer_type: list_with_dates
+    decision_impact: Identifies candidate prerequisites and where freshness checks are needed.
+    required_when: Ask when prerequisite knowledge is uncertain.
+    sensitivity: personal
+  - id: education-03
+    category: education
+    question: Which relevant courses, certificates, or bootcamps have you completed?
+    answer_type: list
+    decision_impact: Routes evidence checks and avoids repetition; completion alone does not raise competency level.
+    required_when: Ask when prior instruction could shorten the curriculum.
+    sensitivity: personal
+  - id: education-04
+    category: education
+    question: Which concepts from prior study can you still explain or apply without notes?
+    answer_type: long_text
+    decision_impact: Selects retrieval checks and potential diagnostic tasks.
+    required_when: Ask when retention and transfer are decision-critical.
+    sensitivity: personal
+  - id: education-05
+    category: education
+    question: What learning artifacts from prior study can you share or describe?
+    answer_type: artifact_list
+    decision_impact: Provides stronger baseline evidence than attendance or completion claims.
+    required_when: Ask when previous learning is being used to skip dependencies.
+    sensitivity: personal
+  - id: education-06
+    category: education
+    question: Which academic prerequisites have been difficult or repeatedly interrupted?
+    answer_type: long_text
+    decision_impact: Changes prerequisite sequencing, scaffolding, and diagnostic depth.
+    required_when: Ask when an early dependency appears fragile.
+    sensitivity: personal
+
+  - id: work-01
+    category: work
+    question: What current or recent work responsibilities are relevant to this goal?
+    answer_type: long_text
+    decision_impact: Identifies transferable behaviors and authentic practice contexts.
+    required_when: Ask for work-linked, promotion, or career-transition outcomes.
+    sensitivity: personal
+  - id: work-02
+    category: work
+    question: Which tasks do you perform independently, with review, or only with help?
+    answer_type: matrix
+    decision_impact: Separates exposure from independent capability and routes assessments.
+    required_when: Ask when work experience is offered as competency evidence.
+    sensitivity: personal
+  - id: work-03
+    category: work
+    question: What measurable work outcomes or deliverables have you produced?
+    answer_type: artifact_list
+    decision_impact: Supplies outcome evidence and candidate portfolio artifacts.
+    required_when: Ask when work artifacts could validate target competencies.
+    sensitivity: personal
+  - id: work-04
+    category: work
+    question: What feedback have managers, clients, or peers given about your relevant performance?
+    answer_type: long_text
+    decision_impact: Adds external evidence and identifies strengths or recurring gaps.
+    required_when: Ask when external feedback can resolve baseline uncertainty.
+    sensitivity: personal
+  - id: work-05
+    category: work
+    question: What employment status or transition timing do you want the system to consider?
+    answer_type: optional_short_text
+    decision_impact: Changes runway, urgency, and the balance between learning and outcome preparation.
+    required_when: optional; ask only with consent when transition timing materially affects feasibility.
+    sensitivity: sensitive
+  - id: work-06
+    category: work
+    question: Which workplace tools, data, or environments may be used safely for practice?
+    answer_type: multiselect_with_notes
+    decision_impact: Changes project realism while preventing confidentiality or access violations.
+    required_when: Ask before proposing workplace-based projects.
+    sensitivity: personal
+
+  - id: technical-01
+    category: technical
+    question: Which relevant tools or technologies have you used, and in what context?
+    answer_type: list_with_context
+    decision_impact: Selects candidate diagnostics and avoids unnecessary introductions.
+    required_when: Ask when the target has technical prerequisites.
+    sensitivity: personal
+  - id: technical-02
+    category: technical
+    question: What can you build or troubleshoot independently today?
+    answer_type: long_text
+    decision_impact: Establishes self-reported behavioral baselines to verify with tasks.
+    required_when: Ask before setting technical current levels.
+    sensitivity: personal
+  - id: technical-03
+    category: technical
+    question: Which technical task most recently blocked you, and where did you get stuck?
+    answer_type: incident_description
+    decision_impact: Locates the earliest causal gap and guides a discriminating assessment.
+    required_when: Ask when performance evidence shows failure or heavy assistance.
+    sensitivity: personal
+  - id: technical-04
+    category: technical
+    question: Which technical artifacts, repositories, demos, or logs can be reviewed?
+    answer_type: artifact_list
+    decision_impact: Enables evidence-based current levels and debugging assessment.
+    required_when: Ask when artifacts can replace broad self-report.
+    sensitivity: personal
+  - id: technical-05
+    category: technical
+    question: What hardware, software, connectivity, or account access is available?
+    answer_type: checklist_with_notes
+    decision_impact: Changes tool choices, project scope, cost, and offline alternatives.
+    required_when: Ask before selecting resource-intensive tools or environments.
+    sensitivity: personal
+  - id: technical-06
+    category: technical
+    question: How comfortable are you reading documentation and error messages in the working language?
+    answer_type: scale_with_example
+    decision_impact: Changes scaffolding, documentation practice, and technical-language support.
+    required_when: Ask when independent troubleshooting is a target behavior.
+    sensitivity: personal
+
+  - id: projects-01
+    category: projects
+    question: Which relevant projects have you completed, and what did each deliver?
+    answer_type: project_list
+    decision_impact: Identifies possible capability evidence and project-ladder entry points.
+    required_when: Ask when project experience may establish the baseline.
+    sensitivity: personal
+  - id: projects-02
+    category: projects
+    question: For each project, which parts did you complete independently?
+    answer_type: contribution_matrix
+    decision_impact: Separates personal behavior evidence from team or tutorial output.
+    required_when: Ask before using a project to validate competence.
+    sensitivity: personal
+  - id: projects-03
+    category: projects
+    question: Who used or evaluated the project, and against what criteria?
+    answer_type: long_text
+    decision_impact: Calibrates authenticity, evaluator independence, and evidence confidence.
+    required_when: Ask when a project supports L3 or higher claims.
+    sensitivity: personal
+  - id: projects-04
+    category: projects
+    question: What constraints, failures, or trade-offs did you handle in the project?
+    answer_type: incident_list
+    decision_impact: Tests debugging, judgment, and transfer beyond a copied happy path.
+    required_when: Ask when advanced capability is claimed.
+    sensitivity: personal
+  - id: projects-05
+    category: projects
+    question: Which project artifacts may be inspected without exposing confidential information?
+    answer_type: artifact_permissions
+    decision_impact: Determines safe evidence access and whether a substitute task is required.
+    required_when: Ask before requesting or evaluating project artifacts.
+    sensitivity: personal
+  - id: projects-06
+    category: projects
+    question: What real problem or audience would make the next project valuable to you?
+    answer_type: long_text
+    decision_impact: Selects an authentic project with motivational and outcome relevance.
+    required_when: Ask before designing the next evidence-producing project.
+    sensitivity: personal
+
+  - id: learning-01
+    category: learning
+    question: Which learning formats have helped you retain and apply skills?
+    answer_type: multiselect_with_examples
+    decision_impact: Selects initial instructional formats to test rather than treating preference as fixed.
+    required_when: Ask when choosing among equally effective delivery formats.
+    sensitivity: personal
+  - id: learning-02
+    category: learning
+    question: What usually causes you to pause, abandon, or delay learning?
+    answer_type: long_text
+    decision_impact: Changes task size, support, reminders, and risk controls.
+    required_when: Ask when persistence risk affects roadmap feasibility.
+    sensitivity: personal
+  - id: learning-03
+    category: learning
+    question: How do you currently practice recall, application, or review?
+    answer_type: long_text
+    decision_impact: Changes retrieval practice and review cadence.
+    required_when: Ask before designing retention and review routines.
+    sensitivity: personal
+  - id: learning-04
+    category: learning
+    question: How much guidance helps before you attempt a task independently?
+    answer_type: scale_with_example
+    decision_impact: Sets the initial scaffolding level and fade schedule.
+    required_when: Ask before assigning a project above the demonstrated baseline.
+    sensitivity: personal
+  - id: learning-05
+    category: learning
+    question: What feedback cadence and format can you act on consistently?
+    answer_type: structured_preference
+    decision_impact: Changes checkpoint frequency and feedback channel.
+    required_when: Ask before setting assessment checkpoints.
+    sensitivity: personal
+  - id: learning-06
+    category: learning
+    question: Describe a skill you successfully learned and what made the process work.
+    answer_type: long_text
+    decision_impact: Reveals tested strategies and contextual strengths for the initial plan.
+    required_when: Ask when learning-strategy evidence is otherwise sparse.
+    sensitivity: personal
+
+  - id: motivation-01
+    category: motivation
+    question: What target outcome matters most, and why now?
+    answer_type: long_text
+    decision_impact: Establishes goal relevance, urgency, and the primary outcome route.
+    required_when: Always ask when no current target outcome exists.
+    sensitivity: personal
+  - id: motivation-02
+    category: motivation
+    question: What observable result would make this effort worthwhile?
+    answer_type: long_text
+    decision_impact: Converts aspiration into candidate outcome evidence and success thresholds.
+    required_when: Ask when success evidence is vague.
+    sensitivity: personal
+  - id: motivation-03
+    category: motivation
+    question: Which trade-off matters most among speed, depth, cost, flexibility, and certainty?
+    answer_type: ranked_choice
+    decision_impact: Resolves roadmap and resource trade-offs.
+    required_when: Ask when feasible routes optimize different constraints.
+    sensitivity: personal
+  - id: motivation-04
+    category: motivation
+    question: What would make you change or abandon this goal?
+    answer_type: long_text
+    decision_impact: Defines pivot triggers and prevents sunk-cost planning.
+    required_when: Ask for long or high-cost routes where early exit criteria matter.
+    sensitivity: personal
+  - id: motivation-05
+    category: motivation
+    question: Who besides you is affected by the goal or learning schedule?
+    answer_type: optional_short_text
+    decision_impact: Reveals coordination constraints and support without assuming family circumstances.
+    required_when: optional; ask only with consent when other people's commitments may affect feasibility.
+    sensitivity: sensitive
+  - id: motivation-06
+    category: motivation
+    question: What support, accountability, or community is realistically available?
+    answer_type: multiselect_with_notes
+    decision_impact: Changes feedback loops, accountability design, and independent-evidence safeguards.
+    required_when: Ask when persistence or evaluator access affects the route.
+    sensitivity: personal
+
+  - id: constraints-01
+    category: constraints
+    question: How many hours per week are reliably available, and how variable is that capacity?
+    answer_type: numeric_range_with_variability
+    decision_impact: Sets roadmap duration, weekly load, and buffer ratio.
+    required_when: Always ask before producing a dated roadmap or weekly plan.
+    sensitivity: personal
+  - id: constraints-02
+    category: constraints
+    question: What deadline exists, and what makes it fixed or flexible?
+    answer_type: date_with_notes
+    decision_impact: Tests feasibility and determines milestone urgency.
+    required_when: Ask when the outcome is time-bound.
+    sensitivity: personal
+  - id: constraints-03
+    category: constraints
+    question: What budget range, if any, do you want the plan to respect?
+    answer_type: optional_range
+    decision_impact: Changes tool, assessment, mentoring, and resource choices while preserving free alternatives.
+    required_when: optional; ask only with consent before recommending any paid dependency.
+    sensitivity: sensitive
+  - id: constraints-04
+    category: constraints
+    question: Which recurring work, care, health, or family commitments should scheduling protect?
+    answer_type: optional_schedule
+    decision_impact: Changes workload, recovery buffers, and session placement.
+    required_when: optional; ask only with consent when capacity variability cannot otherwise be planned safely.
+    sensitivity: sensitive
+  - id: constraints-05
+    category: constraints
+    question: What restrictions apply to data, software installation, accounts, or public sharing?
+    answer_type: checklist_with_notes
+    decision_impact: Changes project data, tools, deployment, and portfolio evidence design.
+    required_when: Ask before selecting projects or tools that may violate access or confidentiality rules.
+    sensitivity: personal
+  - id: constraints-06
+    category: constraints
+    question: What is the minimum weekly delivery you can sustain during a difficult week?
+    answer_type: short_text
+    decision_impact: Defines the fallback plan and protects continuity under disruption.
+    required_when: Ask before finalizing a recurring weekly plan.
+    sensitivity: personal

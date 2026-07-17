@@ -1,0 +1,39 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Learning Roadmap
+type: object
+additionalProperties: false
+required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, budget, currency, total_estimated_cost, phases]
+properties:
+  id: {$ref: common.schema.yaml#/$defs/id}
+  schema_version: {$ref: common.schema.yaml#/$defs/schema_version}
+  content_version: {$ref: common.schema.yaml#/$defs/content_version}
+  status: {$ref: common.schema.yaml#/$defs/status}
+  source: {$ref: common.schema.yaml#/$defs/source}
+  confidence: {$ref: common.schema.yaml#/$defs/confidence}
+  created_at: {$ref: common.schema.yaml#/$defs/timestamp}
+  updated_at: {$ref: common.schema.yaml#/$defs/timestamp}
+  budget:
+    type: object
+    additionalProperties: false
+    required: [amount, source]
+    properties:
+      amount: {type: number, minimum: 0}
+      source: {type: string, minLength: 1}
+  currency: {type: string, minLength: 3, maxLength: 3}
+  total_estimated_cost: {type: number, minimum: 0}
+  phases:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, outcome, milestones, project_ids, weekly_capacity_hours, buffer_ratio, estimated_cost, currency]
+      properties:
+        id: {$ref: common.schema.yaml#/$defs/id}
+        outcome: {type: string}
+        milestones: {type: array}
+        project_ids: {type: array, items: {type: string}}
+        weekly_capacity_hours: {type: number, minimum: 0}
+        buffer_ratio: {type: number, minimum: 0, maximum: 1}
+        estimated_cost: {type: number, minimum: 0}
+        currency: {type: string, minLength: 3, maxLength: 3}
+  extensions: {$ref: common.schema.yaml#/$defs/extensions}

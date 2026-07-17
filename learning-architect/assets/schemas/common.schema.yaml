@@ -1,0 +1,33 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Learning Architect Common Contracts
+type: object
+$defs:
+  id:
+    type: string
+    minLength: 1
+  semantic_version:
+    type: string
+    pattern: '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$'
+  schema_version:
+    const: 1.0.0
+  content_version:
+    type: integer
+    minimum: 1
+  status:
+    type: string
+    enum: [draft, validated, active, superseded, archived]
+  source:
+    type: string
+    minLength: 1
+  operational_source:
+    type: string
+    enum: [user, assessment, project, mentor, employer, market-research, inference]
+  confidence:
+    type: string
+    enum: [low, medium, high]
+  timestamp:
+    type: string
+    format: date-time
+  extensions:
+    type: object
+    additionalProperties: true

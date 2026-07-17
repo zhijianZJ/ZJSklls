@@ -1,0 +1,179 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Domain Pack
+type: object
+additionalProperties: false
+$defs:
+  rubric_dimension:
+    type: object
+    additionalProperties: false
+    required: [weight, critical, passing_threshold, performance_bands]
+    properties:
+      weight: {type: number, exclusiveMinimum: 0, maximum: 100}
+      critical: {type: boolean}
+      passing_threshold:
+        type: string
+        enum: [developing, proficient, strong]
+      performance_bands:
+        type: object
+        additionalProperties: false
+        required: [insufficient, developing, proficient, strong]
+        properties:
+          insufficient: {type: string, minLength: 1}
+          developing: {type: string, minLength: 1}
+          proficient: {type: string, minLength: 1}
+          strong: {type: string, minLength: 1}
+  analytic_rubric:
+    type: object
+    additionalProperties: false
+    required: [correctness, capability_behavior, reliability, responsible_practice, business_value, technical_communication]
+    properties:
+      correctness: {$ref: "#/$defs/rubric_dimension"}
+      capability_behavior: {$ref: "#/$defs/rubric_dimension"}
+      reliability: {$ref: "#/$defs/rubric_dimension"}
+      responsible_practice: {$ref: "#/$defs/rubric_dimension"}
+      business_value: {$ref: "#/$defs/rubric_dimension"}
+      technical_communication: {$ref: "#/$defs/rubric_dimension"}
+required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, version, last_reviewed_at, review_interval_days, target_outcomes, competencies, dependencies, project_archetypes, assessment_patterns, outcome_preparation, market_assumptions]
+properties:
+  id: {$ref: common.schema.yaml#/$defs/id}
+  schema_version: {$ref: common.schema.yaml#/$defs/schema_version}
+  content_version: {$ref: common.schema.yaml#/$defs/content_version}
+  status: {$ref: common.schema.yaml#/$defs/status}
+  source: {$ref: common.schema.yaml#/$defs/source}
+  confidence: {$ref: common.schema.yaml#/$defs/confidence}
+  created_at: {$ref: common.schema.yaml#/$defs/timestamp}
+  updated_at: {$ref: common.schema.yaml#/$defs/timestamp}
+  version: {$ref: common.schema.yaml#/$defs/semantic_version}
+  last_reviewed_at: {type: string, format: date}
+  review_interval_days: {type: integer, minimum: 1}
+  target_outcomes:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, name, description, success_evidence, source, as_of]
+      properties:
+        id: {$ref: common.schema.yaml#/$defs/id}
+        name: {type: string, minLength: 1}
+        description: {type: string, minLength: 1}
+        success_evidence: {type: array, minItems: 1, items: {type: string, minLength: 1}}
+        source: {type: string, minLength: 1}
+        as_of: {type: string, format: date}
+        source_url: {type: string, format: uri, pattern: '^https?://'}
+  competencies:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, name, category, levels, evidence_requirements]
+      properties:
+        id: {$ref: common.schema.yaml#/$defs/id}
+        name: {type: string, minLength: 1}
+        category: {type: string, minLength: 1}
+        levels:
+          type: object
+          additionalProperties: false
+          required: [L0, L1, L2, L3, L4, L5]
+          properties:
+            L0: {type: string, minLength: 1}
+            L1: {type: string, minLength: 1}
+            L2: {type: string, minLength: 1}
+            L3: {type: string, minLength: 1}
+            L4: {type: string, minLength: 1}
+            L5: {type: string, minLength: 1}
+        evidence_requirements: {type: array, minItems: 1, items: {type: string}}
+  dependencies:
+    type: array
+    items:
+      type: object
+      additionalProperties: false
+      required: [from, to]
+      properties:
+        from: {$ref: common.schema.yaml#/$defs/id}
+        to: {$ref: common.schema.yaml#/$defs/id}
+  project_archetypes:
+    type: array
+    minItems: 6
+    maxItems: 6
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, level, name, example, inputs, constraints, deliverables, competency_ids, business_value, evidence, common_failure_modes, demonstration_requirements, documentation_requirements, retrospective_requirements, rubric]
+      properties:
+        id: {$ref: common.schema.yaml#/$defs/id}
+        level: {type: integer, minimum: 1, maximum: 6}
+        name: {type: string, minLength: 1}
+        example: {type: string, minLength: 1}
+        inputs: {type: array, minItems: 1, items: {type: string}}
+        constraints: {type: array, minItems: 1, items: {type: string}}
+        deliverables: {type: array, minItems: 1, items: {type: string}}
+        competency_ids: {type: array, minItems: 1, items: {type: string}}
+        business_value: {type: string, minLength: 1}
+        evidence: {type: array, minItems: 1, items: {type: string}}
+        common_failure_modes: {type: array, minItems: 1, items: {type: string}}
+        demonstration_requirements: {type: array, minItems: 1, items: {type: string}}
+        documentation_requirements: {type: array, minItems: 1, items: {type: string}}
+        retrospective_requirements: {type: array, minItems: 1, items: {type: string}}
+        rubric: {$ref: "#/$defs/analytic_rubric"}
+  assessment_patterns:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, evaluator, artifact, observed_behavior, threshold, feedback_loop, capability_checks, result_levels]
+      properties:
+        id: {$ref: common.schema.yaml#/$defs/id}
+        evaluator: {type: string, minLength: 1}
+        artifact: {type: string, minLength: 1}
+        observed_behavior: {type: string, minLength: 1}
+        threshold: {type: string, minLength: 1}
+        feedback_loop: {type: string, minLength: 1}
+        capability_checks:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            enum: [independent-completion, explain-trade-offs, modify-requirements, debug, deploy-deliver, teach-review]
+        result_levels:
+          type: object
+          additionalProperties: false
+          required: [understanding, guided, independent, transfer]
+          properties:
+            understanding: {type: string, minLength: 1}
+            guided: {type: string, minLength: 1}
+            independent: {type: string, minLength: 1}
+            transfer: {type: string, minLength: 1}
+  outcome_preparation:
+    type: object
+    minProperties: 1
+    additionalProperties:
+      type: object
+      additionalProperties: false
+      required: [minimum_evidence, artifacts, readiness_gate, source, as_of]
+      properties:
+        minimum_evidence: {type: array, minItems: 1, items: {type: string, minLength: 1}}
+        artifacts: {type: array, minItems: 1, items: {type: string, minLength: 1}}
+        readiness_gate: {type: string, minLength: 1}
+        source: {type: string, minLength: 1}
+        as_of: {type: string, format: date}
+        source_url: {type: string, format: uri, pattern: '^https?://'}
+  market_assumptions:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      additionalProperties: false
+      required: [id, as_of, source_name, assumption, confidence, implication, next_review_at]
+      properties:
+        id: {$ref: common.schema.yaml#/$defs/id}
+        as_of: {type: string, format: date}
+        source_name: {type: string, minLength: 1}
+        source_url: {type: string, format: uri, pattern: '^https?://'}
+        assumption: {type: string, minLength: 1}
+        confidence: {$ref: common.schema.yaml#/$defs/confidence}
+        implication: {type: string, minLength: 1}
+        next_review_at: {type: string, format: date}
+  extensions: {$ref: common.schema.yaml#/$defs/extensions}

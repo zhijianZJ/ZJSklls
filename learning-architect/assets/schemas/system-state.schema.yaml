@@ -1,0 +1,62 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: Learning System State
+type: object
+additionalProperties: false
+required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, learner_id, current_stage, stage_states, active_versions, next_action]
+properties:
+  id: {$ref: common.schema.yaml#/$defs/id}
+  schema_version: {$ref: common.schema.yaml#/$defs/schema_version}
+  content_version: {$ref: common.schema.yaml#/$defs/content_version}
+  status: {$ref: common.schema.yaml#/$defs/status}
+  source: {$ref: common.schema.yaml#/$defs/source}
+  confidence: {$ref: common.schema.yaml#/$defs/confidence}
+  created_at: {$ref: common.schema.yaml#/$defs/timestamp}
+  updated_at: {$ref: common.schema.yaml#/$defs/timestamp}
+  learner_id: {type: string, minLength: 1}
+  current_stage:
+    type: string
+    enum: [discovery, goal-analysis, gap-analysis, competency-design, curriculum-design, project-design, roadmap, weekly-planner, assessment, outcome-preparation, continuous-optimization]
+  stage_states:
+    type: object
+    additionalProperties: false
+    minProperties: 11
+    required: [discovery, goal-analysis, gap-analysis, competency-design, curriculum-design, project-design, roadmap, weekly-planner, assessment, outcome-preparation, continuous-optimization]
+    properties:
+      discovery: {$ref: '#/$defs/stage_state'}
+      goal-analysis: {$ref: '#/$defs/stage_state'}
+      gap-analysis: {$ref: '#/$defs/stage_state'}
+      competency-design: {$ref: '#/$defs/stage_state'}
+      curriculum-design: {$ref: '#/$defs/stage_state'}
+      project-design: {$ref: '#/$defs/stage_state'}
+      roadmap: {$ref: '#/$defs/stage_state'}
+      weekly-planner: {$ref: '#/$defs/stage_state'}
+      assessment: {$ref: '#/$defs/stage_state'}
+      outcome-preparation: {$ref: '#/$defs/stage_state'}
+      continuous-optimization: {$ref: '#/$defs/stage_state'}
+  active_versions:
+    type: object
+    minProperties: 1
+    additionalProperties: {$ref: common.schema.yaml#/$defs/content_version}
+  next_action: {type: string, minLength: 1}
+  extensions: {$ref: common.schema.yaml#/$defs/extensions}
+$defs:
+  stage_state:
+    type: object
+    additionalProperties: false
+    required: [state]
+    properties:
+      state:
+        type: string
+        enum: [not_started, collecting, draft, validated, active, needs_input, blocked, not_applicable, superseded, archived]
+      reason: {type: string, minLength: 1}
+      source: {$ref: common.schema.yaml#/$defs/operational_source}
+      confidence: {$ref: common.schema.yaml#/$defs/confidence}
+      affected_downstream:
+        type: array
+        uniqueItems: true
+        items: {type: string, minLength: 1}
+    if:
+      properties: {state: {const: not_applicable}}
+      required: [state]
+    then:
+      required: [reason, source, confidence, affected_downstream]
