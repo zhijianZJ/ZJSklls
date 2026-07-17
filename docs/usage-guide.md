@@ -59,7 +59,7 @@ engine_result:
 每条重要信息应同时记录认识论类别和操作来源：
 
 - `fact`：可由稳定外部资料核验的事实；
-- `self_report`：学习者自述，例如“会 Python”；
+- `self-report`：学习者自述，例如“会 Python”；
 - `evidence`：代码、交付物、测试、评审或观察记录；
 - `inference`：由多条信息推导的判断；
 - `assumption`：为继续草拟而暂时采用、尚待验证的前提。

@@ -33,7 +33,7 @@ Each competency has a stable ID, name, category, L0–L5 observable behavior, an
 
 Write domain-specific observable behavior, not “beginner/intermediate/advanced” labels or topic lists. Evidence requirements should name runtime results, artifacts, tests, reviews, or observed performance—not watching, reading, attendance, or certificates.
 
-Dependency edges point `from` a prerequisite `to` a downstream capability. All endpoints must exist, IDs must be unique, and the graph must be acyclic. Add only dependencies that materially affect safety or understanding. Do not force every competency into one linear chain.
+Dependency edges point `from` a prerequisite `to` a downstream capability. All endpoints must exist, IDs must be unique, and the graph must be acyclic. Add only dependencies that materially affect safety or understanding. Do not force every competency into one linear chain. When reusing a competency across domains, preserve its semantic meaning; if the meaning must evolve, use explicit versioning and migration mappings rather than silently repurposing the ID.
 
 ## Project archetypes and rubric gates
 

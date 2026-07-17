@@ -91,7 +91,7 @@ Interviews confirmed the problem, but the prototype did not improve the key meas
 ### First prompt
 
 ```text
-Use Learning Architect to help me deliver an AI application in my current procurement role. I have four hours per week and want to reduce repetitive supplier-document work within ten weeks while meeting company data and approval rules. Clarify business value, risk, permissions, and verifiable measures first.
+Use Learning Architect to help me deliver an AI application in my current manufacturing-procurement role. I have four hours per week and want to reduce repetitive supplier-document work within ten weeks while meeting company data and approval rules. Clarify business value, risk, permissions, and verifiable measures first.
 ```
 
 ### What the Skill may ask

@@ -13,7 +13,7 @@ You do not need a complete personal dossier. Bring as much of this as you can:
 - hard constraints involving work, family, health, privacy, or access;
 - the authentic outcome you want to produce, such as a portfolio case, deployed project, work sample, or real delivery.
 
-Use “unknown” or a range when necessary. Self-assessment is treated as `self_report`, not automatically as verified capability.
+Use “unknown” or a range when necessary. Self-assessment is treated as `self-report`, not automatically as verified capability.
 
 ## First use
 

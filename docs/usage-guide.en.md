@@ -14,8 +14,8 @@ Stages run in order. Prose output alone never passes a gate. A genuinely irrelev
 | 4. Competency Design | Define what the learner must be able to do | prioritized gaps, target context | nodes, L0–L5 behaviors, weights, evidence needs | every core node has a target level | “Build an observable competency tree, not a topic list.” |
 | 5. Curriculum Design | Build the smallest dependency-safe learning graph | gaps and prerequisites | learning units, acyclic graph, practice | every unit serves a gap and prerequisites are complete | “Design the minimum dependency graph.” |
 | 6. Project Design | Produce authentic capability evidence | competency model, context, constraints | project briefs, deliverables, coverage, rubrics | every core competency has authentic coverage | “Design a progressive project ladder with gates.” |
-| 7. Roadmap | Sequence feasible phases with buffers | project dependencies, capacity, budget, deadline | phases, milestones, checkpoints | time, cost, and dependencies are feasible | “Show baseline and minimum-viable routes.” |
-| 8. Weekly Planner | Convert the roadmap into a bounded commitment | current phase and real available hours | weekly outcome, tasks, retrieval, minimum delivery | load fits capacity and produces evidence | “Build this week around the minimum delivery.” |
+| 7. Roadmap | Sequence feasible phases with buffers | project dependencies, capacity, budget, deadline | phases, milestones, checkpoints | time, cost, and dependencies are feasible | “Show conservative, baseline, and minimum-viable routes.” |
+| 8. Weekly Planner | Convert the roadmap into a bounded commitment | current phase, real available hours, and risks | weekly outcome, tasks, retrieval, minimum delivery | load fits capacity and produces evidence | “Build this week around the minimum delivery.” |
 | 9. Assessment | Judge independent performance | artifacts, runtime results, rubric | scores, observed behavior, evidence, next action | critical evidence reaches threshold | “Score the evidence and name the earliest causal gap.” |
 | 10. Outcome Preparation | Make verified capability evaluable in context | verified evidence and target route | portfolio, work sample, demo, or handoff | target evaluators can verify relevant evidence | “Prepare the target materials using verified evidence only.” |
 | 11. Continuous Optimization | Adapt through explainable version changes | progress, quality, feedback, triggers | diagnosis, version change, expected effect, review date | cause is explained and affected artifacts rechecked | “Update the system from this week’s evidence and keep history.” |
@@ -59,7 +59,7 @@ Before writing, compare the loaded active version and timestamp or content hash 
 Important claims use `epistemic_class` independently from operational source and confidence:
 
 - `fact`: verifiable through a stable external source;
-- `self_report`: what the learner says about themselves;
+- `self-report`: what the learner says about themselves;
 - `evidence`: artifact, code, test, review, or observed performance;
 - `inference`: a conclusion derived from inputs;
 - `assumption`: a temporary premise that enables a draft and still needs validation.
