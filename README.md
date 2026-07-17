@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-**版本 [1.0.0](VERSION) · 84 tests 核心回归 / 92 tests 总计 · MIT**
+**版本 [1.0.0](VERSION) · 84 tests 核心回归 / 94 tests 总计 · MIT**
 
 把模糊的学习目标转化为可验证、可调整的个性化学习系统。
 
@@ -29,14 +29,16 @@
 
 ## 安装
 
-先获取仓库，并在仓库根目录执行安装命令：
+Learning Architect 支持 Codex、Claude Code 和 Tencent WorkBuddy 的原生或兼容 Skill 接入；豆包使用明确标注的对话接入模式。各平台能力、macOS/Linux 与 Windows 安装命令、升级、卸载和验收步骤见[多平台安装与使用指南](docs/platform-installation.md)。
+
+Codex 用户可先获取仓库，并在仓库根目录执行用户级安装：
 
 ```bash
 git clone https://github.com/king-wsc/LearningArchitectSklls.git
 cd LearningArchitectSklls
 (
   set -e
-  skills_dir="${CODEX_HOME:-$HOME/.codex}/skills"
+  skills_dir="$HOME/.agents/skills"
   destination="$skills_dir/learning-architect"
   if [ -e "$destination" ]; then
     echo "安装已停止：$destination 已存在，请先备份或选择升级流程。" >&2
@@ -48,11 +50,9 @@ cd LearningArchitectSklls
 )
 ```
 
-整个括号命令没有报错且退出状态为 0，表示目标原本不存在且 `SKILL.md` 已复制成功；如果目标已存在，它会停止而不会复制。安装后请新建任务，并明确要求使用 `Learning Architect`；如果客户端缓存 Skills，请按该客户端说明重新加载或重启。
+整个括号命令没有报错且退出状态为 0，表示目标原本不存在且 `SKILL.md` 已复制成功；如果目标已存在，它会停止而不会复制。安装后请新建任务，并明确要求使用 `Learning Architect`。Claude Code 请安装到 `~/.claude/skills/learning-architect`；Tencent WorkBuddy 请优先从技能界面导入本地目录；豆包不应按本地原生 Skill 描述，具体操作见多平台指南。
 
 升级时不要把新目录直接合并进旧目录。先把已安装目录移到你指定的备份位置，再复制新版本；验证无误前保留备份，避免覆盖本地修改。卸载只需在确认不再需要本地修改后移走已安装目录。
-
-其他工具只有在兼容同类 `SKILL.md` 目录约定时才可能复用该目录；请以对应工具的官方安装说明为准，本项目不声明未经测试的客户端兼容性。
 
 维护者与贡献者可在仓库根目录验证完整项目：
 
@@ -87,6 +87,7 @@ python3 learning-architect/scripts/validate_learning_system.py --skill-root lear
 - [新手入门](docs/getting-started.md)：第一次使用、继续与重新规划；
 - [完整使用手册](docs/usage-guide.md)：工作流、结构化状态、证据判断与安全边界；
 - [使用场景与提示词](docs/examples.md)：四类典型目标的完整示例；
+- [多平台安装与使用](docs/platform-installation.md)：Codex、Claude Code、Tencent WorkBuddy 与豆包；
 - [Domain Pack 扩展指南](docs/domain-pack-guide.md)：数据契约、能力依赖、项目原型与验证要求；
 - [English documentation](README.en.md)：英文项目入口。
 
@@ -98,7 +99,7 @@ python3 learning-architect/scripts/validate_learning_system.py --skill-root lear
 | [`learning-architect/references/`](learning-architect/references/) | 发现、能力、课程、项目、测评与优化引擎 |
 | [`learning-architect/assets/`](learning-architect/assets/) | Schema、模板与 Domain Pack |
 | [`learning-architect/scripts/`](learning-architect/scripts/) | 离线学习系统验证器 |
-| [`tests/learning-architect/`](tests/learning-architect/) | 84 项核心回归测试、8 项开源封装测试及有效、无效样例 |
+| [`tests/learning-architect/`](tests/learning-architect/) | 84 项核心回归测试、10 项开源封装测试及有效、无效样例 |
 | [`docs/`](docs/) | 中英文使用与扩展文档 |
 
 ## 贡献

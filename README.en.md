@@ -2,7 +2,7 @@
 
 [简体中文](README.md)
 
-**Version [1.0.0](VERSION) · 84 core regression tests / 92 total tests · MIT**
+**Version [1.0.0](VERSION) · 84 core regression tests / 94 total tests · MIT**
 
 Turn an ambiguous learning goal into a verifiable, adaptable, personalized learning system.
 
@@ -29,14 +29,16 @@ See [Getting Started](docs/getting-started.en.md) for prompts covering first use
 
 ## Install
 
-Get the repository, then run the installation commands from the repository root:
+Learning Architect supports native or compatible Skill integration with Codex, Claude Code, and Tencent WorkBuddy. Doubao uses an explicitly labeled prompt-based conversational mode. See the [multi-platform installation and usage guide](docs/platform-installation.en.md) for platform capabilities, macOS/Linux and Windows commands, upgrades, uninstallation, and acceptance tests.
+
+Codex users can get the repository and run this user-level installation from its root:
 
 ```bash
 git clone https://github.com/king-wsc/LearningArchitectSklls.git
 cd LearningArchitectSklls
 (
   set -e
-  skills_dir="${CODEX_HOME:-$HOME/.codex}/skills"
+  skills_dir="$HOME/.agents/skills"
   destination="$skills_dir/learning-architect"
   if [ -e "$destination" ]; then
     echo "Installation stopped: $destination already exists; back it up or use the upgrade flow first." >&2
@@ -48,11 +50,9 @@ cd LearningArchitectSklls
 )
 ```
 
-The parenthesized command exits successfully only when the destination was absent and `SKILL.md` was copied; an existing destination stops the copy with an error. After installation, open a new task and explicitly ask for `Learning Architect`. If the client caches Skills, reload or restart it according to that client's documentation.
+The parenthesized command exits successfully only when the destination was absent and `SKILL.md` was copied; an existing destination stops the copy with an error. After installation, open a new task and explicitly ask for `Learning Architect`. For Claude Code, install to `~/.claude/skills/learning-architect`. For Tencent WorkBuddy, prefer importing the local directory through the Skills UI. Do not describe Doubao as a native local Skill host; follow the guide's conversational workflow.
 
 For an upgrade, do not merge the new directory into the old one. Move the installed directory to a backup location you control, copy the new version, and keep the backup until verification succeeds so local modifications are not silently overwritten. To uninstall, move the installed directory away only after preserving any changes you need.
-
-Other tools may reuse the directory only if they support a compatible `SKILL.md` directory convention. Follow that tool's official installation documentation; this project does not claim compatibility with untested clients.
 
 Maintainers and contributors can validate the complete repository from its root:
 
@@ -88,6 +88,7 @@ Each stage has entry conditions, artifacts, and a gate. When evidence is insuffi
 - [Getting Started](docs/getting-started.en.md): first use, continuation, and replanning.
 - [Full Usage Guide](docs/usage-guide.en.md): workflow, structured state, evidence judgment, and safety boundaries.
 - [Scenarios and Prompts](docs/examples.en.md): complete examples for four typical targets.
+- [Multi-platform Installation and Usage](docs/platform-installation.en.md): Codex, Claude Code, Tencent WorkBuddy, and Doubao.
 - [Domain Pack Extension Guide](docs/domain-pack-guide.en.md): data contract, competency dependencies, project archetypes, and validation requirements.
 - [中文文档](README.md): Chinese project entry.
 
@@ -99,7 +100,7 @@ Each stage has entry conditions, artifacts, and a gate. When evidence is insuffi
 | [`learning-architect/references/`](learning-architect/references/) | Discovery, competency, curriculum, project, assessment, and optimization engines |
 | [`learning-architect/assets/`](learning-architect/assets/) | Schemas, templates, and Domain Packs |
 | [`learning-architect/scripts/`](learning-architect/scripts/) | Offline learning-system validator |
-| [`tests/learning-architect/`](tests/learning-architect/) | 84 core regression tests, 8 open-source package tests, and valid/invalid fixtures |
+| [`tests/learning-architect/`](tests/learning-architect/) | 84 core regression tests, 10 open-source package tests, and valid/invalid fixtures |
 | [`docs/`](docs/) | Chinese and English usage and extension guides |
 
 ## Contributing
