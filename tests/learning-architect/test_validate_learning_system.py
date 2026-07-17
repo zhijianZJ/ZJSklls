@@ -116,6 +116,44 @@ class LearningSystemValidationTests(unittest.TestCase):
             ),
             [],
         )
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary_root = Path(temporary_directory)
+            missing = temporary_root / "missing"
+            self.assertTrue(
+                any(
+                    "does not exist" in error
+                    for error in self.validator.validate_learner_system(
+                        self.skill_root, missing
+                    )
+                )
+            )
+
+            empty = temporary_root / "empty"
+            empty.mkdir()
+            self.assertTrue(
+                any(
+                    "contains no YAML artifacts" in error
+                    for error in self.validator.validate_learner_system(
+                        self.skill_root, empty
+                    )
+                )
+            )
+
+            history_only = temporary_root / "history-only"
+            history = history_only / "history"
+            history.mkdir(parents=True)
+            shutil.copy2(
+                self.fixtures / "valid-learner" / "system-state.yaml",
+                history / "system-state.yaml",
+            )
+            self.assertTrue(
+                any(
+                    "active root system-state.yaml" in error
+                    for error in self.validator.validate_learner_system(
+                        self.skill_root, history_only
+                    )
+                )
+            )
 
     def test_skill_entrypoint_exposes_progressive_workflow_contract(self):
         skill_path = self.skill_root / "SKILL.md"
@@ -718,6 +756,17 @@ class LearningSystemValidationTests(unittest.TestCase):
         self.assertTrue(progress_review["evidence"])
         self.assertIn("evidence", schemas["optimization-state"]["required"])
         self.assertNotIn("review_date", progress_review)
+        serialized_progress = yaml.safe_dump(progress_review)
+        self.assertNotIn("1.1.0", serialized_progress)
+        self.assertIn("content version 2", serialized_progress)
+        competency_text = (
+            self.skill_root / "references" / "competency-engine.md"
+        ).read_text(encoding="utf-8")
+        domain_text = (
+            self.skill_root / "references" / "domain-pack-contract.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("positive integer `content_version`", competency_text)
+        self.assertIn("positive integer `content_version`", domain_text)
 
     def test_discovery_starts_with_eight_to_twelve_questions(self):
         text = (
@@ -1177,6 +1226,19 @@ class LearningSystemValidationTests(unittest.TestCase):
         self.assertTrue(any(list(issue.path) == ["schema_version"] for issue in issues), [issue.message for issue in issues])
         self.assertTrue(any(list(issue.path) == ["content_version"] for issue in issues), [issue.message for issue in issues])
         self.assertTrue(any(list(issue.path) == ["status"] for issue in issues), [issue.message for issue in issues])
+        for unsupported in ("0.9.0", "2.0.0", "99.0.0"):
+            with self.subTest(unsupported_schema_version=unsupported):
+                candidate = yaml.safe_load(
+                    (self.fixtures / "valid-learner" / "learner-profile.yaml").read_text(
+                        encoding="utf-8"
+                    )
+                )
+                candidate["schema_version"] = unsupported
+                version_issues = self.schema_issues("learner-profile", candidate)
+                self.assertTrue(
+                    any(list(issue.path) == ["schema_version"] for issue in version_issues),
+                    [issue.message for issue in version_issues],
+                )
 
     def test_competency_contract_rejects_invalid_levels_weights_and_empty_evidence(self):
         model = yaml.safe_load((self.fixtures / "valid-learner" / "competency-model.yaml").read_text(encoding="utf-8"))

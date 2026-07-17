@@ -64,7 +64,9 @@ Domain Pack 是可替换、可版本化的职业或领域参考包。它为 Lear
 验证命令需要 Python 3.9+，以及 `PyYAML`、`jsonschema` 和 `referencing`。在仓库根目录运行：
 
 ```bash
-python3 learning-architect/scripts/validate_learning_system.py --skill-root learning-architect
+python3 learning-architect/scripts/validate_learning_system.py \
+  --skill-root learning-architect \
+  --learner-dir tests/learning-architect/fixtures/valid-learner
 python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
 python3 -m unittest tests/learning-architect/test_open_source_package.py -q
 ```

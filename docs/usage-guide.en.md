@@ -100,6 +100,8 @@ Useful review inputs include planned versus actual hours, minimum delivery statu
 Maintainers can run:
 
 ```bash
-python3 learning-architect/scripts/validate_learning_system.py --skill-root learning-architect
+python3 learning-architect/scripts/validate_learning_system.py \
+  --skill-root learning-architect \
+  --learner-dir tests/learning-architect/fixtures/valid-learner
 python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
 ```

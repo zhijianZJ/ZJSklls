@@ -64,7 +64,9 @@ Resource catalogs are optional and replaceable. If included, record coverage, li
 Validation requires Python 3.9+ with `PyYAML`, `jsonschema`, and `referencing`. Run from the repository root:
 
 ```bash
-python3 learning-architect/scripts/validate_learning_system.py --skill-root learning-architect
+python3 learning-architect/scripts/validate_learning_system.py \
+  --skill-root learning-architect \
+  --learner-dir tests/learning-architect/fixtures/valid-learner
 python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
 python3 -m unittest tests/learning-architect/test_open_source_package.py -q
 ```

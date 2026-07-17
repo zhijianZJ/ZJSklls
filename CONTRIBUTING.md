@@ -10,7 +10,7 @@
 
 ### Domain Pack 贡献要求
 
-Domain Pack 必须符合 `learning-architect/assets/schemas/domain-pack.schema.json`，使用稳定 ID，并提供有效的 `schema_version`、`content_version` 和 `status`。目标成果、能力层级、依赖关系、项目、评分量规与通过阈值必须保持可验证且相互一致。
+Domain Pack 必须符合 `learning-architect/assets/schemas/domain-pack.schema.yaml`，使用稳定 ID，并提供有效的 `schema_version`、`content_version` 和 `status`。目标成果、能力层级、依赖关系、项目、评分量规与通过阈值必须保持可验证且相互一致。
 
 所有主张、能力要求和评分标准都应附带来源元数据，包括可追溯的来源标识、标题或说明、访问地址（如适用）、访问或审查日期。证据必须经过隐私处理：不得提交真实学习者姓名、联系方式、账户凭据、私密对话、客户机密或未经许可的受版权保护材料。
 
@@ -46,7 +46,7 @@ python3 learning-architect/scripts/validate_learning_system.py \
 
 ### Domain Pack requirements
 
-A Domain Pack must validate against `learning-architect/assets/schemas/domain-pack.schema.json`, use stable IDs, and provide valid `schema_version`, `content_version`, and `status` values. Target outcomes, competency levels, dependencies, projects, rubrics, and passing thresholds must remain verifiable and internally consistent.
+A Domain Pack must validate against `learning-architect/assets/schemas/domain-pack.schema.yaml`, use stable IDs, and provide valid `schema_version`, `content_version`, and `status` values. Target outcomes, competency levels, dependencies, projects, rubrics, and passing thresholds must remain verifiable and internally consistent.
 
 Claims, competency requirements, and scoring criteria must include source metadata: a traceable source identifier, title or description, location when applicable, and access or review date. Evidence must be privacy-safe. Do not submit real learner names, contact details, account credentials, private conversations, client-confidential information, or copyrighted material without permission.
 

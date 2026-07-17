@@ -36,7 +36,7 @@ $defs:
 required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, version, last_reviewed_at, review_interval_days, target_outcomes, competencies, dependencies, project_archetypes, assessment_patterns, outcome_preparation, market_assumptions]
 properties:
   id: {$ref: common.schema.yaml#/$defs/id}
-  schema_version: {$ref: common.schema.yaml#/$defs/semantic_version}
+  schema_version: {$ref: common.schema.yaml#/$defs/schema_version}
   content_version: {$ref: common.schema.yaml#/$defs/content_version}
   status: {$ref: common.schema.yaml#/$defs/status}
   source: {$ref: common.schema.yaml#/$defs/source}

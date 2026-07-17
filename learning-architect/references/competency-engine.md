@@ -24,11 +24,11 @@ Every level statement must begin with an observable action. Level evidence is cu
 3. Separate core, supporting, and differentiating capabilities. Normalize core weights so prioritization is explicit.
 4. Set current levels only from dated evidence; otherwise record `needs_input` or a low-confidence hypothesis and request the smallest discriminating assessment.
 5. Attach evidence requirements that name an artifact, an observable behavior, an evaluator, and a threshold.
-6. Persist `schema_version`, semantic `content_version`, `source`, `confidence`, timestamps, and `affected_downstream`.
+6. Persist the supported `schema_version`, positive integer `content_version`, `source`, `confidence`, timestamps, and `affected_downstream`. Increment `content_version` for each artifact revision; do not encode SemVer in it.
 
 ## Change control
 
-Use semantic versioning: patch for clarification without changed meaning, minor for backward-compatible additions, and major for removed or redefined IDs. Each release records `last_reviewed_at`, review interval, source-dated market assumptions, and a migration map such as `old-id -> new-id | retired | split:[...]`. A Domain Pack review invalidates stale capability decisions and triggers Gap, Curriculum, and Project revalidation.
+Use semantic versioning only for the Domain Pack `version`: patch for clarification without changed meaning, minor for backward-compatible additions, and major for removed or redefined IDs. Learner artifacts use a positive integer `content_version` that increments on every material revision. Each Domain Pack release records `last_reviewed_at`, review interval, source-dated market assumptions, and a migration map such as `old-id -> new-id | retired | split:[...]`. A Domain Pack review invalidates stale capability decisions and triggers Gap, Curriculum, and Project revalidation.
 
 ## Gate and return
 

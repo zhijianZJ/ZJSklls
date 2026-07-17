@@ -6,7 +6,7 @@ A Domain Pack is a reusable, versioned occupational reference. It supplies targe
 
 ## Required governance
 
-- Use a stable occupational `id`, `schema_version`, semantic `content_version` and `version`, lifecycle status, `source`, enum `confidence`, creation/update timestamps, `last_reviewed_at`, and `review_interval_days`.
+- Use a stable occupational `id`, the supported `schema_version`, positive integer `content_version`, semantic `version`, lifecycle status, `source`, enum `confidence`, creation/update timestamps, `last_reviewed_at`, and `review_interval_days`. Increment `content_version` for each pack artifact revision; reserve SemVer for `version`.
 - Keep competency, dependency, project, assessment, and outcome-preparation IDs stable. Validate unique IDs, dependency endpoints, and acyclicity.
 - Store a migration map for every renamed, split, merged, or retired stable ID. A target must resolve to a current competency ID; a retired node uses the documented `{to: retired, reason: ...}` sentinel. A major semantic break increments the major version; additions use minor; non-semantic corrections use patch.
 - Record each market assumption with a unique stable ID, `as_of` date, named source and URL or durable reference, claim, confidence, implication, and valid `next_review_at`. Reject an assumption when its review date is expired under the validator's current-date policy. Assumptions are evidence, not timeless requirements.

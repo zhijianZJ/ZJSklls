@@ -59,6 +59,8 @@ class OpenSourcePackageTests(unittest.TestCase):
             "No hidden promotion",
         ):
             self.assertIn(phrase, text)
+        self.assertIn("domain-pack.schema.yaml", text)
+        self.assertNotIn("domain-pack.schema.json", text)
 
     def test_chinese_document_set_is_complete(self):
         required = {
@@ -95,6 +97,8 @@ class OpenSourcePackageTests(unittest.TestCase):
             text = read_text(path)
             for phrase in phrases:
                 self.assertIn(phrase, text, f"{path}: {phrase}")
+        for path in ("docs/usage-guide.md", "docs/domain-pack-guide.md"):
+            self.assertIn("--learner-dir", read_text(path), path)
 
     def test_english_document_set_is_complete(self):
         required = {
@@ -131,6 +135,8 @@ class OpenSourcePackageTests(unittest.TestCase):
             text = read_text(path)
             for phrase in phrases:
                 self.assertIn(phrase, text, f"{path}: {phrase}")
+        for path in ("docs/usage-guide.en.md", "docs/domain-pack-guide.en.md"):
+            self.assertIn("--learner-dir", read_text(path), path)
 
     def test_skill_metadata_covers_ai_exploration_and_transition(self):
         skill = read_text("learning-architect/SKILL.md")

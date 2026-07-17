@@ -425,6 +425,14 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
     if errors:
         return errors
 
+    if not learner_dir.exists():
+        return [f"Learner directory does not exist: {learner_dir}"]
+    if not learner_dir.is_dir():
+        return [f"Learner path is not a directory: {learner_dir}"]
+    learner_yaml_paths = sorted(learner_dir.rglob("*.yaml"))
+    if not learner_yaml_paths:
+        return [f"Learner directory contains no YAML artifacts: {learner_dir}"]
+
     try:
         schemas, registry = _load_schemas(skill_root)
     except (OSError, yaml.YAMLError) as exc:
@@ -436,7 +444,7 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
     artifact_identity_groups: dict[
         tuple[str, str], list[tuple[Path, dict[str, Any]]]
     ] = {}
-    for path in sorted(learner_dir.rglob("*.yaml")):
+    for path in learner_yaml_paths:
         name = _artifact_schema_name(learner_dir, path)
         if name is None or name == "common":
             errors.append(f"Unknown learner artifact path: {path.relative_to(learner_dir)}")
@@ -533,6 +541,16 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
                     for path, document in active_records
                 )
             )
+
+    active_system_states = current_artifacts.get("system-state", [])
+    root_system_state = learner_dir / "system-state.yaml"
+    if (
+        len(active_system_states) != 1
+        or active_system_states[0][0] != root_system_state
+    ):
+        errors.append(
+            "Learner system requires exactly one active root system-state.yaml"
+        )
 
     def first(name: str) -> dict[str, Any] | None:
         records = current_artifacts.get(name, [])

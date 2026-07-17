@@ -5,7 +5,7 @@ additionalProperties: false
 required: [id, schema_version, content_version, status, source, confidence, created_at, updated_at, personal, experience, learning_preferences, motivation, constraints, swot, unknowns]
 properties:
   id: {$ref: common.schema.yaml#/$defs/id}
-  schema_version: {$ref: common.schema.yaml#/$defs/semantic_version}
+  schema_version: {$ref: common.schema.yaml#/$defs/schema_version}
   content_version: {$ref: common.schema.yaml#/$defs/content_version}
   status: {$ref: common.schema.yaml#/$defs/status}
   source: {$ref: common.schema.yaml#/$defs/source}
