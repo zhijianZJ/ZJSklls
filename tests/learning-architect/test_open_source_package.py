@@ -138,6 +138,49 @@ class OpenSourcePackageTests(unittest.TestCase):
         for path in ("docs/usage-guide.en.md", "docs/domain-pack-guide.en.md"):
             self.assertIn("--learner-dir", read_text(path), path)
 
+    def test_platform_installation_guides_cover_supported_hosts_and_boundaries(self):
+        required = {
+            "docs/platform-installation.md": (
+                "# Learning Architect 多平台安装与使用",
+                "## 兼容性矩阵",
+                "## Codex",
+                "## Claude Code",
+                "## Tencent WorkBuddy",
+                "## 豆包",
+                "$HOME/.agents/skills/learning-architect",
+                "$HOME/.claude/skills/learning-architect",
+                "原生 Skill",
+                "对话接入",
+            ),
+            "docs/platform-installation.en.md": (
+                "# Learning Architect Multi-platform Installation and Usage",
+                "## Compatibility matrix",
+                "## Codex",
+                "## Claude Code",
+                "## Tencent WorkBuddy",
+                "## Doubao",
+                "$HOME/.agents/skills/learning-architect",
+                "$HOME/.claude/skills/learning-architect",
+                "Native Skill",
+                "prompt-based",
+            ),
+        }
+        for path, phrases in required.items():
+            text = read_text(path)
+            for phrase in phrases:
+                self.assertIn(phrase, text, f"{path}: {phrase}")
+
+    def test_readmes_link_to_platform_guides_and_name_all_hosts(self):
+        chinese = read_text("README.md")
+        english = read_text("README.en.md")
+        self.assertIn("docs/platform-installation.md", chinese)
+        self.assertIn("docs/platform-installation.en.md", english)
+        for text in (chinese, english):
+            for host in ("Codex", "Claude Code", "Tencent WorkBuddy"):
+                self.assertIn(host, text)
+        self.assertIn("豆包", chinese)
+        self.assertIn("Doubao", english)
+
     def test_skill_metadata_covers_ai_exploration_and_transition(self):
         skill = read_text("learning-architect/SKILL.md")
         for phrase in (
