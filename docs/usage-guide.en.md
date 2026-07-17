@@ -16,7 +16,7 @@ Stages run in order. Prose output alone never passes a gate. A genuinely irrelev
 | 6. Project Design | Produce authentic capability evidence | competency model, context, constraints | project briefs, deliverables, coverage, rubrics | every core competency has authentic coverage | “Design a progressive project ladder with gates.” |
 | 7. Roadmap | Sequence feasible phases with buffers | project dependencies, capacity, budget, deadline | phases, milestones, checkpoints | time, cost, and dependencies are feasible | “Show conservative, baseline, and minimum-viable routes.” |
 | 8. Weekly Planner | Convert the roadmap into a bounded commitment | current phase, real available hours, and risks | weekly outcome, tasks, retrieval, minimum delivery | load fits capacity and produces evidence | “Build this week around the minimum delivery.” |
-| 9. Assessment | Judge independent performance | artifacts, runtime results, rubric | scores, observed behavior, evidence, next action | critical evidence reaches threshold | “Score the evidence and name the earliest causal gap.” |
+| 9. Assessment | Judge independent performance | artifacts, runtime results, rubric | scores, observed behavior, evidence, next action | every critical dimension meets its evidence threshold | “Score the evidence and name the earliest causal gap.” |
 | 10. Outcome Preparation | Make verified capability evaluable in context | verified evidence and target route | portfolio, work sample, demo, or handoff | target evaluators can verify relevant evidence | “Prepare the target materials using verified evidence only.” |
 | 11. Continuous Optimization | Adapt through explainable version changes | progress, quality, feedback, triggers | diagnosis, version change, expected effect, review date | cause is explained and affected artifacts rechecked | “Update the system from this week’s evidence and keep history.” |
 
@@ -89,7 +89,7 @@ Useful review inputs include planned versus actual hours, minimum delivery statu
 
 - Feasibility: expose conflicts among target, deadline, capacity, budget, and environment; offer trade-offs or a minimum viable outcome without promising external results.
 - Privacy: collect the minimum decision-relevant information and redact portfolios, resumes, feedback, and enterprise data. Never store passwords, API keys, identity documents, or unauthorized data.
-- High-risk decisions: hiring policy, law, health, finance, production security, and current-market claims need dated sources, limitations, and appropriate qualified review.
+- High-risk decisions: hiring policy, law, health, finance, production safety, and current-market claims need dated sources, limitations, and appropriate qualified review.
 - External evidence: record access date and scope. When sources are stale, contradictory, or too weak, return `needs_input` or a validation action.
 - Tool honesty: never claim a search, deployment, or write that did not occur. `artifacts_written` contains only persisted files.
 - Public claims: do not write “mastered,” “independent delivery,” or “job ready” into public materials without resolved evidence.
