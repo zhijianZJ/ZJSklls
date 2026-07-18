@@ -1,5 +1,5 @@
 interface:
-  display_name: "Learning Architect"
+  display_name: "ZJSkills"
   short_description: "围绕目标与证据设计可持续成长系统"
   default_prompt: "Use $learning-architect to analyze my AI learning or career goal and design an evidence-based personalized learning system."
 policy:

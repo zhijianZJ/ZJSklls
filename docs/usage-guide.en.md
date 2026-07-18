@@ -1,6 +1,6 @@
-# Learning Architect Full Usage Guide
+# ZJSkills Full Usage Guide
 
-Learning Architect manages growth as a versioned decision system. Define a verifiable outcome first, design capabilities and authentic projects next, and only then schedule knowledge and time. Learning activity supports a capability judgment only when it produces observable behavior and resolved evidence.
+ZJSkills manages growth as a versioned decision system. Define a verifiable outcome first, design capabilities and authentic projects next, and only then schedule knowledge and time. Learning activity supports a capability judgment only when it produces observable behavior and resolved evidence.
 
 ## Complete workflow
 

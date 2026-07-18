@@ -1,6 +1,6 @@
-# Learning Architect Getting Started
+# ZJSkills Getting Started
 
-Learning Architect is an outcome-driven learning-system Skill, not a course recommender. It starts with your target, baseline, capacity, and constraints, then works backward into capabilities, projects, a roadmap, weekly commitments, and verifiable evidence. When evidence or circumstances change, it replans the affected system instead of merely adding more content.
+ZJSkills is an outcome-driven learning-system Skill, not a course recommender. It starts with your target, baseline, capacity, and constraints, then works backward into capabilities, projects, a roadmap, weekly commitments, and verifiable evidence. When evidence or circumstances change, it replans the affected system instead of merely adding more content.
 
 ## Before you begin
 
@@ -20,7 +20,7 @@ Use “unknown” or a range when necessary. Self-assessment is treated as `self
 Enable `learning-architect` in a Skill-capable AI client, then copy and adapt this prompt:
 
 ```text
-Use Learning Architect to design my personalized learning system.
+Use ZJSkills to design my personalized learning system.
 Target: [target]
 Current situation: [work, education, and relevant experience]
 Weekly capacity: [hours]
@@ -54,7 +54,7 @@ Using the confirmed information, create version 1 of the complete learning syste
 You can resume without starting over. For cross-task persistence, name a learner workspace you authorize and ask for `system-state.yaml` to be written there. The Skill does not select a global storage location, and it must not claim persistence when file writes are unavailable.
 
 ```text
-Read and validate [learner workspace path]/system-state.yaml, then continue the previous Learning Architect state from the earliest stage whose gate has not passed.
+Read and validate [learner workspace path]/system-state.yaml, then continue the previous ZJSkills state from the earliest stage whose gate has not passed.
 ```
 
 ```text
@@ -85,4 +85,4 @@ My target changed from [old target] to [new target] because [reason]. Create a n
 This stage missed its rubric threshold. The failure evidence is [evidence]. Find the earliest causal gap, design a guided-to-independent recovery path, and update the downstream roadmap.
 ```
 
-Learning Architect can improve learning decisions, capability evidence, and adaptation. It cannot guarantee an offer, career transition, promotion, income, venture outcome, client acceptance, or any result controlled by external parties.
+ZJSkills can improve learning decisions, capability evidence, and adaptation. It cannot guarantee an offer, career transition, promotion, income, venture outcome, client acceptance, or any result controlled by external parties.

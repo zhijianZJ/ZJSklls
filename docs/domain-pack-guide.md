@@ -1,6 +1,6 @@
 # Domain Pack 扩展指南
 
-Domain Pack 是可替换、可版本化的职业或领域参考包。它为 Learning Architect 提供目标结果、能力等级、依赖关系、项目原型、测评方式、结果准备和带日期的外部假设，但不是永恒真理、学习者事实或付费课程目录。
+Domain Pack 是可替换、可版本化的职业或领域参考包。它为 ZJSkills 提供目标结果、能力等级、依赖关系、项目原型、测评方式、结果准备和带日期的外部假设，但不是永恒真理、学习者事实或付费课程目录。
 
 开始前请阅读 [Domain Pack 契约](../learning-architect/references/domain-pack-contract.md)、[Domain Pack Schema](../learning-architect/assets/schemas/domain-pack.schema.yaml) 和现有的 [AI Agent Engineer 示例](../learning-architect/assets/domain-packs/ai-agent.yaml)。新 Pack 使用稳定 ID 命名，保存为 `learning-architect/assets/domain-packs/<stable-id>.yaml`；相应测试放在 `tests/learning-architect/`，需要样例时使用该目录下脱敏的 `fixtures/`。
 

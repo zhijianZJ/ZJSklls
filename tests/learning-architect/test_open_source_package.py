@@ -21,6 +21,11 @@ class OpenSourcePackageTests(unittest.TestCase):
             self.assertIn("1.0.0", text)
             self.assertIn("MIT", text)
             self.assertIn("ZJSkills", text)
+            self.assertIn("https://github.com/zhijianZJ/ZJSklls.git", text)
+            self.assertNotIn("king-wsc", text)
+            self.assertNotIn("LearningArchitectSklls", text)
+        self.assertTrue(chinese.startswith("# ZJSkills\n"))
+        self.assertTrue(english.startswith("# ZJSkills\n"))
         self.assertIn("[English](README.en.md)", chinese)
         self.assertIn("[简体中文](README.md)", english)
 
@@ -65,21 +70,21 @@ class OpenSourcePackageTests(unittest.TestCase):
     def test_chinese_document_set_is_complete(self):
         required = {
             "docs/getting-started.md": (
-                "# Learning Architect 新手入门",
+                "# ZJSkills 新手入门",
                 "## 第一次使用",
                 "## 为什么先提问",
                 "## 如何继续",
                 "## 如何重新规划",
             ),
             "docs/usage-guide.md": (
-                "# Learning Architect 完整使用手册",
+                "# ZJSkills 完整使用手册",
                 "## 完整工作流",
                 "## 产物与结构化状态",
                 "## 证据与能力判断",
                 "## 异常与安全边界",
             ),
             "docs/examples.md": (
-                "# Learning Architect 使用场景与提示词",
+                "# ZJSkills 使用场景与提示词",
                 "## 场景一：零基础了解 AI 行业",
                 "## 场景二：转岗 AI Agent 工程师",
                 "## 场景三：转岗 AI 产品经理",
@@ -103,21 +108,21 @@ class OpenSourcePackageTests(unittest.TestCase):
     def test_english_document_set_is_complete(self):
         required = {
             "docs/getting-started.en.md": (
-                "# Learning Architect Getting Started",
+                "# ZJSkills Getting Started",
                 "## First use",
                 "## Why it asks before planning",
                 "## How to continue",
                 "## How to replan",
             ),
             "docs/usage-guide.en.md": (
-                "# Learning Architect Full Usage Guide",
+                "# ZJSkills Full Usage Guide",
                 "## Complete workflow",
                 "## Artifacts and structured state",
                 "## Evidence and capability judgment",
                 "## Failure and safety boundaries",
             ),
             "docs/examples.en.md": (
-                "# Learning Architect Scenarios and Prompts",
+                "# ZJSkills Scenarios and Prompts",
                 "## Scenario 1: Explore the AI industry from zero",
                 "## Scenario 2: Transition to AI Agent Engineer",
                 "## Scenario 3: Transition to AI Product Manager",
@@ -141,7 +146,7 @@ class OpenSourcePackageTests(unittest.TestCase):
     def test_platform_installation_guides_cover_supported_hosts_and_boundaries(self):
         required = {
             "docs/platform-installation.md": (
-                "# Learning Architect 多平台安装与使用",
+                "# ZJSkills 多平台安装与使用",
                 "## 兼容性矩阵",
                 "## Codex",
                 "## Claude Code",
@@ -153,7 +158,7 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "对话接入",
             ),
             "docs/platform-installation.en.md": (
-                "# Learning Architect Multi-platform Installation and Usage",
+                "# ZJSkills Multi-platform Installation and Usage",
                 "## Compatibility matrix",
                 "## Codex",
                 "## Claude Code",
@@ -181,6 +186,16 @@ class OpenSourcePackageTests(unittest.TestCase):
         self.assertIn("豆包", chinese)
         self.assertIn("Doubao", english)
 
+    def test_public_documents_use_zjskills_brand_and_repository_url(self):
+        documents = [REPO_ROOT / "README.md", REPO_ROOT / "README.en.md", REPO_ROOT / "CONTRIBUTING.md"]
+        documents.extend(sorted((REPO_ROOT / "docs").glob("*.md")))
+        for document in documents:
+            text = document.read_text(encoding="utf-8")
+            self.assertNotIn("king-wsc", text, document)
+            self.assertNotIn("LearningArchitectSklls", text, document)
+            self.assertNotIn("Learning Architect", text, document)
+        self.assertIn("https://github.com/zhijianZJ/ZJSklls.git", read_text("README.md"))
+
     def test_skill_metadata_covers_ai_exploration_and_transition(self):
         skill = read_text("learning-architect/SKILL.md")
         for phrase in (
@@ -191,9 +206,15 @@ class OpenSourcePackageTests(unittest.TestCase):
         ):
             self.assertIn(phrase, skill)
 
+    def test_skill_ui_uses_zjskills_while_preserving_technical_identifier(self):
+        metadata = read_text("learning-architect/agents/openai.yaml")
+        self.assertIn('display_name: "ZJSkills"', metadata)
+        self.assertIn("$learning-architect", metadata)
+
     def test_runtime_skill_is_brand_and_promotion_neutral(self):
         forbidden = ("ZJSkills", "智建", "社群", "community link", "课程推广")
         violations = []
+        allowed_brand_metadata = RUNTIME_ROOT / "agents" / "openai.yaml"
         for path in RUNTIME_ROOT.rglob("*"):
             if not path.is_file() or "__pycache__" in path.parts:
                 continue
@@ -201,6 +222,8 @@ class OpenSourcePackageTests(unittest.TestCase):
                 continue
             text = path.read_text(encoding="utf-8", errors="ignore")
             for phrase in forbidden:
+                if path == allowed_brand_metadata and phrase == "ZJSkills":
+                    continue
                 if phrase in text:
                     violations.append(f"{path.relative_to(REPO_ROOT)}: {phrase}")
         self.assertEqual(violations, [])

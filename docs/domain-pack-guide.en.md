@@ -1,6 +1,6 @@
 # Domain Pack Extension Guide
 
-A Domain Pack is a replaceable, versioned occupational reference. It gives Learning Architect target outcomes, competency levels, dependencies, project archetypes, assessment patterns, outcome preparation, and dated external assumptions. It is not timeless truth, a learner fact, or a required paid-course catalog.
+A Domain Pack is a replaceable, versioned occupational reference. It gives ZJSkills target outcomes, competency levels, dependencies, project archetypes, assessment patterns, outcome preparation, and dated external assumptions. It is not timeless truth, a learner fact, or a required paid-course catalog.
 
 Before editing, read the [Domain Pack contract](../learning-architect/references/domain-pack-contract.md), [Domain Pack schema](../learning-architect/assets/schemas/domain-pack.schema.yaml), and the existing [AI Agent Engineer example](../learning-architect/assets/domain-packs/ai-agent.yaml). Name a new pack after its stable ID at `learning-architect/assets/domain-packs/<stable-id>.yaml`; add tests under `tests/learning-architect/` and privacy-safe samples under its `fixtures/` directory when needed.
 

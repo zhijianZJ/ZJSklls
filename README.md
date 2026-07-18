@@ -1,4 +1,4 @@
-# Learning Architect
+# ZJSkills
 
 [English](README.en.md)
 
@@ -8,16 +8,16 @@
 
 ## 它解决什么问题
 
-课程清单通常不会回答三个关键问题：目标究竟需要哪些能力、当前差距有什么证据、条件变化后应该从哪里重算。Learning Architect 从目标、基础、时间和约束出发，设计能力模型、项目阶梯、阶段路线、周度行动与评估关卡，并把事实、自述、证据、推断和假设分开记录。
+课程清单通常不会回答三个关键问题：目标究竟需要哪些能力、当前差距有什么证据、条件变化后应该从哪里重算。ZJSkills 从目标、基础、时间和约束出发，设计能力模型、项目阶梯、阶段路线、周度行动与评估关卡，并把事实、自述、证据、推断和假设分开记录。
 
 它帮助你提高学习决策、能力证据和持续调整的质量，但不保证 Offer、转岗、晋升、收入或其他由外部主体决定的结果。
 
 ## 快速开始
 
-在支持 Skills 的 AI 工具中启用 `learning-architect`，然后直接说明目标与约束：
+在支持 Skills 的 AI 工具中启用显示名为 `ZJSkills` 的 Skill；为兼容已安装用户，底层目录与显式调用标识仍为 `learning-architect`。然后直接说明目标与约束：
 
 ```text
-请使用 Learning Architect 帮我设计个性化学习系统。
+请使用 ZJSkills 帮我设计个性化学习系统。
 我的目标是：在六个月内具备 AI Agent 工程师岗位所需的可验证能力。
 我的基础是：会使用 Python 完成基础脚本。
 我每周可投入：12 小时。
@@ -29,13 +29,13 @@
 
 ## 安装
 
-Learning Architect 支持 Codex、Claude Code 和 Tencent WorkBuddy 的原生或兼容 Skill 接入；豆包使用明确标注的对话接入模式。各平台能力、macOS/Linux 与 Windows 安装命令、升级、卸载和验收步骤见[多平台安装与使用指南](docs/platform-installation.md)。
+ZJSkills 支持 Codex、Claude Code 和 Tencent WorkBuddy 的原生或兼容 Skill 接入；豆包使用明确标注的对话接入模式。各平台能力、macOS/Linux 与 Windows 安装命令、升级、卸载和验收步骤见[多平台安装与使用指南](docs/platform-installation.md)。
 
 Codex 用户可先获取仓库，并在仓库根目录执行用户级安装：
 
 ```bash
-git clone https://github.com/king-wsc/LearningArchitectSklls.git
-cd LearningArchitectSklls
+git clone https://github.com/zhijianZJ/ZJSklls.git
+cd ZJSklls
 (
   set -e
   skills_dir="$HOME/.agents/skills"
@@ -50,7 +50,7 @@ cd LearningArchitectSklls
 )
 ```
 
-整个括号命令没有报错且退出状态为 0，表示目标原本不存在且 `SKILL.md` 已复制成功；如果目标已存在，它会停止而不会复制。安装后请新建任务，并明确要求使用 `Learning Architect`。Claude Code 请安装到 `~/.claude/skills/learning-architect`；Tencent WorkBuddy 请优先从技能界面导入本地目录；豆包不应按本地原生 Skill 描述，具体操作见多平台指南。
+整个括号命令没有报错且退出状态为 0，表示目标原本不存在且 `SKILL.md` 已复制成功；如果目标已存在，它会停止而不会复制。安装后请新建任务，并明确要求使用 `ZJSkills`。Claude Code 请安装到 `~/.claude/skills/learning-architect`；Tencent WorkBuddy 请优先从技能界面导入本地目录；豆包不应按本地原生 Skill 描述，具体操作见多平台指南。
 
 升级时不要把新目录直接合并进旧目录。先把已安装目录移到你指定的备份位置，再复制新版本；验证无误前保留备份，避免覆盖本地修改。卸载只需在确认不再需要本地修改后移走已安装目录。
 

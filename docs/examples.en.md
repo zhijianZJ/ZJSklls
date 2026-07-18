@@ -1,4 +1,4 @@
-# Learning Architect Scenarios and Prompts
+# ZJSkills Scenarios and Prompts
 
 These prompts start or continue a learning-system design. The likely artifacts are examples, not guarantees of employment, income, promotion, or delivery outcomes. Replace placeholders with real constraints and require the Skill to separate self-report, evidence, inference, and assumption.
 
@@ -7,7 +7,7 @@ These prompts start or continue a learning-system design. The likely artifacts a
 ### First prompt
 
 ```text
-Use Learning Architect to help me build a structured understanding of the AI industry in four weeks and decide whether to explore technical, product, or business-application work next. I have no programming experience, five hours per week, and a budget of CNY 300. Ask the decision-critical questions first and do not start with a course list.
+Use ZJSkills to help me build a structured understanding of the AI industry in four weeks and decide whether to explore technical, product, or business-application work next. I have no programming experience, five hours per week, and a budget of CNY 300. Ask the decision-critical questions first and do not start with a course list.
 ```
 
 ### What the Skill may ask
@@ -35,7 +35,7 @@ I completed all three tasks. The product brief scored highest, but I was most en
 ### First prompt
 
 ```text
-Use Learning Architect to assess a transition to AI Agent Engineer. I have three years in data analysis, know SQL and some Python, can invest ten hours per week, and want credible real-project evidence for role evaluation in eight months. Define success evidence and critical gaps before building a route. Do not treat course completion as capability.
+Use ZJSkills to assess a transition to AI Agent Engineer. I have three years in data analysis, know SQL and some Python, can invest ten hours per week, and want credible real-project evidence for role evaluation in eight months. Define success evidence and critical gaps before building a route. Do not treat course completion as capability.
 ```
 
 ### What the Skill may ask
@@ -63,7 +63,7 @@ The RAG project runs, but retrieval quality dropped after the requirements chang
 ### First prompt
 
 ```text
-Use Learning Architect to design my AI Product Manager transition system. I have five years in ecommerce operations, no development background, eight hours per week, and a six-month target to produce AI product cases and work samples that a target team can evaluate. Analyze transferable capability, technical-understanding gaps, and target-role differences first.
+Use ZJSkills to design my AI Product Manager transition system. I have five years in ecommerce operations, no development background, eight hours per week, and a six-month target to produce AI product cases and work samples that a target team can evaluate. Analyze transferable capability, technical-understanding gaps, and target-role differences first.
 ```
 
 ### What the Skill may ask
@@ -91,7 +91,7 @@ Interviews confirmed the problem, but the prototype did not improve the key meas
 ### First prompt
 
 ```text
-Use Learning Architect to help me deliver an AI application in my current manufacturing-procurement role. I have four hours per week and want to reduce repetitive supplier-document work within ten weeks while meeting company data and approval rules. Clarify business value, risk, permissions, and verifiable measures first.
+Use ZJSkills to help me deliver an AI application in my current manufacturing-procurement role. I have four hours per week and want to reduce repetitive supplier-document work within ten weeks while meeting company data and approval rules. Clarify business value, risk, permissions, and verifiable measures first.
 ```
 
 ### What the Skill may ask

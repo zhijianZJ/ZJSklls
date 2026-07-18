@@ -1,4 +1,4 @@
-# Contributing to Learning Architect
+# Contributing to ZJSkills
 
 ## 中文贡献指南
 

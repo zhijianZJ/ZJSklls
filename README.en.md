@@ -1,4 +1,4 @@
-# Learning Architect
+# ZJSkills
 
 [简体中文](README.md)
 
@@ -8,16 +8,16 @@ Turn an ambiguous learning goal into a verifiable, adaptable, personalized learn
 
 ## What it helps you solve
 
-Course lists rarely answer three critical questions: which capabilities the target actually requires, what evidence supports the current gap, and where to recompute when circumstances change. Learning Architect starts from the target, baseline, capacity, and constraints, then designs a competency model, project ladder, phased roadmap, weekly actions, and assessment gates while keeping facts, self-reports, evidence, inferences, and assumptions distinct.
+Course lists rarely answer three critical questions: which capabilities the target actually requires, what evidence supports the current gap, and where to recompute when circumstances change. ZJSkills starts from the target, baseline, capacity, and constraints, then designs a competency model, project ladder, phased roadmap, weekly actions, and assessment gates while keeping facts, self-reports, evidence, inferences, and assumptions distinct.
 
 It can improve the quality of learning decisions, capability evidence, and adaptation, but it does not guarantee an offer, career transition, promotion, income, or any result controlled by external parties.
 
 ## Quick start
 
-Enable `learning-architect` in a Skill-capable AI tool, then state your target and constraints directly:
+Enable the Skill displayed as `ZJSkills` in a Skill-capable AI tool. For installed-user compatibility, its directory and explicit invocation identifier remain `learning-architect`. Then state your target and constraints directly:
 
 ```text
-Use Learning Architect to design my personalized learning system.
+Use ZJSkills to design my personalized learning system.
 My target: build verifiable capabilities for an AI Agent Engineer role within six months.
 My baseline: I can write basic Python scripts.
 My weekly capacity: 12 hours.
@@ -29,13 +29,13 @@ See [Getting Started](docs/getting-started.en.md) for prompts covering first use
 
 ## Install
 
-Learning Architect supports native or compatible Skill integration with Codex, Claude Code, and Tencent WorkBuddy. Doubao uses an explicitly labeled prompt-based conversational mode. See the [multi-platform installation and usage guide](docs/platform-installation.en.md) for platform capabilities, macOS/Linux and Windows commands, upgrades, uninstallation, and acceptance tests.
+ZJSkills supports native or compatible Skill integration with Codex, Claude Code, and Tencent WorkBuddy. Doubao uses an explicitly labeled prompt-based conversational mode. See the [multi-platform installation and usage guide](docs/platform-installation.en.md) for platform capabilities, macOS/Linux and Windows commands, upgrades, uninstallation, and acceptance tests.
 
 Codex users can get the repository and run this user-level installation from its root:
 
 ```bash
-git clone https://github.com/king-wsc/LearningArchitectSklls.git
-cd LearningArchitectSklls
+git clone https://github.com/zhijianZJ/ZJSklls.git
+cd ZJSklls
 (
   set -e
   skills_dir="$HOME/.agents/skills"
@@ -50,7 +50,7 @@ cd LearningArchitectSklls
 )
 ```
 
-The parenthesized command exits successfully only when the destination was absent and `SKILL.md` was copied; an existing destination stops the copy with an error. After installation, open a new task and explicitly ask for `Learning Architect`. For Claude Code, install to `~/.claude/skills/learning-architect`. For Tencent WorkBuddy, prefer importing the local directory through the Skills UI. Do not describe Doubao as a native local Skill host; follow the guide's conversational workflow.
+The parenthesized command exits successfully only when the destination was absent and `SKILL.md` was copied; an existing destination stops the copy with an error. After installation, open a new task and explicitly ask for `ZJSkills`. For Claude Code, install to `~/.claude/skills/learning-architect`. For Tencent WorkBuddy, prefer importing the local directory through the Skills UI. Do not describe Doubao as a native local Skill host; follow the guide's conversational workflow.
 
 For an upgrade, do not merge the new directory into the old one. Move the installed directory to a backup location you control, copy the new version, and keep the backup until verification succeeds so local modifications are not silently overwritten. To uninstall, move the installed directory away only after preserving any changes you need.
 
