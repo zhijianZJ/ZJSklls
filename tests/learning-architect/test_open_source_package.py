@@ -196,6 +196,13 @@ class OpenSourcePackageTests(unittest.TestCase):
             self.assertNotIn("Learning Architect", text, document)
         self.assertIn("https://github.com/zhijianZJ/ZJSklls.git", read_text("README.md"))
 
+    def test_repository_documents_do_not_retain_the_old_github_location(self):
+        documents = [REPO_ROOT / "README.md", REPO_ROOT / "README.en.md", REPO_ROOT / "CONTRIBUTING.md"]
+        documents.extend(sorted((REPO_ROOT / "docs").rglob("*.md")))
+        for document in documents:
+            text = document.read_text(encoding="utf-8")
+            self.assertNotIn("king-wsc/LearningArchitectSklls", text, document)
+
     def test_skill_metadata_covers_ai_exploration_and_transition(self):
         skill = read_text("learning-architect/SKILL.md")
         for phrase in (

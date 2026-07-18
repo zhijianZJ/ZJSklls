@@ -691,7 +691,7 @@ Use these exact commands after confirming `/tmp/learning-architect-installed-bac
 git push
 test ! -e /tmp/learning-architect-installed-backup-20260717
 mv /Users/wangshucheng/.codex/skills/learning-architect /tmp/learning-architect-installed-backup-20260717
-python3 /Users/wangshucheng/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py --repo king-wsc/LearningArchitectSklls --path learning-architect --ref codex/learning-architect
+python3 /Users/wangshucheng/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py --repo zhijianZJ/ZJSklls --path learning-architect --ref codex/learning-architect
 ```
 
 If installation fails before the new destination exists, restore with:
