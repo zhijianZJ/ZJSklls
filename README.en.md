@@ -2,7 +2,7 @@
 
 [简体中文](README.md)
 
-**Version [1.0.0](VERSION) · 86 core regression tests / 101 total tests · MIT**
+**Version [2.0.0](VERSION) · 87 core regression tests / 105 total tests · MIT**
 
 Turn an ambiguous learning goal into a verifiable, adaptable, personalized learning system.
 
@@ -16,7 +16,20 @@ It can improve the quality of learning decisions, capability evidence, and adapt
 
 ## Quick start
 
-Enable the Skill displayed as `ZJSkills` in a Skill-capable AI tool. For installed-user compatibility, its directory and explicit invocation identifier remain `learning-architect`. Then state your target and constraints directly:
+Enable `ZJSkills` in a Skill-capable AI tool. Starting with 2.0.0, the runtime directory and explicit identifier are both `zjskills`: use `$zjskills` in Codex and `/zjskills` in Claude Code. If you do not know what to ask, send “Use ZJSkills” to open the entry menu.
+
+### ZJSkills Learning Navigation
+
+1. Explore the AI industry and identify suitable directions.
+2. Design an AI learning or career-transition route.
+3. Plan today's or this week's learning.
+4. Solve a problem encountered during learning.
+5. Adjust the plan after time, goals, or circumstances change.
+6. Continue previous learning progress.
+
+You can reply with a number or describe the need in your own words. **Beginner mode** is the default: it shows one main action, an observable completion signal, and one fallback. You may ask for standard mode or professional mode with evidence and structured state at any time. A concrete request bypasses the menu and routes directly to the relevant support.
+
+You can also state your target and constraints directly:
 
 ```text
 Use ZJSkills to design my personalized learning system.
@@ -47,32 +60,32 @@ ZJSkills supports native or compatible Skill integration with Codex, Claude Code
 Codex users can get the repository and run this user-level installation from its root:
 
 ```bash
-git clone https://github.com/zhijianZJ/ZJSklls.git
-cd ZJSklls
+git clone https://github.com/zhijianZJ/ZJSkills.git
+cd ZJSkills
 (
   set -e
   skills_dir="$HOME/.agents/skills"
-  destination="$skills_dir/learning-architect"
+  destination="$skills_dir/zjskills"
   if [ -e "$destination" ]; then
     echo "Installation stopped: $destination already exists; back it up or use the upgrade flow first." >&2
     exit 1
   fi
   mkdir -p "$skills_dir"
-  cp -R ./learning-architect "$skills_dir/"
+  cp -R ./zjskills "$skills_dir/"
   test -f "$destination/SKILL.md"
 )
 ```
 
-The parenthesized command exits successfully only when the destination was absent and `SKILL.md` was copied; an existing destination stops the copy with an error. After installation, open a new task and explicitly ask for `ZJSkills`. For Claude Code, install to `~/.claude/skills/learning-architect`. For Tencent WorkBuddy, prefer importing the local directory through the Skills UI. Do not describe Doubao as a native local Skill host; follow the guide's conversational workflow.
+The parenthesized command exits successfully only when the destination was absent and `SKILL.md` was copied; an existing destination stops the copy with an error. After installation, open a new task and use `$zjskills` or explicitly ask for `ZJSkills`. For Claude Code, install to `~/.claude/skills/zjskills` and invoke `/zjskills`. For Tencent WorkBuddy, prefer importing the local directory through the Skills UI. Do not describe Doubao as a native local Skill host; follow the guide's conversational workflow.
 
 For an upgrade, do not merge the new directory into the old one. Move the installed directory to a backup location you control, copy the new version, and keep the backup until verification succeeds so local modifications are not silently overwritten. To uninstall, move the installed directory away only after preserving any changes you need.
 
 Maintainers and contributors can validate the complete repository from its root:
 
 ```bash
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" learning-architect
-python3 -m unittest discover -s tests/learning-architect -p "test_*.py" -q
-python3 learning-architect/scripts/validate_learning_system.py --skill-root learning-architect --learner-dir tests/learning-architect/fixtures/valid-learner
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" zjskills
+python3 -m unittest discover -s tests/zjskills -p "test_*.py" -q
+python3 zjskills/scripts/validate_learning_system.py --skill-root zjskills --learner-dir tests/zjskills/fixtures/valid-learner
 ```
 
 The validator requires Python 3.9+ with `PyYAML`, `jsonschema`, and `referencing`. The first command uses Codex's bundled `skill-creator`; if that path is unavailable, run the latter two repository checks.
@@ -112,11 +125,11 @@ Learning support runs horizontally during execution: `problem → earliest block
 
 | Location | Purpose |
 | --- | --- |
-| [`learning-architect/SKILL.md`](learning-architect/SKILL.md) | Core operating contract and workflow router |
-| [`learning-architect/references/`](learning-architect/references/) | Discovery, competency, curriculum, project, assessment, and optimization engines |
-| [`learning-architect/assets/`](learning-architect/assets/) | Schemas, templates, and Domain Packs |
-| [`learning-architect/scripts/`](learning-architect/scripts/) | Offline learning-system validator |
-| [`tests/learning-architect/`](tests/learning-architect/) | 86 core regression tests, 15 open-source package tests, and valid/invalid fixtures |
+| [`zjskills/SKILL.md`](zjskills/SKILL.md) | Core operating contract and workflow router |
+| [`zjskills/references/`](zjskills/references/) | Discovery, competency, curriculum, project, assessment, and optimization engines |
+| [`zjskills/assets/`](zjskills/assets/) | Schemas, templates, and Domain Packs |
+| [`zjskills/scripts/`](zjskills/scripts/) | Offline learning-system validator |
+| [`tests/zjskills/`](tests/zjskills/) | 87 core regression tests, 18 open-source package tests, and valid/invalid fixtures |
 | [`docs/`](docs/) | Chinese and English usage and extension guides |
 
 ## Contributing

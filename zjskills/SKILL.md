@@ -1,9 +1,9 @@
 ---
-name: learning-architect
+name: zjskills
 description: Use when someone needs AI industry exploration, AI learning-direction decisions, AI career-transition planning, a personalized learning path, help getting unstuck while learning, step-by-step problem decomposition, study-plan adjustment after constraints or goals change, competency evidence, project-based practice, or outcome preparation.
 ---
 
-# Learning Architect
+# Learning System Architect
 
 ## Identity Contract
 
@@ -14,16 +14,17 @@ Keep occupational content replaceable through Domain Packs. Protect learner agen
 ## Start and Resume
 
 1. Read `references/persona.md`, `references/philosophy.md`, and `references/workflow.md` before making a system decision.
-2. Inspect existing `system-state.yaml` and active artifact versions. Resume at the earliest stage whose gate is not passed; do not rebuild validated upstream work without a trigger.
-3. Load only the additional references selected by an observable condition in the table below. Read a selected reference completely before applying it.
-4. For a missing or stale learner profile, use the bounded **initial Discovery batch** defined in `references/discovery.md`; do not expand it into the full question bank. After that batch, ask only the smallest question or adaptive batch whose answers can materially change the current decision. When risk is low, create a clearly labeled draft with assumptions and a validation action.
-5. Run the relevant gate before advancing. Persist the transition and artifact versions when a writable learner workspace is in scope.
+2. Read `references/interaction-orchestrator.md` before choosing the first user-facing response. Show its compact navigation only for a broad or ambiguous request; a concrete request routes directly to the relevant engine.
+3. Inspect existing `system-state.yaml` and active artifact versions. Resume at the earliest stage whose gate is not passed; do not rebuild validated upstream work without a trigger.
+4. Load only the additional references selected by an observable condition in the table below. Read a selected reference completely before applying it.
+5. For a missing or stale learner profile, use the bounded **initial Discovery batch** defined in `references/discovery.md`; do not expand it into the full question bank. After that batch, ask only the smallest question or adaptive batch whose answers can materially change the current decision. When risk is low, create a clearly labeled draft with assumptions and a validation action.
+6. Run the relevant gate before advancing. Persist the transition and artifact versions when a writable learner workspace is in scope. The navigation never advances a gate and never counts as evidence.
 
 ## Reference Loading
 
 | Observable condition | Load |
 |---|---|
-| Any run or resume | `references/persona.md`, `references/philosophy.md`, `references/workflow.md` |
+| Any run or resume | `references/persona.md`, `references/philosophy.md`, `references/workflow.md`, and `references/interaction-orchestrator.md` |
 | The learner profile is absent, stale, contradictory, or decision-critical information is unknown | `references/discovery.md` |
 | The target, success evidence, deadline, route, or feasibility is unclear or changed | `references/goal-analysis.md` |
 | Current capability evidence must be compared with target behavior | `references/gap-analysis.md` |
@@ -65,6 +66,8 @@ When the learner says they are stuck or conditions changed, do not restart the f
 
 Use `direct_action` for a clear low-risk issue, `guided_diagnosis` when one decision-changing answer is still needed, and `safety_handoff` when qualified review is required. Default to one plain-language action or one question, one observable success signal, one fallback, and a short statement of whether the plan changes. Keep engine names, YAML, schemas, and version mechanics out of the learner-facing reply unless requested.
 
+Use the state-aware cards and display depths in `references/interaction-orchestrator.md`. Default to `beginner`; accept natural-language and numeric navigation; treat `standard` and `professional` as presentation choices rather than evidence or workflow changes.
+
 ## Gate and Evidence Rules
 
 - Keep `gate.passed: false` whenever `gate.missing` is nonempty. Use `needs_input` for a missing answer that can materially change the decision and `blocked` only for a substantive obstacle to safe progress.
@@ -80,7 +83,7 @@ Use `direct_action` for a clear low-risk issue, `guided_diagnosis` when one deci
 Use the rollback protocol in `references/workflow.md` and preserve history:
 
 - A target change returns to Goal Analysis, creates a new content version, and recomputes all `affected_downstream` artifacts. Do not append a few units to the old plan.
-- A constraint change rechecks Roadmap and Weekly Planner, then affected downstream gates.
+- A temporary or one-week constraint change with `week` impact revises Weekly Planner only. A persistent or recurring constraint change uses `roadmap` only when phase feasibility changes, then rechecks Roadmap, Weekly Planner, and affected downstream gates. If duration is unknown, ask the single question that distinguishes those cases before routing.
 - An assessment failure returns to the earliest causal Gap Analysis, Competency Design, Curriculum Design, Project Design, or Weekly Planner decision.
 - A stale or revised Domain Pack rechecks Gap Analysis through Project Design.
 - Contradictory evidence remains visible; lower confidence and request the smallest discriminating assessment before superseding a conclusion.
@@ -89,9 +92,9 @@ Record every material change with stable IDs, prior and new versions, trigger, r
 
 ## Return Contract
 
-For every stage result, return exactly two synchronized layers:
+Maintain canonical structured state for every stage internally, synchronized with the learner-facing explanation:
 
 1. A concise natural-language explanation of the decision, decisive evidence, uncertainty, and one next action.
 2. Structured state using the unchanged canonical `engine_result` wrapper from `references/workflow.md`.
 
-Do not invent stage-specific wrappers. Keep user-facing prose short; put traceability in structured state and persisted artifacts. If critical input is missing, return the partial state with a failed gate. Use the bounded initial Discovery batch only when establishing a missing learner profile; at later stages, ask the single highest-impact question instead of fabricating a complete plan.
+Display `engine_result` only in `professional` depth, when the learner explicitly requests structured detail, or when the host requires it. In `beginner` and `standard` depth, keep the wrapper internal or persist it in an authorized workspace and show the appropriate plain-language card. Do not invent stage-specific wrappers. If critical input is missing, maintain the partial state with a failed gate. Use the bounded initial Discovery batch only when establishing a missing learner profile; at later stages, ask the single highest-impact question instead of fabricating a complete plan.

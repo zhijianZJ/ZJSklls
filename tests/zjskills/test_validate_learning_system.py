@@ -12,7 +12,7 @@ import yaml
 from jsonschema import FormatChecker
 
 ROOT = Path(__file__).resolve().parents[2]
-MODULE_PATH = ROOT / "learning-architect/scripts/validate_learning_system.py"
+MODULE_PATH = ROOT / "zjskills/scripts/validate_learning_system.py"
 
 
 def load_validator():
@@ -105,8 +105,8 @@ class LearningSystemValidationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.validator = load_validator()
-        cls.skill_root = ROOT / "learning-architect"
-        cls.fixtures = ROOT / "tests/learning-architect/fixtures"
+        cls.skill_root = ROOT / "zjskills"
+        cls.fixtures = ROOT / "tests/zjskills/fixtures"
 
     def test_skill_assets_and_valid_learner_pass(self):
         self.assertEqual(self.validator.validate_skill_assets(self.skill_root), [])
@@ -229,7 +229,7 @@ class LearningSystemValidationTests(unittest.TestCase):
         _, frontmatter_text, body = text.split("---", 2)
         frontmatter = yaml.safe_load(frontmatter_text)
         self.assertEqual(set(frontmatter), {"name", "description"})
-        self.assertEqual(frontmatter["name"], "learning-architect")
+        self.assertEqual(frontmatter["name"], "zjskills")
         self.assertTrue(frontmatter["description"].startswith("Use when "))
 
         self.assertIn("## Identity Contract", body)
@@ -435,6 +435,92 @@ class LearningSystemValidationTests(unittest.TestCase):
             self.assertIn(label, beginner)
         self.assertIn("one decision-changing question", beginner)
         self.assertIn("Do not change the 11-stage order", workflow)
+
+    def test_interaction_orchestrator_contract(self):
+        interaction_path = (
+            self.skill_root / "references" / "interaction-orchestrator.md"
+        )
+        self.assertTrue(interaction_path.is_file(), interaction_path)
+        interaction = interaction_path.read_text(encoding="utf-8")
+        skill = (self.skill_root / "SKILL.md").read_text(encoding="utf-8")
+
+        for item in (
+            "1. 了解 AI 行业，判断适合的方向",
+            "2. 制定 AI 学习或转行路线",
+            "3. 安排今天或本周学习任务",
+            "4. 解决学习中遇到的问题",
+            "5. 时间、目标或情况变了，调整原计划",
+            "6. 继续上次的学习进度",
+        ):
+            self.assertIn(item, interaction)
+
+        for token in (
+            "explicit request bypasses the home navigation",
+            "当前目标",
+            "目前进度",
+            "这次要解决什么",
+            "现在只做哪一步",
+            "做到什么算完成",
+            "完成后怎么继续",
+            "本周学习进度",
+            "continue",
+            "back",
+            "switch_method",
+            "unknown",
+            "view_detail",
+            "change_constraints",
+            "change_goal",
+            "save",
+            "pause",
+            "beginner",
+            "standard",
+            "professional",
+            "no valid state",
+            "corrupt state",
+            "does not replace decision engines",
+            "Problem-Solving impact classification",
+            "进行中",
+            "遇到问题",
+            "本周最低交付",
+            "缺少证据",
+            "no more than three relevant next choices",
+        ):
+            self.assertIn(token, interaction)
+
+        self.assertIn("interaction-orchestrator.md", skill)
+        self.assertIn("navigation never advances a gate", skill)
+        self.assertIn(
+            "Maintain canonical structured state for every stage internally",
+            skill,
+        )
+        self.assertIn(
+            "Display `engine_result` only in `professional` depth",
+            skill,
+        )
+
+        workflow = (
+            self.skill_root / "references" / "workflow.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "Structured state is mandatory internally, not mandatory in every visible reply",
+            workflow,
+        )
+        self.assertIn(
+            "temporary or one-week constraint change",
+            workflow,
+        )
+        self.assertIn(
+            "persistent or recurring constraint change",
+            workflow,
+        )
+        self.assertIn(
+            "`change_constraints`: run Problem-Solving impact classification first",
+            interaction,
+        )
+        self.assertIn(
+            "`change_goal`: classify `goal_system` first",
+            interaction,
+        )
 
     def test_learning_issue_schema_and_semantics(self):
         template_path = (
@@ -1160,7 +1246,7 @@ class LearningSystemValidationTests(unittest.TestCase):
 
     def test_skill_asset_validator_reports_domain_pack_cycle(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
-            skill_root = Path(temporary_directory) / "learning-architect"
+            skill_root = Path(temporary_directory) / "zjskills"
             shutil.copytree(self.skill_root, skill_root)
             pack_path = skill_root / "assets/domain-packs/ai-agent.yaml"
             pack = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
@@ -1176,7 +1262,7 @@ class LearningSystemValidationTests(unittest.TestCase):
 
     def test_skill_asset_validator_rejects_paid_course_recommendation(self):
         with tempfile.TemporaryDirectory() as temporary_directory:
-            skill_root = Path(temporary_directory) / "learning-architect"
+            skill_root = Path(temporary_directory) / "zjskills"
             shutil.copytree(self.skill_root, skill_root)
             pack_path = skill_root / "assets/domain-packs/ai-agent.yaml"
             pack = yaml.safe_load(pack_path.read_text(encoding="utf-8"))
@@ -1197,7 +1283,7 @@ class LearningSystemValidationTests(unittest.TestCase):
             "现在报名高级 Agent 课程",
         ]:
             with self.subTest(phrase=phrase), tempfile.TemporaryDirectory() as temporary_directory:
-                skill_root = Path(temporary_directory) / "learning-architect"
+                skill_root = Path(temporary_directory) / "zjskills"
                 shutil.copytree(self.skill_root, skill_root)
                 pack_path = skill_root / "assets/domain-packs/ai-agent.yaml"
                 pack = yaml.safe_load(pack_path.read_text(encoding="utf-8"))

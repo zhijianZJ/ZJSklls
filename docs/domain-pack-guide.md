@@ -2,7 +2,7 @@
 
 Domain Pack 是可替换、可版本化的职业或领域参考包。它为 ZJSkills 提供目标结果、能力等级、依赖关系、项目原型、测评方式、结果准备和带日期的外部假设，但不是永恒真理、学习者事实或付费课程目录。
 
-开始前请阅读 [Domain Pack 契约](../learning-architect/references/domain-pack-contract.md)、[Domain Pack Schema](../learning-architect/assets/schemas/domain-pack.schema.yaml) 和现有的 [AI Agent Engineer 示例](../learning-architect/assets/domain-packs/ai-agent.yaml)。新 Pack 使用稳定 ID 命名，保存为 `learning-architect/assets/domain-packs/<stable-id>.yaml`；相应测试放在 `tests/learning-architect/`，需要样例时使用该目录下脱敏的 `fixtures/`。
+开始前请阅读 [Domain Pack 契约](../zjskills/references/domain-pack-contract.md)、[Domain Pack Schema](../zjskills/assets/schemas/domain-pack.schema.yaml) 和现有的 [AI Agent Engineer 示例](../zjskills/assets/domain-packs/ai-agent.yaml)。新 Pack 使用稳定 ID 命名，保存为 `zjskills/assets/domain-packs/<stable-id>.yaml`；相应测试放在 `tests/zjskills/`，需要样例时使用该目录下脱敏的 `fixtures/`。
 
 ## 数据契约
 
@@ -64,11 +64,11 @@ Domain Pack 是可替换、可版本化的职业或领域参考包。它为 ZJSk
 验证命令需要 Python 3.9+，以及 `PyYAML`、`jsonschema` 和 `referencing`。在仓库根目录运行：
 
 ```bash
-python3 learning-architect/scripts/validate_learning_system.py \
-  --skill-root learning-architect \
-  --learner-dir tests/learning-architect/fixtures/valid-learner
-python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
-python3 -m unittest tests/learning-architect/test_open_source_package.py -q
+python3 zjskills/scripts/validate_learning_system.py \
+  --skill-root zjskills \
+  --learner-dir tests/zjskills/fixtures/valid-learner
+python3 -m unittest tests/zjskills/test_validate_learning_system.py -q
+python3 -m unittest tests/zjskills/test_open_source_package.py -q
 ```
 
 验证包含 Schema 约束以及 Schema 难以表达的语义不变量：ID 唯一性、依赖端点、无环图、六个项目层级、完整 L0-L5、日期有效性、证据覆盖、rubric 权重与迁移映射完整性。

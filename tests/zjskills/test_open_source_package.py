@@ -7,7 +7,7 @@ import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-RUNTIME_ROOT = REPO_ROOT / "learning-architect"
+RUNTIME_ROOT = REPO_ROOT / "zjskills"
 
 
 def read_text(path: str) -> str:
@@ -20,10 +20,10 @@ class OpenSourcePackageTests(unittest.TestCase):
         chinese = read_text("README.md")
         english = read_text("README.en.md")
         for text in (chinese, english):
-            self.assertIn("1.0.0", text)
+            self.assertIn("2.0.0", text)
             self.assertIn("MIT", text)
             self.assertIn("ZJSkills", text)
-            self.assertIn("https://github.com/zhijianZJ/ZJSklls.git", text)
+            self.assertIn("https://github.com/zhijianZJ/ZJSkills.git", text)
             self.assertNotIn("king-wsc", text)
             self.assertNotIn("LearningArchitectSklls", text)
         self.assertTrue(chinese.startswith("# ZJSkills\n"))
@@ -50,7 +50,7 @@ class OpenSourcePackageTests(unittest.TestCase):
     def test_base_open_source_files_and_mit_license(self):
         for path in ("LICENSE", "VERSION", "CONTRIBUTING.md"):
             self.assertTrue((REPO_ROOT / path).is_file(), path)
-        self.assertEqual(read_text("VERSION").strip(), "1.0.0")
+        self.assertEqual(read_text("VERSION").strip(), "2.0.0")
         license_text = read_text("LICENSE")
         self.assertIn("MIT License", license_text)
         self.assertIn("Copyright (c) 2026 ZJSkills", license_text)
@@ -154,8 +154,8 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## Claude Code",
                 "## Tencent WorkBuddy",
                 "## 豆包",
-                "$HOME/.agents/skills/learning-architect",
-                "$HOME/.claude/skills/learning-architect",
+                "$HOME/.agents/skills/zjskills",
+                "$HOME/.claude/skills/zjskills",
                 "原生 Skill",
                 "对话接入",
             ),
@@ -166,8 +166,8 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## Claude Code",
                 "## Tencent WorkBuddy",
                 "## Doubao",
-                "$HOME/.agents/skills/learning-architect",
-                "$HOME/.claude/skills/learning-architect",
+                "$HOME/.agents/skills/zjskills",
+                "$HOME/.claude/skills/zjskills",
                 "Native Skill",
                 "prompt-based",
             ),
@@ -205,7 +205,7 @@ class OpenSourcePackageTests(unittest.TestCase):
                 self.assertIn(phrase, text, f"{path}: {phrase}")
 
     def test_pressure_scenarios_cover_learning_support_and_plan_adjustment(self):
-        document = yaml.safe_load(read_text("tests/learning-architect/scenarios.yaml"))
+        document = yaml.safe_load(read_text("tests/zjskills/scenarios.yaml"))
         scenarios = {item["id"]: item for item in document["scenarios"]}
         required_ids = {
             "concept-confusion",
@@ -216,6 +216,13 @@ class OpenSourcePackageTests(unittest.TestCase):
             "capacity-drop",
             "learning-goal-change",
             "unknown-blocker",
+            "ambiguous-ai-entry",
+            "explicit-error-bypasses-menu",
+            "numeric-stuck-selection",
+            "unknown-selection",
+            "resume-without-state",
+            "beginner-hides-internals",
+            "professional-shows-state",
         }
         self.assertTrue(required_ids <= set(scenarios))
         for scenario_id in required_ids:
@@ -224,6 +231,32 @@ class OpenSourcePackageTests(unittest.TestCase):
                 3,
                 scenario_id,
             )
+        evaluation = read_text("tests/zjskills/v2-interaction-evaluation.md")
+        evaluated_ids = {
+            "ambiguous-ai-entry",
+            "explicit-error-bypasses-menu",
+            "numeric-stuck-selection",
+            "unknown-selection",
+            "resume-without-state",
+            "beginner-hides-internals",
+            "professional-shows-state",
+            "capacity-drop",
+            "learning-goal-change",
+        }
+        for scenario_id in evaluated_ids:
+            self.assertIn(f"| {scenario_id} | PASS |", evaluation)
+
+    def test_v2_migration_commands_fail_closed_on_existing_paths(self):
+        chinese = read_text("docs/platform-installation.md")
+        english = read_text("docs/platform-installation.en.md")
+        for text in (chinese, english):
+            migration = text.split("1.x", 1)[1].split("\n## ", 1)[0]
+            self.assertIn("(\n  set -e", migration)
+            self.assertIn("learning-architect.backup", migration)
+            self.assertIn('destination="$skills_root/zjskills"', migration)
+            self.assertIn("exit 1", migration)
+            self.assertIn("Windows PowerShell", migration)
+            self.assertIn("throw", migration)
 
     def test_public_documents_use_zjskills_brand_and_repository_url(self):
         documents = [REPO_ROOT / "README.md", REPO_ROOT / "README.en.md", REPO_ROOT / "CONTRIBUTING.md"]
@@ -233,7 +266,7 @@ class OpenSourcePackageTests(unittest.TestCase):
             self.assertNotIn("king-wsc", text, document)
             self.assertNotIn("LearningArchitectSklls", text, document)
             self.assertNotIn("Learning Architect", text, document)
-        self.assertIn("https://github.com/zhijianZJ/ZJSklls.git", read_text("README.md"))
+        self.assertIn("https://github.com/zhijianZJ/ZJSkills.git", read_text("README.md"))
 
     def test_repository_documents_do_not_retain_the_old_github_location(self):
         documents = [REPO_ROOT / "README.md", REPO_ROOT / "README.en.md", REPO_ROOT / "CONTRIBUTING.md"]
@@ -241,9 +274,86 @@ class OpenSourcePackageTests(unittest.TestCase):
         for document in documents:
             text = document.read_text(encoding="utf-8")
             self.assertNotIn("king-wsc/LearningArchitectSklls", text, document)
+            if "docs/superpowers" not in document.as_posix():
+                self.assertNotIn("zhijianZJ/ZJSklls", text, document)
+
+    def test_v2_technical_identifier_migration_contract(self):
+        new_runtime = REPO_ROOT / "zjskills"
+        old_runtime = REPO_ROOT / "learning-architect"
+        self.assertTrue(new_runtime.is_dir(), new_runtime)
+        self.assertFalse(old_runtime.exists(), old_runtime)
+        self.assertTrue((new_runtime / "SKILL.md").is_file())
+        self.assertTrue((REPO_ROOT / "tests" / "zjskills").is_dir())
+        self.assertFalse((REPO_ROOT / "tests" / "learning-architect").exists())
+
+        skill = (new_runtime / "SKILL.md").read_text(encoding="utf-8")
+        metadata = (new_runtime / "agents" / "openai.yaml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("name: zjskills", skill)
+        self.assertIn('display_name: "ZJSkills"', metadata)
+        self.assertIn("$zjskills", metadata)
+        self.assertNotIn("$learning-architect", metadata)
+
+        current_documents = [
+            REPO_ROOT / "README.md",
+            REPO_ROOT / "README.en.md",
+            REPO_ROOT / "CONTRIBUTING.md",
+            *sorted(
+                path
+                for path in (REPO_ROOT / "docs").glob("*.md")
+                if not path.name.startswith("platform-installation")
+            ),
+        ]
+        for document in current_documents:
+            text = document.read_text(encoding="utf-8")
+            self.assertNotIn("learning-architect", text, document)
+
+        current_runtime_and_fixtures = [
+            *RUNTIME_ROOT.rglob("*.md"),
+            *RUNTIME_ROOT.rglob("*.yaml"),
+            *(REPO_ROOT / "tests" / "zjskills").rglob("*.md"),
+            *(REPO_ROOT / "tests" / "zjskills").rglob("*.yaml"),
+        ]
+        for document in current_runtime_and_fixtures:
+            text = document.read_text(encoding="utf-8")
+            self.assertNotIn("learning-architect", text, document)
+
+        archive = (
+            REPO_ROOT
+            / "docs/superpowers/history/learning-architect-evaluations/README.md"
+        )
+        self.assertTrue(archive.is_file(), archive)
+        self.assertIn("Historical Evaluation Archive", archive.read_text(encoding="utf-8"))
+
+    def test_public_docs_explain_navigation_and_v2_migration(self):
+        chinese = read_text("README.md") + read_text("docs/getting-started.md")
+        english = read_text("README.en.md") + read_text("docs/getting-started.en.md")
+        for phrase in (
+            "ZJSkills 学习导航",
+            "回复数字",
+            "新手模式",
+            "$zjskills",
+            "/zjskills",
+        ):
+            self.assertIn(phrase, chinese)
+        for phrase in (
+            "ZJSkills Learning Navigation",
+            "reply with a number",
+            "Beginner mode",
+            "$zjskills",
+            "/zjskills",
+        ):
+            self.assertIn(phrase, english)
+        for path in ("docs/platform-installation.md", "docs/platform-installation.en.md"):
+            text = read_text(path)
+            self.assertIn("2.0.0", text)
+            self.assertIn("zjskills", text)
+            self.assertIn("learning-architect", text)
+            self.assertIn("回滚" if path.endswith(".md") and not path.endswith(".en.md") else "rollback", text.lower())
 
     def test_skill_metadata_covers_ai_exploration_and_transition(self):
-        skill = read_text("learning-architect/SKILL.md")
+        skill = read_text("zjskills/SKILL.md")
         for phrase in (
             "AI industry exploration",
             "AI learning-direction decisions",
@@ -252,10 +362,11 @@ class OpenSourcePackageTests(unittest.TestCase):
         ):
             self.assertIn(phrase, skill)
 
-    def test_skill_ui_uses_zjskills_while_preserving_technical_identifier(self):
-        metadata = read_text("learning-architect/agents/openai.yaml")
+    def test_skill_ui_uses_zjskills_technical_identifier(self):
+        metadata = read_text("zjskills/agents/openai.yaml")
         self.assertIn('display_name: "ZJSkills"', metadata)
-        self.assertIn("$learning-architect", metadata)
+        self.assertIn("$zjskills", metadata)
+        self.assertNotIn("$learning-architect", metadata)
 
     def test_runtime_skill_is_brand_and_promotion_neutral(self):
         forbidden = ("ZJSkills", "智建", "社群", "community link", "课程推广")

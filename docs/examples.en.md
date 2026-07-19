@@ -2,6 +2,48 @@
 
 These prompts start or continue a learning-system design. The likely artifacts are examples, not guarantees of employment, income, promotion, or delivery outcomes. Replace placeholders with real constraints and require the Skill to separate self-report, evidence, inference, and assumption.
 
+## Scenario 0: Start from the learning navigation
+
+### The need is still ambiguous
+
+```text
+Use ZJSkills. I want to learn AI, but I do not know where to start.
+```
+
+This should open the six-option learning navigation instead of producing a long route. Replying `4` selects help with a learning problem. Describing the problem directly, such as “I understand tutorials but cannot build alone,” reaches the same support.
+
+### You do not know which option fits
+
+```text
+I do not know which option to choose or how to explain what I need.
+```
+
+The Skill should offer two or three plain choices or one tiny experience task. It should not require workflow terminology or start a complete profile questionnaire.
+
+### A concrete problem routes directly
+
+```text
+My API call returns 401. What should I do now?
+```
+
+A concrete problem bypasses the home menu and starts with one safe check and an observable completion signal. It must not request a secret.
+
+### Resume prior progress
+
+```text
+Continue my previous learning. Check the state in the workspace I specify first.
+```
+
+With valid state, resume from the earliest unpassed gate or open issue. Without state, do not invent progress; offer exactly two paths: create a new plan or specify the workspace containing saved state.
+
+### Inspect professional state
+
+```text
+Switch to professional mode and show this decision's evidence, assumptions, gates, and engine_result.
+```
+
+Professional mode adds traceability without weakening evidence or safety standards. Say “Make it simpler” to return to beginner mode.
+
 ## Scenario 1: Explore the AI industry from zero
 
 ### First prompt

@@ -17,7 +17,18 @@ Use “unknown” or a range when necessary. Self-assessment is treated as `self
 
 ## First use
 
-Enable `learning-architect` in a Skill-capable AI client, then copy and adapt this prompt:
+Enable `zjskills` in a Skill-capable AI client. Use `$zjskills` in Codex or `/zjskills` in Claude Code. If you do not know what to say, send “Use ZJSkills” to open **ZJSkills Learning Navigation**:
+
+1. Explore AI directions.
+2. Design an AI learning or career-transition route.
+3. Plan today or this week.
+4. Solve a learning problem.
+5. Adjust an existing plan.
+6. Continue previous progress.
+
+You can reply with a number or describe the need in your own words. **Beginner mode** hides YAML, schemas, engine names, and version IDs by default, showing one main action and an observable completion signal. A concrete request bypasses the menu.
+
+If your target is already fairly clear, copy and adapt this prompt:
 
 ```text
 Use ZJSkills to design my personalized learning system.
@@ -65,7 +76,7 @@ Here is new evidence from this week: [repository, artifact, test result, feedbac
 I now have only four hours this week. Keep the target, recalculate capacity, and give me the minimum viable delivery.
 ```
 
-Every stage should return concise natural-language guidance plus synchronized structured state in the canonical `engine_result` wrapper. `artifacts_written` must list only files actually persisted.
+Every stage should maintain canonical `engine_result` state internally in sync with its natural-language guidance. Beginner and standard modes hide the raw wrapper; it appears only in professional mode or when you request structured state. `artifacts_written` must list only files actually persisted.
 
 ## When you get stuck
 
@@ -100,7 +111,7 @@ Resolving the blocker does not automatically prove independent capability. A lat
 Replanning rolls back to the earliest affected decision:
 
 - target change: return to Goal Analysis and recompute all affected downstream artifacts;
-- time, budget, or environment change: recheck Roadmap and Weekly Planner;
+- time, budget, or environment change: first distinguish temporary, recurring, or persistent impact; revise Weekly Planner for a temporary change, and recheck Roadmap plus downstream plans only when a persistent change affects phase feasibility;
 - failed project or assessment: locate the earliest causal gap and add focused practice, debugging, or reflection;
 - changed domain evidence: recheck the Domain Pack, capabilities, curriculum, and projects;
 - contradictory evidence: retain the conflict, lower confidence, and run the smallest discriminating assessment.

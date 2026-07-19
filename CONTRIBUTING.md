@@ -10,7 +10,7 @@
 
 ### Domain Pack 贡献要求
 
-Domain Pack 必须符合 `learning-architect/assets/schemas/domain-pack.schema.yaml`，使用稳定 ID，并提供有效的 `schema_version`、`content_version` 和 `status`。目标成果、能力层级、依赖关系、项目、评分量规与通过阈值必须保持可验证且相互一致。
+Domain Pack 必须符合 `zjskills/assets/schemas/domain-pack.schema.yaml`，使用稳定 ID，并提供有效的 `schema_version`、`content_version` 和 `status`。目标成果、能力层级、依赖关系、项目、评分量规与通过阈值必须保持可验证且相互一致。
 
 所有主张、能力要求和评分标准都应附带来源元数据，包括可追溯的来源标识、标题或说明、访问地址（如适用）、访问或审查日期。证据必须经过隐私处理：不得提交真实学习者姓名、联系方式、账户凭据、私密对话、客户机密或未经许可的受版权保护材料。
 
@@ -19,11 +19,11 @@ Domain Pack 必须符合 `learning-architect/assets/schemas/domain-pack.schema.y
 请从仓库根目录使用项目现有命令完成验证：
 
 ```bash
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" learning-architect
-python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
-python3 learning-architect/scripts/validate_learning_system.py \
-  --skill-root learning-architect \
-  --learner-dir tests/learning-architect/fixtures/valid-learner
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" zjskills
+python3 -m unittest tests/zjskills/test_validate_learning_system.py -q
+python3 zjskills/scripts/validate_learning_system.py \
+  --skill-root zjskills \
+  --learner-dir tests/zjskills/fixtures/valid-learner
 ```
 
 如果变更增加或修改了行为，请同时添加相应测试和最小复现样例，并确认相关测试无警告、无失败。
@@ -46,7 +46,7 @@ python3 learning-architect/scripts/validate_learning_system.py \
 
 ### Domain Pack requirements
 
-A Domain Pack must validate against `learning-architect/assets/schemas/domain-pack.schema.yaml`, use stable IDs, and provide valid `schema_version`, `content_version`, and `status` values. Target outcomes, competency levels, dependencies, projects, rubrics, and passing thresholds must remain verifiable and internally consistent.
+A Domain Pack must validate against `zjskills/assets/schemas/domain-pack.schema.yaml`, use stable IDs, and provide valid `schema_version`, `content_version`, and `status` values. Target outcomes, competency levels, dependencies, projects, rubrics, and passing thresholds must remain verifiable and internally consistent.
 
 Claims, competency requirements, and scoring criteria must include source metadata: a traceable source identifier, title or description, location when applicable, and access or review date. Evidence must be privacy-safe. Do not submit real learner names, contact details, account credentials, private conversations, client-confidential information, or copyrighted material without permission.
 
@@ -55,11 +55,11 @@ Claims, competency requirements, and scoring criteria must include source metada
 Run the repository's existing commands from its root:
 
 ```bash
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" learning-architect
-python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
-python3 learning-architect/scripts/validate_learning_system.py \
-  --skill-root learning-architect \
-  --learner-dir tests/learning-architect/fixtures/valid-learner
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" zjskills
+python3 -m unittest tests/zjskills/test_validate_learning_system.py -q
+python3 zjskills/scripts/validate_learning_system.py \
+  --skill-root zjskills \
+  --learner-dir tests/zjskills/fixtures/valid-learner
 ```
 
 If the change adds or modifies behavior, include the corresponding tests and a minimal reproduction fixture, then confirm the relevant checks finish without warnings or failures.

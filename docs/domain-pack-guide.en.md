@@ -2,7 +2,7 @@
 
 A Domain Pack is a replaceable, versioned occupational reference. It gives ZJSkills target outcomes, competency levels, dependencies, project archetypes, assessment patterns, outcome preparation, and dated external assumptions. It is not timeless truth, a learner fact, or a required paid-course catalog.
 
-Before editing, read the [Domain Pack contract](../learning-architect/references/domain-pack-contract.md), [Domain Pack schema](../learning-architect/assets/schemas/domain-pack.schema.yaml), and the existing [AI Agent Engineer example](../learning-architect/assets/domain-packs/ai-agent.yaml). Name a new pack after its stable ID at `learning-architect/assets/domain-packs/<stable-id>.yaml`; add tests under `tests/learning-architect/` and privacy-safe samples under its `fixtures/` directory when needed.
+Before editing, read the [Domain Pack contract](../zjskills/references/domain-pack-contract.md), [Domain Pack schema](../zjskills/assets/schemas/domain-pack.schema.yaml), and the existing [AI Agent Engineer example](../zjskills/assets/domain-packs/ai-agent.yaml). Name a new pack after its stable ID at `zjskills/assets/domain-packs/<stable-id>.yaml`; add tests under `tests/zjskills/` and privacy-safe samples under its `fixtures/` directory when needed.
 
 ## Data contract
 
@@ -64,11 +64,11 @@ Resource catalogs are optional and replaceable. If included, record coverage, li
 Validation requires Python 3.9+ with `PyYAML`, `jsonschema`, and `referencing`. Run from the repository root:
 
 ```bash
-python3 learning-architect/scripts/validate_learning_system.py \
-  --skill-root learning-architect \
-  --learner-dir tests/learning-architect/fixtures/valid-learner
-python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
-python3 -m unittest tests/learning-architect/test_open_source_package.py -q
+python3 zjskills/scripts/validate_learning_system.py \
+  --skill-root zjskills \
+  --learner-dir tests/zjskills/fixtures/valid-learner
+python3 -m unittest tests/zjskills/test_validate_learning_system.py -q
+python3 -m unittest tests/zjskills/test_open_source_package.py -q
 ```
 
 Validation covers schema requirements and semantic invariants that schemas cannot fully express: unique IDs, valid endpoints, acyclicity, six project levels, complete L0–L5 behavior, current source dates, evidence coverage, rubric weights, and migration integrity.

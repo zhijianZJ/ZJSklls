@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Learning Architect schemas and learner state directories."""
+"""Validate learning-system schemas and learner state directories."""
 
 from __future__ import annotations
 

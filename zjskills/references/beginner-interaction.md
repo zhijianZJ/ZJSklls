@@ -44,3 +44,5 @@ If the learner says “I don't know,” “I cannot explain it,” or gives no u
 On the next turn, start from the prior action and ask what happened. Use the result to resolve, shrink, switch, or escalate the issue. Do not restart Discovery or repeat known questions unless the relevant learner fact has changed or become contradictory.
 
 When the issue is resolved, state what evidence was gained, what remains unverified, and the next normal learning action. When unresolved, keep it open and name the one next check. When a condition changes, explain the smallest plan scope affected before regenerating anything.
+
+Honor the global conversation intents and display depth defined in `interaction-orchestrator.md`. A learner may say “继续”, “返回”, “换个方法”, “我不知道”, “查看详情”, “修改时间”, “修改目标”, “保存”, or “暂停” without knowing any internal command. Interpret meaning from context and keep the beginner-facing response actionable.

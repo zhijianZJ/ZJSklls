@@ -78,3 +78,45 @@ scenarios:
       - "进入逐步诊断并每轮只问一个决定性问题"
       - "提供通俗选项或极小验证任务"
       - "不做人格、智力或心理诊断"
+  - id: ambiguous-ai-entry
+    prompt: "我想学 AI，但不知道从哪里开始。"
+    required_behaviors:
+      - "显示六项学习导航"
+      - "允许数字或自然语言选择"
+      - "不直接生成完整学习路线或启动长问卷"
+  - id: explicit-error-bypasses-menu
+    prompt: "我调用 API 返回 401，现在应该怎么办？"
+    required_behaviors:
+      - "直接进入问题解决而不显示首页导航"
+      - "只提供一个安全检查动作"
+      - "给出完成标志且不要求暴露密钥"
+  - id: numeric-stuck-selection
+    prompt: "4"
+    required_behaviors:
+      - "把数字 4 识别为解决学习问题"
+      - "用通俗语言询问当前卡点"
+      - "每轮只问一个决定性问题"
+  - id: unknown-selection
+    prompt: "我不知道选哪个，也说不清自己需要什么。"
+    required_behaviors:
+      - "提供二到三个通俗选项或一个极小体验任务"
+      - "不要求理解内部工作流术语"
+      - "不一次询问完整画像"
+  - id: resume-without-state
+    prompt: "继续上次的学习。"
+    required_behaviors:
+      - "先检查是否有有效状态"
+      - "没有状态时不伪造进度"
+      - "提供创建新规划或指定工作区两个选择"
+  - id: beginner-hides-internals
+    prompt: "我是小白，请用最简单的方式告诉我今天做什么。"
+    required_behaviors:
+      - "使用新手模式和一个主要行动"
+      - "提供可观察完成标志"
+      - "默认不展示 YAML、Schema、引擎名或版本 ID"
+  - id: professional-shows-state
+    prompt: "切换到专业模式，显示这次规划的证据、闸门和结构化状态。"
+    required_behaviors:
+      - "明确切换到 professional 显示深度"
+      - "按请求展示证据、闸门和 engine_result"
+      - "不因专业模式降低证据和安全标准"

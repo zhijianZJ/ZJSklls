@@ -1,5 +1,5 @@
 $schema: https://json-schema.org/draft/2020-12/schema
-title: Learning Architect Common Contracts
+title: Learning System Architect Common Contracts
 type: object
 $defs:
   id:

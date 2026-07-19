@@ -2,6 +2,27 @@
 
 ZJSkills manages growth as a versioned decision system. Define a verifiable outcome first, design capabilities and authentic projects next, and only then schedule knowledge and time. Learning activity supports a capability judgment only when it produces observable behavior and resolved evidence.
 
+## Navigation and display depth
+
+When the request is ambiguous, ZJSkills offers six entries: explore AI directions, design a learning or career-transition route, plan today or this week, solve a learning problem, adjust an existing plan, or continue previous progress. Reply with a number or use your own words. A concrete request routes directly; for example, “My API returns 401” enters problem solving without showing the home menu.
+
+Beginner mode is the default and shows only useful fields among the current target, verified progress, this interaction's focus, one action, its completion signal, and what follows. Ask for standard mode to see rationale and risk, or professional mode to inspect evidence, gates, versions, and `engine_result`. Display depth never changes capability evidence, plans, or gates.
+
+These natural-language intents work at any point; no exact command is required:
+
+| You can say | Behavior |
+|---|---|
+| “Continue” or “Next” | resume from the latest verified action or earliest unpassed gate |
+| “Go back” | return to the prior conversational choice without deleting or rolling back validated data |
+| “Try another way” | retain the failed observation and change the explanation, practice, or diagnostic method |
+| “I don't know” | offer two or three plain choices or one tiny experience task |
+| “Show details” | increase disclosure for this result without changing the learning plan |
+| “I only have four hours” or “My goal changed” | classify a constraint or goal change and adjust the correct scope |
+| “Save progress” | write only after an authorized learner workspace is specified and validated |
+| “Pause” | summarize what is complete, what remains open, and how to resume without implying background work |
+
+“Go back” is conversation navigation. Rollback of an active learning system creates a version and preserves history. A display preference is persisted only when you explicitly ask to save it and the learner workspace is writable.
+
 ## Complete workflow
 
 Stages run in order. Prose output alone never passes a gate. A genuinely irrelevant stage must be recorded as `not_applicable` with a reason, source, confidence, and affected downstream items.
@@ -50,10 +71,10 @@ One missed task or first failure does not justify `roadmap`. Escalation needs re
 
 ## Artifacts and structured state
 
-Each stage returns two synchronized layers:
+Each stage maintains two synchronized layers internally:
 
 1. concise prose stating the decision, decisive evidence, uncertainty, and one next action;
-2. the canonical `engine_result` recording inputs, decisions, evidence, assumptions, confidence, writes, downstream effects, gate, and next action.
+2. the canonical `engine_result` recording inputs, decisions, evidence, assumptions, confidence, writes, downstream effects, gate, and next action. Beginner and standard modes hide the raw wrapper; professional mode or an explicit request may display it.
 
 ```yaml
 engine_result:
@@ -126,8 +147,8 @@ Useful review inputs include planned versus actual hours, minimum delivery statu
 Maintainers can run:
 
 ```bash
-python3 learning-architect/scripts/validate_learning_system.py \
-  --skill-root learning-architect \
-  --learner-dir tests/learning-architect/fixtures/valid-learner
-python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
+python3 zjskills/scripts/validate_learning_system.py \
+  --skill-root zjskills \
+  --learner-dir tests/zjskills/fixtures/valid-learner
+python3 -m unittest tests/zjskills/test_validate_learning_system.py -q
 ```

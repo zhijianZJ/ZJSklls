@@ -2,7 +2,7 @@ id: ai-agent-engineer
 schema_version: 1.0.0
 content_version: 1
 status: active
-source: Learning Architect reference synthesis
+source: Learning System Architect reference synthesis
 confidence: medium
 created_at: "2026-07-13T00:00:00+08:00"
 updated_at: "2026-07-13T00:00:00+08:00"
@@ -14,7 +14,7 @@ target_outcomes:
   - id: production-ai-agent-delivery
     name: Production AI agent delivery
     description: Design, evaluate, deploy, and explain an AI agent that solves a bounded business problem under explicit reliability, security, and cost constraints.
-    source: Learning Architect reference synthesis
+    source: Learning System Architect reference synthesis
     as_of: "2026-07-13"
     success_evidence:
       - A working external-facing delivery with acceptance evidence
@@ -23,7 +23,7 @@ target_outcomes:
   - id: ai-agent-engineering-employment
     name: AI agent engineering employment readiness
     description: Present verified implementation evidence and make defensible technical and business trade-offs in a hiring process.
-    source: Learning Architect reference synthesis
+    source: Learning System Architect reference synthesis
     as_of: "2026-07-13"
     success_evidence:
       - A portfolio case with traceable competency coverage
@@ -515,7 +515,7 @@ assessment_patterns:
 
 outcome_preparation:
   employment_preparation:
-    source: Learning Architect reference synthesis
+    source: Learning System Architect reference synthesis
     as_of: "2026-07-13"
     minimum_evidence:
       - One portfolio case with a complete competency coverage matrix

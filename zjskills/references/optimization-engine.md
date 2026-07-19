@@ -19,7 +19,7 @@ Never overwrite active history. Copy the affected artifact under the same stable
 Explicit rollback targets are:
 
 - `goal_change` -> Goal Analysis, then recompute all `affected_downstream`;
-- capacity/constraint evidence -> Roadmap and Weekly Planner;
+- temporary or one-week capacity/constraint evidence with `week` impact -> Weekly Planner only; persistent or recurring evidence that changes phase feasibility with `roadmap` impact -> Roadmap, Weekly Planner, and affected downstream gates;
 - assessment failure -> earliest causal Gap, Competency, Curriculum, Project, or Weekly Planner decision;
 - `domain_update` -> Gap, Competency, Curriculum, and Project decisions;
 - packaging-only outcome failure -> Outcome Preparation.

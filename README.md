@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-**版本 [1.0.0](VERSION) · 86 tests 核心回归 / 101 tests 总计 · MIT**
+**版本 [2.0.0](VERSION) · 87 tests 核心回归 / 105 tests 总计 · MIT**
 
 把模糊的学习目标转化为可验证、可调整的个性化学习系统。
 
@@ -16,7 +16,20 @@
 
 ## 快速开始
 
-在支持 Skills 的 AI 工具中启用显示名为 `ZJSkills` 的 Skill；为兼容已安装用户，底层目录与显式调用标识仍为 `learning-architect`。然后直接说明目标与约束：
+在支持 Skills 的 AI 工具中启用 `ZJSkills`。2.0.0 起，底层目录和显式调用标识统一为 `zjskills`：Codex 使用 `$zjskills`，Claude Code 使用 `/zjskills`。如果你还不知道要问什么，直接发送“使用 ZJSkills”，它会显示下面的入口。
+
+### ZJSkills 学习导航
+
+1. 了解 AI 行业，判断适合的方向
+2. 制定 AI 学习或转行路线
+3. 安排今天或本周学习任务
+4. 解决学习中遇到的问题
+5. 时间、目标或情况变了，调整原计划
+6. 继续上次的学习进度
+
+回复数字，或直接用自己的话描述需求。默认采用**新手模式**：一次只呈现一个主要行动、完成标志和备用办法；你也可以随时要求“切换到标准模式”或“切换到专业模式并显示证据和结构化状态”。已经明确描述问题时，Skill 会直接处理，不会强制先走菜单。
+
+也可以直接说明目标与约束：
 
 ```text
 请使用 ZJSkills 帮我设计个性化学习系统。
@@ -47,32 +60,32 @@ ZJSkills 支持 Codex、Claude Code 和 Tencent WorkBuddy 的原生或兼容 Ski
 Codex 用户可先获取仓库，并在仓库根目录执行用户级安装：
 
 ```bash
-git clone https://github.com/zhijianZJ/ZJSklls.git
-cd ZJSklls
+git clone https://github.com/zhijianZJ/ZJSkills.git
+cd ZJSkills
 (
   set -e
   skills_dir="$HOME/.agents/skills"
-  destination="$skills_dir/learning-architect"
+  destination="$skills_dir/zjskills"
   if [ -e "$destination" ]; then
     echo "安装已停止：$destination 已存在，请先备份或选择升级流程。" >&2
     exit 1
   fi
   mkdir -p "$skills_dir"
-  cp -R ./learning-architect "$skills_dir/"
+  cp -R ./zjskills "$skills_dir/"
   test -f "$destination/SKILL.md"
 )
 ```
 
-整个括号命令没有报错且退出状态为 0，表示目标原本不存在且 `SKILL.md` 已复制成功；如果目标已存在，它会停止而不会复制。安装后请新建任务，并明确要求使用 `ZJSkills`。Claude Code 请安装到 `~/.claude/skills/learning-architect`；Tencent WorkBuddy 请优先从技能界面导入本地目录；豆包不应按本地原生 Skill 描述，具体操作见多平台指南。
+整个括号命令没有报错且退出状态为 0，表示目标原本不存在且 `SKILL.md` 已复制成功；如果目标已存在，它会停止而不会复制。安装后请新建任务，并使用 `$zjskills` 或直接要求使用 `ZJSkills`。Claude Code 请安装到 `~/.claude/skills/zjskills` 并使用 `/zjskills`；Tencent WorkBuddy 请优先从技能界面导入本地目录；豆包不应按本地原生 Skill 描述，具体操作见多平台指南。
 
 升级时不要把新目录直接合并进旧目录。先把已安装目录移到你指定的备份位置，再复制新版本；验证无误前保留备份，避免覆盖本地修改。卸载只需在确认不再需要本地修改后移走已安装目录。
 
 维护者与贡献者可在仓库根目录验证完整项目：
 
 ```bash
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" learning-architect
-python3 -m unittest discover -s tests/learning-architect -p "test_*.py" -q
-python3 learning-architect/scripts/validate_learning_system.py --skill-root learning-architect --learner-dir tests/learning-architect/fixtures/valid-learner
+python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" zjskills
+python3 -m unittest discover -s tests/zjskills -p "test_*.py" -q
+python3 zjskills/scripts/validate_learning_system.py --skill-root zjskills --learner-dir tests/zjskills/fixtures/valid-learner
 ```
 
 验证器需要 Python 3.9+，以及 `PyYAML`、`jsonschema` 和 `referencing`。第一条命令依赖 Codex 内置的 `skill-creator`；没有该路径时可运行后两条仓库验证命令。
@@ -111,11 +124,11 @@ python3 learning-architect/scripts/validate_learning_system.py --skill-root lear
 
 | 位置 | 用途 |
 | --- | --- |
-| [`learning-architect/SKILL.md`](learning-architect/SKILL.md) | 核心运行契约与工作流路由 |
-| [`learning-architect/references/`](learning-architect/references/) | 发现、能力、课程、项目、测评与优化引擎 |
-| [`learning-architect/assets/`](learning-architect/assets/) | Schema、模板与 Domain Pack |
-| [`learning-architect/scripts/`](learning-architect/scripts/) | 离线学习系统验证器 |
-| [`tests/learning-architect/`](tests/learning-architect/) | 86 项核心回归测试、15 项开源封装测试及有效、无效样例 |
+| [`zjskills/SKILL.md`](zjskills/SKILL.md) | 核心运行契约与工作流路由 |
+| [`zjskills/references/`](zjskills/references/) | 发现、能力、课程、项目、测评与优化引擎 |
+| [`zjskills/assets/`](zjskills/assets/) | Schema、模板与 Domain Pack |
+| [`zjskills/scripts/`](zjskills/scripts/) | 离线学习系统验证器 |
+| [`tests/zjskills/`](tests/zjskills/) | 87 项核心回归测试、18 项开源封装测试及有效、无效样例 |
 | [`docs/`](docs/) | 中英文使用与扩展文档 |
 
 ## 贡献

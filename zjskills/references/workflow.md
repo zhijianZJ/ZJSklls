@@ -26,6 +26,8 @@ The loop is `hear -> locate earliest blocker -> distinguish -> shrink -> define 
 
 For a horizontal support interaction, maintain the canonical `engine_result` internally or in the authorized learner workspace and show the beginner support card by default. If the user asks for structured state, return the same wrapper with `engine: problem-solving`; never invent a second wrapper.
 
+The home navigation and state-aware cards in `interaction-orchestrator.md` are a presentation layer around this state machine. They do not add a stage, pass a gate, create evidence, or authorize a write. An explicit task routes to the matching stage or support loop without requiring the learner to visit the navigation first.
+
 ## State transitions
 
 Allow `not_started -> collecting -> draft -> validated -> active`. Use `needs_input` when missing information can materially change the decision; use `blocked` only for a substantive condition that prevents safe progress. Allow `active -> superseded -> archived` while retaining history.
@@ -48,7 +50,7 @@ When goals compete for the same capacity, name exactly one primary goal, classif
 
 ## Engine return contract
 
-Return every stage result in two synchronized layers: first, a concise natural-language explanation of the conclusion, evidence, uncertainty, and next action; second, structured state using this canonical wrapper. Do not omit the explanation or return prose without state.
+Maintain every stage result in two synchronized layers: first, a concise natural-language explanation of the conclusion, evidence, uncertainty, and next action; second, structured state using this canonical wrapper. Structured state is mandatory internally, not mandatory in every visible reply. Follow `interaction-orchestrator.md`: beginner and standard replies show the appropriate plain-language card, while professional depth, explicit structured-detail requests, or host requirements may display the wrapper. “Return” in an engine reference means maintain and synchronize its result under this contract; it does not override display depth.
 
 ```yaml
 engine_result:
@@ -74,7 +76,7 @@ Keep `gate.passed` false whenever `gate.missing` is non-empty. List only inputs 
 ## Rollback protocol
 
 - On target change, return to Goal Analysis; create a new content version and recompute every item in `affected_downstream`.
-- On constraint change, recheck Roadmap and Weekly Planner, then any downstream stage affected by feasibility.
+- On a temporary or one-week constraint change, use `week` and revise Weekly Planner without automatically rebuilding Roadmap. On a persistent or recurring constraint change that alters phase feasibility, use `roadmap`, then recheck Roadmap, Weekly Planner, and affected downstream gates. When duration is unknown, ask one discriminating question before selecting the impact level.
 - On assessment failure, return to the earliest causal Gap, Competency, Curriculum, Project, or Weekly Planner decision; do not automatically add advanced theory.
 - On Domain Pack revision or staleness, recheck Gap, Competency, Curriculum, and Project decisions.
 - On contradictory evidence, retain both sources, lower confidence, request the smallest discriminating assessment, and supersede only after resolution.
