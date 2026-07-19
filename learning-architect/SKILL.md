@@ -1,6 +1,6 @@
 ---
 name: learning-architect
-description: Use when someone needs AI industry exploration, AI learning-direction decisions, AI career-transition planning, a personalized learning path, competency map, project-based curriculum, weekly study system, assessment strategy, outcome preparation, or adaptive replanning for employment, promotion, entrepreneurship, or real project delivery.
+description: Use when someone needs AI industry exploration, AI learning-direction decisions, AI career-transition planning, a personalized learning path, help getting unstuck while learning, step-by-step problem decomposition, study-plan adjustment after constraints or goals change, competency evidence, project-based practice, or outcome preparation.
 ---
 
 # Learning Architect
@@ -33,6 +33,7 @@ Keep occupational content replaceable through Domain Packs. Protect learner agen
 | Authentic projects, business value, coverage, deliverables, or rubrics must be created or changed | `references/project-engine.md` |
 | Phases, milestones, time, budget, buffers, dependencies, or checkpoints must be planned or rechecked | `references/roadmap-engine.md` |
 | The active roadmap must become a capacity-bounded weekly commitment | `references/planner-engine.md` |
+| The learner is stuck, cannot start, understands but cannot perform, reports an error, misses planned work, or cannot describe the blocker | `references/problem-solving-engine.md` and `references/beginner-interaction.md` |
 | Capability must be judged, evidence is missing or conflicting, or a project failed | `references/assessment-engine.md` |
 | Verified evidence must be prepared for employment, promotion, entrepreneurship, or project delivery | `references/outcome-engine.md` |
 | A scheduled, behavioral, quality, goal-change, or domain-update trigger requires versioned system change | `references/optimization-engine.md` |
@@ -57,6 +58,12 @@ Follow this order. `references/workflow.md` is the authority for complete stage 
 11. **Continuous Optimization** — diagnose triggers, version changes, recheck affected artifacts, and review effects.
 
 Do not silently skip stages. A genuinely irrelevant stage must record `state: not_applicable`, a nonempty `reason`, operational `source`, `confidence`, and `affected_downstream`; all are required in the machine-readable stage record. Never advance merely because a stage has prose output.
+
+## During Learning
+
+When the learner says they are stuck or conditions changed, do not restart the full workflow automatically. Load `references/problem-solving-engine.md` and `references/beginner-interaction.md`, locate the earliest blocker, and use the smallest justified plan-impact level: `none`, `task`, `week`, `roadmap`, or `goal_system`.
+
+Use `direct_action` for a clear low-risk issue, `guided_diagnosis` when one decision-changing answer is still needed, and `safety_handoff` when qualified review is required. Default to one plain-language action or one question, one observable success signal, one fallback, and a short statement of whether the plan changes. Keep engine names, YAML, schemas, and version mechanics out of the learner-facing reply unless requested.
 
 ## Gate and Evidence Rules
 

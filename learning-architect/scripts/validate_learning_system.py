@@ -30,6 +30,7 @@ SCHEMA_NAMES = (
     "assessment",
     "evidence",
     "optimization-state",
+    "learning-issue",
     "domain-pack",
 )
 
@@ -83,6 +84,7 @@ SINGLETON_ARTIFACTS = {
     "evidence.yaml": "evidence",
     "weekly-plan.yaml": "weekly-plan",
     "project.yaml": "project",
+    "learning-issue.yaml": "learning-issue",
 }
 SINGLETON_ARTIFACT_TYPES = {
     "system-state",
@@ -99,6 +101,7 @@ DIRECTORY_ARTIFACTS = {
     "assessments": "assessment",
     "portfolio": "evidence",
     "evidence": "evidence",
+    "learning-issues": "learning-issue",
 }
 LEARNER_FORMAT_CHECKER = FormatChecker()
 
@@ -780,6 +783,21 @@ def validate_learner_system(skill_root: Path, learner_dir: Path) -> list[str]:
                 "Assessment gate.missing must exactly match failed or missing "
                 "applicable behaviors"
             )
+
+    for issue_path, issue in artifacts.get("learning-issue", []):
+        plan_impact = issue.get("plan_impact", {})
+        if plan_impact.get("level") == "goal_system":
+            if plan_impact.get("rollback_target") != "goal-analysis":
+                errors.append(
+                    "Learning issue goal_system requires rollback_target "
+                    "goal-analysis: "
+                    f"{issue_path.relative_to(learner_dir)}"
+                )
+            if not plan_impact.get("affected_artifacts"):
+                errors.append(
+                    "Learning issue goal_system requires affected_artifacts: "
+                    f"{issue_path.relative_to(learner_dir)}"
+                )
 
     system_state = first("system-state")
     if system_state:

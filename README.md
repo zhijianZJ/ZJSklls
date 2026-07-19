@@ -2,13 +2,15 @@
 
 [English](README.en.md)
 
-**版本 [1.0.0](VERSION) · 84 tests 核心回归 / 94 tests 总计 · MIT**
+**版本 [1.0.0](VERSION) · 86 tests 核心回归 / 101 tests 总计 · MIT**
 
 把模糊的学习目标转化为可验证、可调整的个性化学习系统。
 
 ## 它解决什么问题
 
 课程清单通常不会回答三个关键问题：目标究竟需要哪些能力、当前差距有什么证据、条件变化后应该从哪里重算。ZJSkills 从目标、基础、时间和约束出发，设计能力模型、项目阶梯、阶段路线、周度行动与评估关卡，并把事实、自述、证据、推断和假设分开记录。
+
+开始学习后，它还能处理“看不懂、不会做、遇到报错、不知道第一步、没有完成计划”等真实问题：先进行问题拆解，给出一个最小行动和完成标志，再判断是否需要调整任务、本周计划、整体路线或目标系统。
 
 它帮助你提高学习决策、能力证据和持续调整的质量，但不保证 Offer、转岗、晋升、收入或其他由外部主体决定的结果。
 
@@ -26,6 +28,17 @@
 ```
 
 第一次使用、继续规划和重新规划的提示词见[新手入门](docs/getting-started.md)。
+
+## 学习中遇到问题
+
+不需要重新描述整套背景，也不用懂任何技术术语。直接告诉它：
+
+```text
+请使用 ZJSkills 继续陪我学习。我卡住了：[用自己的话描述问题]。
+请先判断我最早卡在哪一步。简单问题直接给我现在只做的一步、完成标志和备用办法；复杂问题每次只问我一个关键问题。最后说明是否需要调整原计划。
+```
+
+如果不知道怎么描述，只说“我卡住了，不知道问题在哪里”也可以。Skill 会提供少量通俗选项或一个很小的验证任务，而不是一次抛出长教程和完整问卷。
 
 ## 安装
 
@@ -70,6 +83,7 @@ python3 learning-architect/scripts/validate_learning_system.py --skill-root lear
 - 从目标结果反推的能力树与前置依赖；
 - 以真实产物和评分标准为核心的项目阶梯；
 - 分阶段路线、下一周计划与明确的通过关卡；
+- 学习中问题的一步步拆解、最小行动、完成标志与后续追踪；
 - 可追溯的结构化状态，以及在目标、约束或证据变化后的版本化更新；
 - 可复用的 Domain Pack 契约，仓库内置 AI Agent 工程师领域包。
 
@@ -82,11 +96,13 @@ python3 learning-architect/scripts/validate_learning_system.py --skill-root lear
 
 每个阶段都有进入条件、产物与关卡。证据不足时，系统会标记假设或请求补充信息；项目或测评未通过时，它会定位最早的因果缺口，只重算受影响的下游部分。
 
+学习陪跑是贯穿执行过程的横向循环：`遇到问题 → 找到最早卡点 → 只做一步 → 验证结果 → 必要时最小化调整计划`，不会为了处理一次卡顿强制重走全部阶段。
+
 ## 完整文档
 
-- [新手入门](docs/getting-started.md)：第一次使用、继续与重新规划；
-- [完整使用手册](docs/usage-guide.md)：工作流、结构化状态、证据判断与安全边界；
-- [使用场景与提示词](docs/examples.md)：四类典型目标的完整示例；
+- [新手入门](docs/getting-started.md)：第一次使用、遇到问题、继续与重新规划；
+- [完整使用手册](docs/usage-guide.md)：工作流、问题拆解、动态调整、结构化状态与安全边界；
+- [使用场景与提示词](docs/examples.md)：四类目标与学习中卡住的完整示例；
 - [多平台安装与使用](docs/platform-installation.md)：Codex、Claude Code、Tencent WorkBuddy 与豆包；
 - [Domain Pack 扩展指南](docs/domain-pack-guide.md)：数据契约、能力依赖、项目原型与验证要求；
 - [English documentation](README.en.md)：英文项目入口。
@@ -99,7 +115,7 @@ python3 learning-architect/scripts/validate_learning_system.py --skill-root lear
 | [`learning-architect/references/`](learning-architect/references/) | 发现、能力、课程、项目、测评与优化引擎 |
 | [`learning-architect/assets/`](learning-architect/assets/) | Schema、模板与 Domain Pack |
 | [`learning-architect/scripts/`](learning-architect/scripts/) | 离线学习系统验证器 |
-| [`tests/learning-architect/`](tests/learning-architect/) | 84 项核心回归测试、10 项开源封装测试及有效、无效样例 |
+| [`tests/learning-architect/`](tests/learning-architect/) | 86 项核心回归测试、15 项开源封装测试及有效、无效样例 |
 | [`docs/`](docs/) | 中英文使用与扩展文档 |
 
 ## 贡献

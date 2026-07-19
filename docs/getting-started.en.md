@@ -67,6 +67,34 @@ I now have only four hours this week. Keep the target, recalculate capacity, and
 
 Every stage should return concise natural-language guidance plus synchronized structured state in the canonical `engine_result` wrapper. `artifacts_written` must list only files actually persisted.
 
+## When you get stuck
+
+You do not need to wait for a formal review or diagnose the category yourself. Any of these can start learning support:
+
+- “I do not understand this part.”
+- “I can explain the idea, but I cannot do it alone.”
+- “The tool returned an error and I do not know what it means.”
+- “The project feels too large and I do not know the first step.”
+- “I missed this week. What should change?”
+- “I cannot explain it; I just feel stuck.”
+
+Use this general prompt:
+
+```text
+Use ZJSkills to help with a problem during learning. My current task is [task]. I am stuck because [problem; write "I don't know" if necessary].
+Use beginner-friendly language. For a simple issue, tell me “Do only this now” and “What success looks like.” For a complex issue, ask only one key question at a time. Do not give me many alternatives at once, and end by deciding whether the existing learning plan must change.
+```
+
+The default reply covers six things: where you are stuck, the initial cause hypothesis, one action now, an observable success signal, one fallback, and whether the plan changes. If you answer “I don't know,” the Skill offers two or three plain choices or one tiny test instead of a questionnaire.
+
+After trying the step, continue with:
+
+```text
+I tried the previous step. The result was [visible result, sanitized error, or artifact]. Decide whether the issue is resolved. If not, give me only the next step and do not repeat an approach that already failed.
+```
+
+Resolving the blocker does not automatically prove independent capability. A later practice attempt or project check without decisive guidance may still be needed.
+
 ## How to replan
 
 Replanning rolls back to the earliest affected decision:

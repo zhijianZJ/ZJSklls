@@ -2,13 +2,15 @@
 
 [简体中文](README.md)
 
-**Version [1.0.0](VERSION) · 84 core regression tests / 94 total tests · MIT**
+**Version [1.0.0](VERSION) · 86 core regression tests / 101 total tests · MIT**
 
 Turn an ambiguous learning goal into a verifiable, adaptable, personalized learning system.
 
 ## What it helps you solve
 
 Course lists rarely answer three critical questions: which capabilities the target actually requires, what evidence supports the current gap, and where to recompute when circumstances change. ZJSkills starts from the target, baseline, capacity, and constraints, then designs a competency model, project ladder, phased roadmap, weekly actions, and assessment gates while keeping facts, self-reports, evidence, inferences, and assumptions distinct.
+
+Once learning begins, it also handles real problems such as confusion, theory that does not transfer into action, tool errors, an unclear first step, or missed commitments. It uses problem decomposition to produce one small action and an observable success signal, then decides whether the current task, week, roadmap, or goal system must change.
 
 It can improve the quality of learning decisions, capability evidence, and adaptation, but it does not guarantee an offer, career transition, promotion, income, or any result controlled by external parties.
 
@@ -26,6 +28,17 @@ First ask for the decision-critical information that could change the route. Do 
 ```
 
 See [Getting Started](docs/getting-started.en.md) for prompts covering first use, continuation, and replanning.
+
+## Problems during learning
+
+You do not need to restate your whole profile or know any internal terminology. Say:
+
+```text
+Use ZJSkills to continue supporting my learning. I'm stuck: [describe the problem in your own words].
+First locate the earliest step blocking me. If it is simple, give me only one action to do now, an observable success signal, and one fallback. If it is complex, ask only one key question at a time. End by saying whether the existing plan needs to change.
+```
+
+If you cannot describe the problem, “I'm stuck and I don't know where” is enough. The Skill will offer a few plain options or one tiny diagnostic task instead of a long tutorial or questionnaire.
 
 ## Install
 
@@ -70,6 +83,7 @@ The validator requires Python 3.9+ with `PyYAML`, `jsonschema`, and `referencing
 - A competency tree and prerequisite dependencies derived backward from the target outcome.
 - A project ladder centered on authentic artifacts and explicit rubrics.
 - A phased roadmap, next weekly plan, and clear passing gates.
+- Step-by-step learning-problem decomposition, one next action, a success signal, and follow-up.
 - Traceable structured state and versioned updates when the target, constraints, or evidence change.
 - A reusable Domain Pack contract, with an AI Agent Engineer pack included in the repository.
 
@@ -83,11 +97,13 @@ Discovery → Goal Analysis → Gap Analysis → Competency Design → Curriculu
 
 Each stage has entry conditions, artifacts, and a gate. When evidence is insufficient, the system labels assumptions or requests more information. When a project or assessment fails, it locates the earliest causal gap and recomputes only the affected downstream parts.
 
+Learning support runs horizontally during execution: `problem → earliest blocker → one action → verify → minimally adjust the plan when necessary`. A single blocker does not force the learner through all stages again.
+
 ## Full documentation
 
-- [Getting Started](docs/getting-started.en.md): first use, continuation, and replanning.
-- [Full Usage Guide](docs/usage-guide.en.md): workflow, structured state, evidence judgment, and safety boundaries.
-- [Scenarios and Prompts](docs/examples.en.md): complete examples for four typical targets.
+- [Getting Started](docs/getting-started.en.md): first use, getting unstuck, continuation, and replanning.
+- [Full Usage Guide](docs/usage-guide.en.md): workflow, problem decomposition, adaptive planning, structured state, and safety boundaries.
+- [Scenarios and Prompts](docs/examples.en.md): four target examples plus learning-in-progress support.
 - [Multi-platform Installation and Usage](docs/platform-installation.en.md): Codex, Claude Code, Tencent WorkBuddy, and Doubao.
 - [Domain Pack Extension Guide](docs/domain-pack-guide.en.md): data contract, competency dependencies, project archetypes, and validation requirements.
 - [中文文档](README.md): Chinese project entry.
@@ -100,7 +116,7 @@ Each stage has entry conditions, artifacts, and a gate. When evidence is insuffi
 | [`learning-architect/references/`](learning-architect/references/) | Discovery, competency, curriculum, project, assessment, and optimization engines |
 | [`learning-architect/assets/`](learning-architect/assets/) | Schemas, templates, and Domain Packs |
 | [`learning-architect/scripts/`](learning-architect/scripts/) | Offline learning-system validator |
-| [`tests/learning-architect/`](tests/learning-architect/) | 84 core regression tests, 10 open-source package tests, and valid/invalid fixtures |
+| [`tests/learning-architect/`](tests/learning-architect/) | 86 core regression tests, 15 open-source package tests, and valid/invalid fixtures |
 | [`docs/`](docs/) | Chinese and English usage and extension guides |
 
 ## Contributing
