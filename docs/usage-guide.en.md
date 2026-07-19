@@ -22,6 +22,32 @@ Stages run in order. Prose output alone never passes a gate. A genuinely irrelev
 
 When goals compete for the same capacity, name one primary goal. Compatible work may be secondary; incompatible work is deferred with a review condition.
 
+## Learning support and problem decomposition
+
+Learning support is not a twelfth stage. It is a horizontal loop available during execution: hear the problem, locate the earliest blocker, distinguish plausible causes, shrink the problem to one action, define success, try, verify, and assess plan impact. The learner can speak naturally and does not need to know the workflow or data model.
+
+Internally, the Skill distinguishes nine issue types: knowledge confusion, theory-to-practice transfer, unclear starting point, prerequisite gap, tool or environment failure, oversized task, resource mismatch, capacity change, and goal change. A type is a hypothesis for organizing the next decision. It never replaces the learner's words or justifies a judgment about diligence, intelligence, personality, or a fixed learning style.
+
+There are three interaction modes:
+
+- `direct_action`: context is sufficient and risk is low, so provide one action, one success signal, and one fallback;
+- `guided_diagnosis`: multiple causes remain plausible or decisive information is missing, so ask one decision-changing question per turn;
+- `safety_handoff`: medical, mental-health, legal, financial, security, or production risk requires an explicit boundary and appropriate human or qualified review.
+
+The beginner-facing reply shows only six useful fields: where you are stuck, the initial read, one action now, what success looks like, one fallback, and whether the plan changes. With an authorized learner workspace, structured records may be stored under `learning-issues/*.yaml`; YAML is hidden by default. Resolving an issue records that a blocker was addressed, not that independent capability was proven.
+
+Plan adjustment uses the smallest justified impact:
+
+| Level | When it applies | Change scope |
+|---|---|---|
+| `none` | one bounded check lets learning continue | no plan artifact changes |
+| `task` | the active task must be split, replaced, scaffolded, or rescheduled | current task only |
+| `week` | capacity, dependencies, or several commitments changed | weekly plan and minimum delivery |
+| `roadmap` | persistent capacity, prerequisite, or project-sequence evidence changes phase feasibility | roadmap and affected downstream gates |
+| `goal_system` | target, deadline, success evidence, or career/business route changed | return to Goal Analysis and rebuild affected artifacts |
+
+One missed task or first failure does not justify `roadmap`. Escalation needs repeated evidence or a confirmed real-world change. A `goal_system` change preserves history and cannot be disguised as a small weekly edit.
+
 ## Artifacts and structured state
 
 Each stage returns two synchronized layers:

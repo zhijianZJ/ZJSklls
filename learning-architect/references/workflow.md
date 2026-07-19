@@ -18,6 +18,14 @@ Use this file as the sole full enumeration of the workflow. Persist progress in 
 
 Do not silently skip a stage. When genuinely irrelevant, persist a stage record containing `state: not_applicable`, a nonempty `reason`, operational `source`, `confidence`, and `affected_downstream`. All five fields are required and machine-validated.
 
+## Horizontal learning-support loop
+
+Do not change the 11-stage order. A learner may invoke the problem-solving loop during execution by reporting confusion, inability to perform, a tool or environment error, an oversized task, a missed commitment, a capacity change, or a goal change. Load `problem-solving-engine.md` and `beginner-interaction.md`; do not force the learner through Discovery again when current context is sufficient.
+
+The loop is `hear -> locate earliest blocker -> distinguish -> shrink -> define success -> try -> verify -> assess plan impact`. It returns to the active stage when resolved. Route `task` and `week` impact to Weekly Planner, `roadmap` impact to Roadmap and affected downstream gates, and `goal_system` impact to Goal Analysis and all affected downstream artifacts. The loop may persist a `learning-issue`, but it never becomes a twelfth stage and never advances a stage gate by itself.
+
+For a horizontal support interaction, maintain the canonical `engine_result` internally or in the authorized learner workspace and show the beginner support card by default. If the user asks for structured state, return the same wrapper with `engine: problem-solving`; never invent a second wrapper.
+
 ## State transitions
 
 Allow `not_started -> collecting -> draft -> validated -> active`. Use `needs_input` when missing information can materially change the decision; use `blocked` only for a substantive condition that prevents safe progress. Allow `active -> superseded -> archived` while retaining history.

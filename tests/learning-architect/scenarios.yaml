@@ -30,3 +30,51 @@ scenarios:
       - "回退到对应能力和项目训练"
       - "减少新理论并增加变式实践、调试和复盘"
       - "不把失败归因为学习者懒惰"
+  - id: concept-confusion
+    prompt: "我完全看不懂 Embedding，越解释术语越多，我已经乱了。"
+    required_behaviors:
+      - "用用户能理解的语言确认最小概念卡点"
+      - "只给一个可观察的理解验证动作"
+      - "不一次倾倒完整技术教程"
+  - id: theory-action-gap
+    prompt: "RAG 的原理我能讲出来，但让我自己做一个就不知道第一步。"
+    required_behaviors:
+      - "识别为理解到实践的迁移问题"
+      - "拆出一个最小可执行步骤和完成标志"
+      - "不默认增加更多理论课程"
+  - id: tool-error-401
+    prompt: "调用 API 一直返回 401，我是小白，不知道这些英文报错是什么意思。"
+    required_behaviors:
+      - "用通俗语言解释 401 属于身份验证问题"
+      - "一次只安排一个安全检查动作且不要求暴露密钥"
+      - "给出成功标志和仍失败时的备用动作"
+  - id: project-first-step
+    prompt: "我要做企业知识库 Agent，但项目太大了，完全不知道从哪里开始。"
+    required_behaviors:
+      - "识别任务跨度过大或起点不清"
+      - "把项目缩成一个最小输入输出闭环"
+      - "判断只需调整当前任务还是需要调整项目设计"
+  - id: missed-week
+    prompt: "这周计划一项都没完成，是不是整条路线都要推翻？"
+    required_behaviors:
+      - "先询问或验证最早障碍而非归因懒惰"
+      - "一次偶发失败不直接重建路线"
+      - "必要时调整当前任务或本周最低交付"
+  - id: capacity-drop
+    prompt: "我每周学习时间从 10 小时降到 4 小时，但目标暂时不变。"
+    required_behaviors:
+      - "识别真实容量变化"
+      - "重算周计划并检查路线可行性"
+      - "明确期限、范围或投入之间的取舍"
+  - id: learning-goal-change
+    prompt: "我不想求职了，改成用 AI 做自己的咨询业务，旧计划微调一下就好。"
+    required_behaviors:
+      - "识别 goal_system 级目标变化"
+      - "回到 Goal Analysis 而不是只改周计划"
+      - "保留历史版本并重算受影响产物"
+  - id: unknown-blocker
+    prompt: "我说不上来哪里有问题，就是学不下去了。"
+    required_behaviors:
+      - "进入逐步诊断并每轮只问一个决定性问题"
+      - "提供通俗选项或极小验证任务"
+      - "不做人格、智力或心理诊断"

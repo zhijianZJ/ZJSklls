@@ -3,6 +3,8 @@ import re
 import unittest
 from urllib.parse import unquote
 
+import yaml
+
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_ROOT = REPO_ROOT / "learning-architect"
@@ -185,6 +187,43 @@ class OpenSourcePackageTests(unittest.TestCase):
                 self.assertIn(host, text)
         self.assertIn("豆包", chinese)
         self.assertIn("Doubao", english)
+
+    def test_beginner_learning_support_is_documented_in_both_languages(self):
+        required = {
+            "README.md": ("学习中遇到问题", "我卡住了", "问题拆解"),
+            "README.en.md": ("Problems during learning", "I'm stuck", "problem decomposition"),
+            "docs/getting-started.md": ("## 学习中遇到问题", "现在只做这一步"),
+            "docs/getting-started.en.md": ("## When you get stuck", "Do only this now"),
+            "docs/usage-guide.md": ("## 学习陪跑与问题拆解", "goal_system"),
+            "docs/usage-guide.en.md": ("## Learning support and problem decomposition", "goal_system"),
+            "docs/examples.md": ("## 场景五：学习中卡住", "401"),
+            "docs/examples.en.md": ("## Scenario 5: Getting stuck while learning", "401"),
+        }
+        for path, phrases in required.items():
+            text = read_text(path)
+            for phrase in phrases:
+                self.assertIn(phrase, text, f"{path}: {phrase}")
+
+    def test_pressure_scenarios_cover_learning_support_and_plan_adjustment(self):
+        document = yaml.safe_load(read_text("tests/learning-architect/scenarios.yaml"))
+        scenarios = {item["id"]: item for item in document["scenarios"]}
+        required_ids = {
+            "concept-confusion",
+            "theory-action-gap",
+            "tool-error-401",
+            "project-first-step",
+            "missed-week",
+            "capacity-drop",
+            "learning-goal-change",
+            "unknown-blocker",
+        }
+        self.assertTrue(required_ids <= set(scenarios))
+        for scenario_id in required_ids:
+            self.assertGreaterEqual(
+                len(scenarios[scenario_id]["required_behaviors"]),
+                3,
+                scenario_id,
+            )
 
     def test_public_documents_use_zjskills_brand_and_repository_url(self):
         documents = [REPO_ROOT / "README.md", REPO_ROOT / "README.en.md", REPO_ROOT / "CONTRIBUTING.md"]

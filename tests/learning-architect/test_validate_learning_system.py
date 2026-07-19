@@ -388,6 +388,101 @@ class LearningSystemValidationTests(unittest.TestCase):
         self.assertEqual(missing_engines, [], f"Missing adaptive engines: {missing_engines}")
         self.assertEqual(missing_templates, [], f"Missing worked templates: {missing_templates}")
 
+    def test_learning_support_runtime_contract(self):
+        references = self.skill_root / "references"
+        problem_solving_path = references / "problem-solving-engine.md"
+        beginner_path = references / "beginner-interaction.md"
+        self.assertTrue(problem_solving_path.is_file(), problem_solving_path)
+        self.assertTrue(beginner_path.is_file(), beginner_path)
+
+        skill = (self.skill_root / "SKILL.md").read_text(encoding="utf-8")
+        workflow = (references / "workflow.md").read_text(encoding="utf-8")
+        problem_solving = problem_solving_path.read_text(encoding="utf-8")
+        beginner = beginner_path.read_text(encoding="utf-8")
+        combined = "\n".join((skill, workflow, problem_solving, beginner))
+
+        for token in (
+            "direct_action",
+            "guided_diagnosis",
+            "safety_handoff",
+            "knowledge_confusion",
+            "practice_transfer",
+            "starting_ambiguity",
+            "prerequisite_gap",
+            "tool_environment",
+            "task_overreach",
+            "resource_mismatch",
+            "capacity_change",
+            "goal_change",
+            "none",
+            "task",
+            "week",
+            "roadmap",
+            "goal_system",
+            "engine: problem-solving",
+            "engine_result",
+        ):
+            self.assertIn(token, combined)
+
+        for label in (
+            "你现在卡在哪里",
+            "我对原因的初步判断",
+            "现在只做这一步",
+            "做到什么算完成",
+            "如果还是不行",
+            "是否影响原计划",
+        ):
+            self.assertIn(label, beginner)
+        self.assertIn("one decision-changing question", beginner)
+        self.assertIn("Do not change the 11-stage order", workflow)
+
+    def test_learning_issue_schema_and_semantics(self):
+        template_path = (
+            self.skill_root / "assets" / "templates" / "learning-issue.yaml"
+        )
+        schema_path = (
+            self.skill_root / "assets" / "schemas" / "learning-issue.schema.yaml"
+        )
+        self.assertTrue(template_path.is_file(), template_path)
+        self.assertTrue(schema_path.is_file(), schema_path)
+
+        template = yaml.safe_load(template_path.read_text(encoding="utf-8"))
+        self.assertEqual(self.schema_issues("learning-issue", template), [])
+
+        missing_success = yaml.safe_load(template_path.read_text(encoding="utf-8"))
+        missing_success.pop("success_signal")
+        self.assertTrue(self.schema_issues("learning-issue", missing_success))
+
+        invalid_impact = yaml.safe_load(template_path.read_text(encoding="utf-8"))
+        invalid_impact["plan_impact"]["level"] = "everything"
+        self.assertTrue(self.schema_issues("learning-issue", invalid_impact))
+
+        with self.copied_valid_learner() as learner_dir:
+            issue_dir = learner_dir / "learning-issues"
+            issue_dir.mkdir()
+            goal_issue = yaml.safe_load(template_path.read_text(encoding="utf-8"))
+            goal_issue["id"] = "issue-goal-change"
+            goal_issue["issue_type"] = "goal_change"
+            goal_issue["plan_impact"] = {
+                "level": "goal_system",
+                "reason": "The target changed from employment to entrepreneurship.",
+                "affected_artifacts": ["target-outcome", "competency-model"],
+                "rollback_target": "weekly-planner",
+            }
+            (issue_dir / "goal-change.yaml").write_text(
+                yaml.safe_dump(goal_issue), encoding="utf-8"
+            )
+            errors = self.validator.validate_learner_system(
+                self.skill_root, learner_dir
+            )
+            self.assertTrue(
+                any(
+                    "goal_system requires rollback_target goal-analysis" in error
+                    for error in errors
+                ),
+                errors,
+            )
+
     def test_adaptive_engines_expose_required_contracts(self):
         references = self.skill_root / "references"
         combined_text = "\n".join(

@@ -113,3 +113,37 @@ Only redacted samples are allowed, and a procurement manager must approve every 
 ```text
 The pilot reduced processing time, but critical-field errors exceeded the threshold and human review increased. Here are the test records: [content]. Diagnose the failure, roll back to the earliest affected capability or project decision, and design the next experiment.
 ```
+
+## Scenario 5: Getting stuck while learning
+
+These prompts work inside an existing learning plan; you do not need to restart the full planning workflow.
+
+### A concept does not make sense
+
+```text
+I am learning embeddings, but every explanation adds more unfamiliar terms and I no longer know where I first got lost. Use beginner-friendly language to locate one blocker, then give me one tiny task that checks understanding. Do not explain the whole chapter at once.
+```
+
+### An API returns 401
+
+```text
+My API call returns 401. I am a beginner. Explain in one sentence which boundary this usually points to, then give me only one safe check at a time. Never ask me to send an API key, password, or token, and tell me what visible result means the step is complete.
+```
+
+### A week was missed
+
+```text
+I did not complete this week's plan. Do not assume I lack discipline and do not immediately rebuild the entire route. Ask one question at a time to locate the earliest obstacle, then decide whether to change the current task, this week, or the roadmap.
+```
+
+### The target changed
+
+```text
+My target changed from becoming an AI Agent Engineer to building an AI consulting business. Decide whether this changes the whole goal system, preserve the old version, and state where replanning must begin. Do not just append startup tasks to the old weekly plan.
+```
+
+### Continue after one action
+
+```text
+I completed the previous action. The result was [result]. Decide whether the issue is resolved. If not, give me only the next action and success signal. If this affects the plan, state the smallest justified change and why.
+```

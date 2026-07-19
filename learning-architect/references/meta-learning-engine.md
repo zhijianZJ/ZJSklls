@@ -16,6 +16,8 @@ Represent the active mix as explicit ratios whose sum is 1.0: `theory_ratio`, `p
 
 Do not label a modality as the learner's fixed “style.” A preference may shape accessibility or format, but only observed outcome evidence justifies a learning-method claim. Do not make multiple major ratio changes in one review unless safety requires it; otherwise the effect cannot be attributed.
 
+Do not start a meta-learning experiment from one report of confusion or one failed task. First use the Problem-Solving Engine to resolve the bounded issue. Start an experiment only when repeated `learning-issue` records and dated outcomes show a stable mismatch in theory, practice, review, accessibility, retrieval, or transfer. Preserve the problem records as evidence for the hypothesis, but do not convert their labels into fixed traits.
+
 ## Experiment and rollback
 
 Record baseline evidence, candidate ratios, one hypothesis, duration, success measure, minimum delivery impact, and `review_at` in a versioned optimization event. Keep the current version active until the candidate passes capacity and dependency gates. If the expected assessment or sustainability effect is absent, restore the prior ratios and diagnose the next smallest causal factor. Preserve all versions and observations.

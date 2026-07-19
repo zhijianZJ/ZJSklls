@@ -24,6 +24,8 @@ Explicit rollback targets are:
 - `domain_update` -> Gap, Competency, Curriculum, and Project decisions;
 - packaging-only outcome failure -> Outcome Preparation.
 
+Accept plan-impact decisions from the Problem-Solving Engine without automatically treating every issue as an optimization event. `none` closes or continues the issue without an artifact change; `task` and `week` create the smallest Weekly Planner revision; `roadmap` rechecks Roadmap and named downstream gates; `goal_system` is a `goal_change` event that must return to Goal Analysis. Escalate a recurring learning problem only when dated attempts show that the smaller change did not remove the diagnosed cause.
+
 Revalidate all dependencies, evidence coverage, load, and gates touched by a change. Compare the expected effect at `review_at`; keep, revise, or reverse the candidate based on evidence rather than sunk cost.
 
 Return a natural-language explanation followed by the canonical `engine_result` from `workflow.md` with `engine: continuous-optimization`, enum confidence, the optimization event and new artifact versions, explicit rollback/affected downstream decisions, gate details, and one next action.
