@@ -131,27 +131,72 @@ class LightweightSkillTests(unittest.TestCase):
     def test_skill_conditionally_loads_all_four_references(self):
         skill = read_runtime("SKILL.md")
         load_section = self.level_two_section(skill, "Load Only What Is Needed")
+        approved_references = (
+            "references/career-diagnosis.md",
+            "references/learning-route.md",
+            "references/learning-help.md",
+            "references/ai-career-map.md",
+        )
         table_lines = [
             line.strip()
             for line in load_section.splitlines()
             if line.strip().startswith("|") and line.strip().endswith("|")
         ]
         self.assertGreaterEqual(len(table_lines), 3, table_lines)
+
+        def cells(line: str) -> list[str]:
+            return [cell.strip() for cell in line.strip("|").split("|")]
+
+        header_cells = cells(table_lines[0])
+        separator_cells = cells(table_lines[1])
+        self.assertGreaterEqual(len(header_cells), 2, header_cells)
+        self.assertTrue(all(header_cells), header_cells)
+        self.assertEqual(len(separator_cells), len(header_cells))
         self.assertTrue(
-            any(
-                re.fullmatch(r"\|(?:\s*:?-+:?\s*\|)+", line)
-                for line in table_lines
-            ),
-            table_lines,
+            all(re.fullmatch(r":?-{3,}:?", cell) for cell in separator_cells),
+            separator_cells,
         )
-        routing_table = "\n".join(table_lines)
-        for reference in (
-            "references/career-diagnosis.md",
-            "references/learning-route.md",
-            "references/learning-help.md",
-            "references/ai-career-map.md",
-        ):
-            self.assertIn(reference, routing_table, reference)
+
+        data_rows = [cells(line) for line in table_lines[2:]]
+        self.assertEqual(len(data_rows), len(approved_references), data_rows)
+        reference_rows = {}
+        reference_cell_indexes = []
+        for row_index, row in enumerate(data_rows):
+            self.assertEqual(len(row), len(header_cells), row)
+            matches = [
+                (cell_index, reference)
+                for cell_index, cell in enumerate(row)
+                for reference in approved_references
+                if reference in cell
+            ]
+            self.assertEqual(len(matches), 1, row)
+            reference_cell_index, reference = matches[0]
+            reference_cell_indexes.append(reference_cell_index)
+            self.assertEqual(row[reference_cell_index].strip("`"), reference, row)
+            condition_cells = [
+                cell
+                for cell_index, cell in enumerate(row)
+                if cell_index != reference_cell_index and cell
+            ]
+            self.assertTrue(condition_cells, row)
+            reference_rows.setdefault(reference, []).append(row_index)
+
+        self.assertEqual(len(set(reference_cell_indexes)), 1, reference_cell_indexes)
+        reference_column = reference_cell_indexes[0]
+        condition_columns = [
+            column
+            for column in range(len(header_cells))
+            if column != reference_column and all(row[column] for row in data_rows)
+        ]
+        self.assertTrue(condition_columns, data_rows)
+        for reference in approved_references:
+            self.assertEqual(len(reference_rows.get(reference, [])), 1, reference)
+            self.assertEqual(load_section.count(reference), 1, reference)
+        self.assertEqual(
+            len({rows[0] for rows in reference_rows.values()}),
+            len(approved_references),
+            reference_rows,
+        )
 
     def test_career_diagnosis_has_the_compact_output_contract(self):
         self.assertTrue(
