@@ -2,7 +2,7 @@ scenarios:
   - {id: vague-ai-transition, language: zh-CN, prompt: "我想转行 AI，但不知道该学什么。"}
   - {id: compare-agent-vibe, language: zh-CN, prompt: "我在 AI Agent 开发和 Vibe Coding 之间犹豫。我会一点 Python，但还没独立部署过项目。"}
   - {id: no-coding-evidence, language: zh-CN, prompt: "我零编程基础，看到 Agent 工程师工资高，所以想三个月转行。"}
-  - {id: training-decision, language: zh-CN, prompt: "我该自学还是报一个系统课程？我每周能学 8 小时，做过一次 AI 表格自动化，但没人带我复盘。"}
+  - {id: learning-overload, language: zh-CN, prompt: "我收藏了很多 Agent、Python 和 RAG 资料，但越看越不知道先学什么。每周能投入 8 小时，希望三个月后做出一个能演示的项目。"}
   - {id: concept-confusion, language: zh-CN, prompt: "我一直没搞懂 RAG 和直接把资料放进上下文有什么区别。"}
   - {id: incomplete-error, language: zh-CN, prompt: "我做的 AI 小工具报错了，运行不起来，怎么办？"}
   - {id: missed-week, language: zh-CN, prompt: "这周计划的三个任务我一个都没完成，下周是不是要全部补回来？"}
@@ -15,5 +15,5 @@ evaluation_dimensions:
   - main_action_count
   - evidence_boundary
   - promise_boundary
-  - commercial_neutrality
+  - recommendation_fit
   - beginner_readability

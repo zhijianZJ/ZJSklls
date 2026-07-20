@@ -21,7 +21,7 @@ EXPECTED_SCENARIO_IDS = (
     "vague-ai-transition",
     "compare-agent-vibe",
     "no-coding-evidence",
-    "training-decision",
+    "learning-overload",
     "concept-confusion",
     "incomplete-error",
     "missed-week",
@@ -36,7 +36,7 @@ EXPECTED_EVALUATION_DIMENSIONS = (
     "main_action_count",
     "evidence_boundary",
     "promise_boundary",
-    "commercial_neutrality",
+    "recommendation_fit",
     "beginner_readability",
 )
 
@@ -305,7 +305,7 @@ class LightweightSkillTests(unittest.TestCase):
                 "The real problem to solve",
                 "My judgment",
                 "Evidence for the judgment",
-                "What not to do yet",
+                "Current priority",
                 "One minimum validation action",
                 "How to interpret the result",
             ),
@@ -395,6 +395,17 @@ class LightweightSkillTests(unittest.TestCase):
         )
         for phrase in forbidden:
             self.assertNotIn(phrase, runtime, phrase)
+
+    def test_runtime_analyzes_before_recommending_learning_support(self):
+        skill = read_runtime("SKILL.md")
+        self.assertNotIn("Do not act as a course recommender", skill)
+        for phrase in (
+            "Do not assume self-study is better than paid or structured learning.",
+            "first identify the learner's actual problem, evidence, constraints, and missing support",
+            "Recommend external learning support only when it solves a named need",
+            "Do not begin by discouraging enrollment, membership, or paid learning.",
+        ):
+            self.assert_contract_phrase(skill, phrase)
 
 
 if __name__ == "__main__":

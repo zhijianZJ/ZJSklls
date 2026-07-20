@@ -2,13 +2,13 @@
 
 [简体中文](README.md)
 
-**Version [3.0.0](VERSION) · MIT**
+**Version [3.0.1](VERSION) · MIT**
 
 Tell ZJSkills your real AI career or learning situation.
 It diagnoses the current problem, explains the evidence boundary,
 and gives one useful next step.
 
-ZJSkills 3.0 is a lightweight, AI-first career diagnosis Skill. It does not default to a questionnaire, long-term curriculum, or course recommendations. It reads goals, experience, constraints, and feedback already in the conversation, works immediately when evidence is sufficient, and asks **zero or one** decisive question only when the missing fact could change the judgment.
+ZJSkills 3.0 is a lightweight, AI-first career diagnosis Skill. It reads goals, experience, constraints, and feedback already in the conversation, identifies the real problem, then provides a fitting judgment, learning route, or problem-solving action. It works immediately when evidence is sufficient and asks **zero or one** decisive question only when the missing fact could change the judgment.
 
 ## Career diagnosis
 
@@ -50,7 +50,7 @@ See [Getting Started](docs/getting-started.en.md) for copy-paste prompts and the
 
 If the target is mainly outside AI, ZJSkills says so instead of forcing an AI label. It can clarify the target, constraints, unknowns, and a transferable next step, but it does not impersonate a domain expert or invent occupational standards, market facts, licensing requirements, or safety rules when reliable sources are absent.
 
-It does not replace qualified medical, legal, financial, or mental-health judgment and does not promise employment, transition, promotion, income, client results, or another externally controlled outcome. Self-study, free resources, paid courses, and structured support are compared neutrally by constraints, feedback needs, practice access, and evidence value.
+It does not replace qualified medical, legal, financial, or mental-health judgment and does not promise employment, transition, promotion, income, client results, or another externally controlled outcome.
 
 ## Installation and platforms
 
@@ -74,7 +74,7 @@ ZJSkills supports Native Skill installation on Codex and Claude Code. On Tencent
 
 If you encounter usage issues, planning questions, or other unresolved problems while using ZJSkills, contact Zhijian to join the Q&A group.
 
-This note belongs only in public documentation; it does not enter runtime diagnoses, route recommendations, or course judgments.
+This note belongs only in public documentation; it does not enter runtime diagnoses, route recommendations, or resource selection.
 
 ## License
 

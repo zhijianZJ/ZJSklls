@@ -41,6 +41,17 @@ CURRENT_USAGE_GUIDES = (
     "docs/platform-installation.en.md",
 )
 
+LEARNER_FACING_GUIDES = (
+    "README.md",
+    "README.en.md",
+    "docs/getting-started.md",
+    "docs/getting-started.en.md",
+    "docs/usage-guide.md",
+    "docs/usage-guide.en.md",
+    "docs/examples.md",
+    "docs/examples.en.md",
+)
+
 
 def read_text(path: str) -> str:
     return (REPO_ROOT / path).read_text(encoding="utf-8")
@@ -54,13 +65,13 @@ class OpenSourcePackageTests(unittest.TestCase):
         next_heading = re.search(r"(?m)^##\s+", remainder)
         return remainder[: next_heading.start()] if next_heading else remainder
 
-    def test_readme_pair_and_version_surface_3_0(self):
+    def test_readme_pair_and_version_surface_3_0_1(self):
         self.assertFalse((REPO_ROOT / "README.zh-CN.md").exists())
         chinese = read_text("README.md")
         english = read_text("README.en.md")
-        self.assertEqual(read_text("VERSION").strip(), "3.0.0")
+        self.assertEqual(read_text("VERSION").strip(), "3.0.1")
         for text in (chinese, english):
-            self.assertIn("3.0.0", text)
+            self.assertIn("3.0.1", text)
             self.assertIn("MIT", text)
             self.assertIn("ZJSkills", text)
             self.assertIn("https://github.com/zhijianZJ/ZJSkills.git", text)
@@ -203,7 +214,7 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## 学习解题输出",
                 "## 用户提供材料时",
                 "## 非 AI 请求的边界",
-                "## 安全与商业中立",
+                "## 安全与建议边界",
                 "## 保存的 Markdown 结构",
             ),
             "docs/usage-guide.en.md": (
@@ -216,7 +227,7 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## Learning-help output",
                 "## When the user supplies material",
                 "## Boundary for non-AI requests",
-                "## Safety and commercial neutrality",
+                "## Safety and recommendation boundaries",
                 "## Saved Markdown shape",
             ),
         }
@@ -231,7 +242,7 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## 场景一：模糊的 AI 转型",
                 "## 场景二：Agent 与 Vibe Coding",
                 "## 场景三：没有编程证据",
-                "## 场景四：自学还是结构化支持",
+                "## 场景四：资料很多但不知道先学什么",
                 "## 场景五：概念混淆",
                 "## 场景六：项目报错",
                 "## 场景七：一周没完成",
@@ -242,7 +253,7 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## Scenario 1: A vague AI transition",
                 "## Scenario 2: Agent versus Vibe Coding",
                 "## Scenario 3: No coding evidence",
-                "## Scenario 4: Self-study versus structured support",
+                "## Scenario 4: Too many resources and no clear starting point",
                 "## Scenario 5: Concept confusion",
                 "## Scenario 6: A project error",
                 "## Scenario 7: A missed week",
@@ -254,6 +265,28 @@ class OpenSourcePackageTests(unittest.TestCase):
             text = read_text(path)
             for phrase in phrases:
                 self.assertIn(phrase, text, f"{path}: {phrase}")
+
+    def test_learner_facing_guides_do_not_foreground_course_or_training_decisions(self):
+        forbidden = (
+            "报课",
+            "报班",
+            "付费课程",
+            "推荐课程",
+            "课程推荐",
+            "自学还是",
+            "结构化支持",
+            "course recommendation",
+            "catalog of courses",
+            "paid courses",
+            "enroll in training",
+            "self-study versus",
+            "structured support",
+            "course judgments",
+        )
+        for path in LEARNER_FACING_GUIDES:
+            text = read_text(path).lower()
+            for phrase in forbidden:
+                self.assertNotIn(phrase.lower(), text, f"{path}: {phrase}")
 
     def test_platform_guides_cover_five_host_categories_and_3_0_verification(self):
         required = {

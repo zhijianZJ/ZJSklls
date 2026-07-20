@@ -1,4 +1,6 @@
-# ZJSkills 3.0 Forward Evaluation
+# ZJSkills 3.0.0 Forward Evaluation (Historical)
+
+This file records the 3.0.0 evaluation and is retained as historical evidence. The 3.0.1 scenario inventory and recommendation rules changed after this run; this document must not be read as a 3.0.1 forward-test result.
 
 Ten outputs were produced in distinct fresh contexts from only the fixed Skill-path prefix and the exact scenario prompt. The initial raw outputs are preserved at `/private/tmp/zjskills-v3-eval.Ih7Owf/`. One observed failure was corrected with RED/GREEN evidence and rerun in a fresh context; its replacement is `/private/tmp/zjskills-v3-reeval.33cNEQ/non-ai-without-source.md`.
 

@@ -1,6 +1,6 @@
 # Career Diagnosis
 
-Use this mode for decisions about direction, personal fit, feasibility, realistic expectations, or whether self-study or structured learning support is appropriate. It is also suitable when learning has not connected to real work.
+Use this mode for decisions about direction, personal fit, feasibility, realistic expectations, or the best way to overcome a learning constraint. It is also suitable when learning has not connected to real work.
 
 ## Decision method
 
@@ -27,7 +27,7 @@ Use only one of these judgment levels:
 - **Do not invest heavily yet:** evidence or constraints do not justify heavy investment yet.
 - **Insufficient evidence:** validate before choosing.
 
-Treat self-study and structured support neutrally. Compare them by constraints, feedback needs, practice access, and evidence value—not price, status, or provider claims.
+When the user asks about a course, membership, mentor, community, or institution, diagnose the underlying problem before judging the requested solution. External support can be a good choice when it directly addresses a demonstrated need for expert correction, timely feedback, practice access, accountability, or reliable structure. Explain what the support must provide and how the user can verify its value; do not default to either approval or rejection.
 
 A diagnosis is not proof of capability. Never promise employment, promotion, income, admission, client results, or any other external outcome.
 
@@ -49,9 +49,9 @@ Give one allowed judgment level, the direction if known, and the evidence bounda
 
 Separate known facts, inference, and uncertainty. Use only decisive evidence dimensions.
 
-## What not to do yet
+## Current priority
 
-Name one premature commitment, conclusion, or investment to avoid.
+Name the decision, capability gap, or validation task that deserves attention first.
 
 ## One minimum validation action
 

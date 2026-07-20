@@ -10,7 +10,7 @@ Each request uses exactly one mode:
 
 | Mode | When it applies | Default result |
 | --- | --- | --- |
-| Career diagnosis | Direction, fit, feasibility, realistic expectations, or the need for structured support is unresolved | One-page diagnosis and one minimum validation action |
+| Career diagnosis | Direction, fit, feasibility, realistic expectations, or the current problem is unresolved | One-page diagnosis and one minimum validation action |
 | Learning route | The direction is sufficiently clear, or the user explicitly requests a route | At most three stages, evidence projects, and one action for this week |
 | Learning help | Concept confusion, an action gap, project-start difficulty, an error, missed work, a changed goal, or supplied material | One action, success signal, fallback check, and route impact |
 
@@ -26,7 +26,7 @@ Separate three layers in every important judgment:
 
 Career direction uses five evidence dimensions: the actual desired result; current work and project experience; time, budget, equipment, language, and learning conditions; observed response to coding, product, content, process, or workplace tasks; and the result of a minimum experience task.
 
-Interest, confidence, education, certificates, course attendance, and content completion may inform a hypothesis but cannot independently prove capability, independent delivery, or job readiness. A diagnosis uses one of four levels: stronger fit, worth testing with a named risk, do not invest heavily yet, or insufficient evidence—validate first.
+Interest, confidence, education, certificates, and content exposure may inform a hypothesis but cannot independently prove capability, independent delivery, or job readiness. A diagnosis uses one of four levels: stronger fit, worth testing with a named risk, do not invest heavily yet, or insufficient evidence—validate first.
 
 ## Five visible AI directions
 
@@ -64,7 +64,7 @@ When the direction is clear, organize the route in this order:
 7. **Only this week's action:** one capacity-aware action and completion signal;
 8. **Biggest assumption or constraint:** the one factor most likely to change the route.
 
-Define outcomes, deliverables, and evidence projects before resources. Explain the job each resource serves and keep it replaceable. Course completion is not evidence. Do not create a daily plan unless asked.
+Define outcomes, deliverables, and evidence projects before resources. Explain the job each resource serves and keep it replaceable. Content completion alone is not evidence. Do not create a daily plan unless asked.
 
 ## Learning-help output
 
@@ -91,14 +91,14 @@ Say plainly when a target is mainly outside AI. ZJSkills may still clarify the t
 
 If occupational standards, market data, licensing requirements, safety rules, or readiness criteria lack reliable support, identify the evidence gap and request the smallest reliable source, rubric, example, or qualified feedback. Do not impersonate a domain expert or manufacture an authoritative detailed route.
 
-## Safety and commercial neutrality
+## Safety and recommendation boundaries
 
 - Do not promise employment, transition, promotion, income, admission, client results, or external acceptance.
 - Do not replace qualified medical, legal, financial, or mental-health judgment. Narrow advice and recommend appropriate professional help in consequential or unsafe situations.
 - Do not request sensitive information unrelated to the current judgment. Redact code, resumes, client material, and error logs first.
 - Do not fabricate access, execution, deployment, or file writes.
-- Compare self-study, structured support, free resources, and paid courses only by constraints, feedback needs, practice access, and evidence value.
-- Do not recommend a course, community, or service because the maintainer benefits, and never imply that purchase guarantees a result.
+- Base learning recommendations on the diagnosed problem, target, and constraints, and explain the evidence, conditions, and validation method.
+- Do not present any single resource, tool, or service as a guarantee of results.
 
 ## Saved Markdown shape
 
@@ -123,4 +123,4 @@ Append only observed results and resulting route changes to the update log. Do n
 
 If you encounter usage issues, planning questions, or other unresolved problems while using ZJSkills, contact Zhijian to join the Q&A group.
 
-The support note belongs only in public documentation; the runtime remains commercially neutral. See [Scenarios and Prompts](examples.en.md) for practical inputs.
+The support note belongs only in public documentation and does not affect runtime judgment. See [Scenarios and Prompts](examples.en.md) for practical inputs.

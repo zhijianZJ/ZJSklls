@@ -28,13 +28,13 @@ I have never coded, but I strongly want to become an AI Agent Engineer. I watch 
 
 The desire and video study are known context, but there is no coding or project evidence. A sound judgment is “insufficient evidence—validate first” or “do not invest heavily yet.” The next step is one bounded model/API task with an explanation of how to interpret success or failure.
 
-## Scenario 4: Self-study versus structured support
+## Scenario 4: Too many resources and no clear starting point
 
 ```text
-I have eight hours per week and a limited budget. I have self-studied for two months, but an error can stop me for a week. I finish clear exercises yet struggle to judge whether a project meets the bar. Must I enroll in training?
+I saved many Agent, Python, and RAG resources. I switch topics every day and no longer know what comes first. I have eight hours per week and want a demonstrable project in three months. Help me identify the real problem and sequence the learning.
 ```
 
-The response should compare options neutrally. Self-study is less expensive and the user has execution evidence; structured support may offer timely feedback and acceptance checks, but price and brand do not prove value. Test a short period with a clear rubric and independent feedback before deciding on ongoing support, without routing to a provider.
+The response should identify that the main problem is not a lack of material but the absence of a target deliverable, dependency order, and acceptance criteria. Define the three-month project first, compress the missing capabilities into no more than three stages, and give one action this week that exposes the most important gap.
 
 ## Scenario 5: Concept confusion
 
