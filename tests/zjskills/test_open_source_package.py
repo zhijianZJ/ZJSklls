@@ -72,6 +72,12 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## 如何继续",
                 "## 如何重新规划",
             ),
+            "docs/usage-guide.md": (
+                "# ZJSkills 完整使用手册",
+                "## 完整工作流",
+                "## 证据与能力判断",
+                "## 异常与安全边界",
+            ),
             "docs/examples.md": (
                 "# ZJSkills 使用场景与提示词",
                 "## 场景一：零基础了解 AI 行业",
@@ -93,6 +99,12 @@ class OpenSourcePackageTests(unittest.TestCase):
                 "## Why it asks before planning",
                 "## How to continue",
                 "## How to replan",
+            ),
+            "docs/usage-guide.en.md": (
+                "# ZJSkills Full Usage Guide",
+                "## Complete workflow",
+                "## Evidence and capability judgment",
+                "## Failure and safety boundaries",
             ),
             "docs/examples.en.md": (
                 "# ZJSkills Scenarios and Prompts",

@@ -39,12 +39,40 @@ class LightweightSkillTests(unittest.TestCase):
         )
         self.assertIn(phrase, matching_lines, phrase)
 
-    def assert_phrases_in_order(self, text: str, phrases: tuple[str, ...]):
+    def level_two_section(self, text: str, heading: str) -> str:
+        marker = f"## {heading}"
+        self.assert_contract_phrase(text, marker)
+        remainder = text.split(marker, 1)[1]
+        next_heading = re.search(r"(?m)^##\s+", remainder)
+        return remainder[: next_heading.start()] if next_heading else remainder
+
+    def markdown_heading_names(self, text: str) -> list[str]:
+        headings = []
+        fence_marker = None
+        for line in text.splitlines():
+            fence = re.match(r"^\s*(`{3,}|~{3,})", line)
+            if fence and fence_marker is None:
+                fence_marker = fence.group(1)[0]
+                continue
+            if fence and fence.group(1)[0] == fence_marker:
+                fence_marker = None
+                continue
+            if fence_marker is not None:
+                continue
+            match = re.fullmatch(r"#{1,6}\s+(.+?)(?:\s+#+)?\s*", line)
+            if match:
+                headings.append(match.group(1))
+        return headings
+
+    def assert_markdown_sections_in_order(
+        self, text: str, sections: tuple[str, ...]
+    ):
+        headings = self.markdown_heading_names(text)
         positions = []
-        for phrase in phrases:
-            self.assert_contract_phrase(text, phrase)
-            positions.append(text.index(phrase))
-        self.assertEqual(positions, sorted(positions), phrases)
+        for section in sections:
+            self.assertIn(section, headings, section)
+            positions.append(headings.index(section))
+        self.assertEqual(positions, sorted(positions), sections)
 
     def test_runtime_contains_only_the_six_approved_files(self):
         self.assertEqual(tracked_runtime_files(), EXPECTED_RUNTIME_FILES)
@@ -92,28 +120,45 @@ class LightweightSkillTests(unittest.TestCase):
         ):
             self.assert_contract_phrase(skill, phrase)
 
+    def test_skill_defaults_to_chat_and_writes_one_route_only_on_request(self):
+        skill = read_runtime("SKILL.md")
+        for phrase in (
+            "Default to chat output.",
+            "Create one Markdown file only when the user explicitly asks to save, export, or maintain a continuing route.",
+        ):
+            self.assert_contract_phrase(skill, phrase)
+
     def test_skill_conditionally_loads_all_four_references(self):
         skill = read_runtime("SKILL.md")
-        self.assert_contract_phrase(skill, "## Load Only What Is Needed")
+        load_section = self.level_two_section(skill, "Load Only What Is Needed")
+        table_lines = [
+            line.strip()
+            for line in load_section.splitlines()
+            if line.strip().startswith("|") and line.strip().endswith("|")
+        ]
+        self.assertGreaterEqual(len(table_lines), 3, table_lines)
+        self.assertTrue(
+            any(
+                re.fullmatch(r"\|(?:\s*:?-+:?\s*\|)+", line)
+                for line in table_lines
+            ),
+            table_lines,
+        )
+        routing_table = "\n".join(table_lines)
         for reference in (
             "references/career-diagnosis.md",
             "references/learning-route.md",
             "references/learning-help.md",
             "references/ai-career-map.md",
         ):
-            self.assert_contract_phrase(skill, reference)
-            self.assertRegex(
-                skill,
-                rf"(?m)^\|[^|]+\|[^|]*`{re.escape(reference)}`[^|]*\|$",
-                reference,
-            )
+            self.assertIn(reference, routing_table, reference)
 
     def test_career_diagnosis_has_the_compact_output_contract(self):
         self.assertTrue(
             (RUNTIME_ROOT / "references/career-diagnosis.md").is_file()
         )
         diagnosis = read_runtime("references/career-diagnosis.md")
-        self.assert_phrases_in_order(
+        self.assert_markdown_sections_in_order(
             diagnosis,
             (
                 "Your current situation",
@@ -129,7 +174,7 @@ class LightweightSkillTests(unittest.TestCase):
     def test_learning_route_has_the_three_stage_output_contract(self):
         self.assertTrue((RUNTIME_ROOT / "references/learning-route.md").is_file())
         route = read_runtime("references/learning-route.md")
-        self.assert_phrases_in_order(
+        self.assert_markdown_sections_in_order(
             route,
             (
                 "Target",
@@ -145,7 +190,7 @@ class LightweightSkillTests(unittest.TestCase):
     def test_learning_help_has_one_action_and_fallback_contract(self):
         self.assertTrue((RUNTIME_ROOT / "references/learning-help.md").is_file())
         help_text = read_runtime("references/learning-help.md")
-        self.assert_phrases_in_order(
+        self.assert_markdown_sections_in_order(
             help_text,
             (
                 "Where you are stuck",
