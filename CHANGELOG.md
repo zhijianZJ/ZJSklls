@@ -2,6 +2,18 @@
 
 All notable public changes to ZJSkills are recorded here.
 
+## [3.0.1] - 2026-07-20
+
+### Changed
+
+- Made learning-support recommendations diagnosis-first instead of defaulting to anti-enrollment language.
+- Treated courses, memberships, mentors, communities, and institutions as valid options when they solve a named feedback, correction, practice, accountability, or structure need.
+- Refocused Chinese and English user documentation on personal diagnosis, problem decomposition, learning routes, and getting unstuck.
+
+### Removed
+
+- Removed the standalone self-study-versus-training discussion and course-selection framing from learner-facing guides and examples.
+
 ## [3.0.0] - 2026-07-20
 
 ### Changed

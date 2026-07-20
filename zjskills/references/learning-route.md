@@ -4,7 +4,7 @@ Use this mode when the target direction is sufficiently clear or the user explic
 
 ## Route rules
 
-Suggest resources only after the target, stage outcomes, evidence projects, and current action are clear. Explain the job each resource serves; do not make a catalog.
+Suggest resources and learning support after the target, stage outcomes, evidence projects, and current action are clear. Explain the job each option serves. When outside guidance would materially improve feedback, correction, practice access, accountability, or structure, include it as a valid route component with selection and progress criteria.
 
 Default to a chat response. Save only when the user explicitly requests it, and create one Markdown route containing diagnosis, target, stages, current action, evidence, and an update log. Append observed results and route changes to that log. Do not create extra state files.
 
