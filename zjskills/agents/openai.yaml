@@ -1,7 +1,4 @@
 interface:
-  display_name: "ZJSkills"
-  short_description: "面向AI新手的学习导航、职业路线、问题拆解与动态调整"
-  default_prompt: "Use $zjskills to show me the beginner-friendly learning navigation and guide me to one clear next step."
-
-policy:
-  allow_implicit_invocation: true
+  display_name: ZJSkills
+  short_description: AI 职业诊断、学习路线与学习解题
+  default_prompt: Use $zjskills to diagnose my current AI career or learning situation and give me the single most useful next step.
