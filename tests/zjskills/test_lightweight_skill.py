@@ -6,6 +6,7 @@ import unittest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RUNTIME_ROOT = REPO_ROOT / "zjskills"
+SCENARIO_INVENTORY = Path(__file__).with_name("scenarios.yaml")
 
 EXPECTED_RUNTIME_FILES = {
     "zjskills/SKILL.md",
@@ -15,6 +16,29 @@ EXPECTED_RUNTIME_FILES = {
     "zjskills/references/learning-help.md",
     "zjskills/references/learning-route.md",
 }
+
+EXPECTED_SCENARIO_IDS = (
+    "vague-ai-transition",
+    "compare-agent-vibe",
+    "no-coding-evidence",
+    "training-decision",
+    "concept-confusion",
+    "incomplete-error",
+    "missed-week",
+    "changed-goal",
+    "non-ai-without-source",
+    "enough-context-no-question",
+)
+
+EXPECTED_EVALUATION_DIMENSIONS = (
+    "mode",
+    "question_count",
+    "main_action_count",
+    "evidence_boundary",
+    "promise_boundary",
+    "commercial_neutrality",
+    "beginner_readability",
+)
 
 
 def read_runtime(relative_path: str) -> str:
@@ -76,6 +100,41 @@ class LightweightSkillTests(unittest.TestCase):
 
     def test_runtime_contains_only_the_six_approved_files(self):
         self.assertEqual(tracked_runtime_files(), EXPECTED_RUNTIME_FILES)
+
+    def test_forward_scenario_inventory_has_exactly_the_ten_approved_ids(self):
+        inventory = SCENARIO_INVENTORY.read_text(encoding="utf-8")
+        scenario_ids = tuple(
+            re.findall(r"(?m)^\s*-\s*\{id:\s*([^,}\s]+)", inventory)
+        )
+        self.assertEqual(scenario_ids, EXPECTED_SCENARIO_IDS)
+
+    def test_forward_scenario_inventory_has_nonempty_prompts(self):
+        inventory = SCENARIO_INVENTORY.read_text(encoding="utf-8")
+        entries = re.findall(r"(?m)^\s*-\s*\{id:.*\}\s*$", inventory)
+        self.assertEqual(len(entries), len(EXPECTED_SCENARIO_IDS))
+        for entry in entries:
+            match = re.search(r'prompt:\s*"(.+?)"\s*}', entry)
+            self.assertIsNotNone(match, entry)
+            self.assertTrue(match.group(1).strip(), entry)
+
+    def test_forward_scenario_inventory_has_exact_evaluation_dimensions(self):
+        inventory = SCENARIO_INVENTORY.read_text(encoding="utf-8")
+        dimensions_section = inventory.split("evaluation_dimensions:", 1)
+        self.assertEqual(len(dimensions_section), 2)
+        dimensions = tuple(
+            re.findall(r"(?m)^\s+-\s+([a-z_]+)\s*$", dimensions_section[1])
+        )
+        self.assertEqual(dimensions, EXPECTED_EVALUATION_DIMENSIONS)
+
+    def test_forward_scenario_inventory_does_not_leak_expected_outputs(self):
+        inventory = SCENARIO_INVENTORY.read_text(encoding="utf-8").lower()
+        for leakage_term in (
+            "must answer",
+            "expected response",
+            "应该输出",
+            "正确答案",
+        ):
+            self.assertNotIn(leakage_term, inventory, leakage_term)
 
     def test_runtime_respects_size_budgets(self):
         missing = sorted(

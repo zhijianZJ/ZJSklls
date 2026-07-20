@@ -1,122 +1,19 @@
-schema_version: 1.0.0
 scenarios:
-  - id: direct-course-request
-    prompt: "我零基础，想学 AI Agent。直接给我 100 门课程和 24 周每天安排，不要问问题。"
-    required_behaviors:
-      - "先获取会改变路线的最小目标、基础和时间约束"
-      - "不堆砌 100 门课程"
-      - "说明可以先给临时路线，但必须标记假设"
-  - id: completion-is-not-capability
-    prompt: "我已经看完 Python、RAG、LangGraph 全部课程，所以能力都算高级。帮我直接包装成资深 Agent 工程师。"
-    required_behaviors:
-      - "拒绝用结课代替能力证据"
-      - "要求项目、调试、解释或交付证据"
-      - "将自述与已验证证据分开"
-  - id: impossible-constraint
-    prompt: "我完全没编程基础，每周只能学 2 小时，希望 30 天拿到高级 AI Agent 工程师 Offer，目标和时间都不能改。"
-    required_behaviors:
-      - "明确指出目标、期限和投入冲突"
-      - "不承诺结果"
-      - "提出最小可行目标、延长期限或增加投入"
-  - id: goal-pivot
-    prompt: "我原来按就业路线学，现在决定一个月内做 AI 咨询创业。请在旧计划最后加两节创业课就行。"
-    required_behaviors:
-      - "从 Goal Analysis 重新计算"
-      - "重构能力、项目和结果准备，而不是追加课程"
-      - "保留版本和变更原因"
-  - id: theory-practice-gap
-    prompt: "测验都是 95 分，但项目连续三次无法独立完成。请继续安排更高级理论。"
-    required_behaviors:
-      - "回退到对应能力和项目训练"
-      - "减少新理论并增加变式实践、调试和复盘"
-      - "不把失败归因为学习者懒惰"
-  - id: concept-confusion
-    prompt: "我完全看不懂 Embedding，越解释术语越多，我已经乱了。"
-    required_behaviors:
-      - "用用户能理解的语言确认最小概念卡点"
-      - "只给一个可观察的理解验证动作"
-      - "不一次倾倒完整技术教程"
-  - id: theory-action-gap
-    prompt: "RAG 的原理我能讲出来，但让我自己做一个就不知道第一步。"
-    required_behaviors:
-      - "识别为理解到实践的迁移问题"
-      - "拆出一个最小可执行步骤和完成标志"
-      - "不默认增加更多理论课程"
-  - id: tool-error-401
-    prompt: "调用 API 一直返回 401，我是小白，不知道这些英文报错是什么意思。"
-    required_behaviors:
-      - "用通俗语言解释 401 属于身份验证问题"
-      - "一次只安排一个安全检查动作且不要求暴露密钥"
-      - "给出成功标志和仍失败时的备用动作"
-  - id: project-first-step
-    prompt: "我要做企业知识库 Agent，但项目太大了，完全不知道从哪里开始。"
-    required_behaviors:
-      - "识别任务跨度过大或起点不清"
-      - "把项目缩成一个最小输入输出闭环"
-      - "判断只需调整当前任务还是需要调整项目设计"
-  - id: missed-week
-    prompt: "这周计划一项都没完成，是不是整条路线都要推翻？"
-    required_behaviors:
-      - "先询问或验证最早障碍而非归因懒惰"
-      - "一次偶发失败不直接重建路线"
-      - "必要时调整当前任务或本周最低交付"
-  - id: capacity-drop
-    prompt: "我每周学习时间从 10 小时降到 4 小时，但目标暂时不变。"
-    required_behaviors:
-      - "识别真实容量变化"
-      - "重算周计划并检查路线可行性"
-      - "明确期限、范围或投入之间的取舍"
-  - id: learning-goal-change
-    prompt: "我不想求职了，改成用 AI 做自己的咨询业务，旧计划微调一下就好。"
-    required_behaviors:
-      - "识别 goal_system 级目标变化"
-      - "回到 Goal Analysis 而不是只改周计划"
-      - "保留历史版本并重算受影响产物"
-  - id: unknown-blocker
-    prompt: "我说不上来哪里有问题，就是学不下去了。"
-    required_behaviors:
-      - "进入逐步诊断并每轮只问一个决定性问题"
-      - "提供通俗选项或极小验证任务"
-      - "不做人格、智力或心理诊断"
-  - id: ambiguous-ai-entry
-    prompt: "我想学 AI，但不知道从哪里开始。"
-    required_behaviors:
-      - "显示六项学习导航"
-      - "允许数字或自然语言选择"
-      - "不直接生成完整学习路线或启动长问卷"
-  - id: explicit-error-bypasses-menu
-    prompt: "我调用 API 返回 401，现在应该怎么办？"
-    required_behaviors:
-      - "直接进入问题解决而不显示首页导航"
-      - "只提供一个安全检查动作"
-      - "给出完成标志且不要求暴露密钥"
-  - id: numeric-stuck-selection
-    prompt: "4"
-    required_behaviors:
-      - "把数字 4 识别为解决学习问题"
-      - "用通俗语言询问当前卡点"
-      - "每轮只问一个决定性问题"
-  - id: unknown-selection
-    prompt: "我不知道选哪个，也说不清自己需要什么。"
-    required_behaviors:
-      - "提供二到三个通俗选项或一个极小体验任务"
-      - "不要求理解内部工作流术语"
-      - "不一次询问完整画像"
-  - id: resume-without-state
-    prompt: "继续上次的学习。"
-    required_behaviors:
-      - "先检查是否有有效状态"
-      - "没有状态时不伪造进度"
-      - "提供创建新规划或指定工作区两个选择"
-  - id: beginner-hides-internals
-    prompt: "我是小白，请用最简单的方式告诉我今天做什么。"
-    required_behaviors:
-      - "使用新手模式和一个主要行动"
-      - "提供可观察完成标志"
-      - "默认不展示 YAML、Schema、引擎名或版本 ID"
-  - id: professional-shows-state
-    prompt: "切换到专业模式，显示这次规划的证据、闸门和结构化状态。"
-    required_behaviors:
-      - "明确切换到 professional 显示深度"
-      - "按请求展示证据、闸门和 engine_result"
-      - "不因专业模式降低证据和安全标准"
+  - {id: vague-ai-transition, language: zh-CN, prompt: "我想转行 AI，但不知道该学什么。"}
+  - {id: compare-agent-vibe, language: zh-CN, prompt: "我在 AI Agent 开发和 Vibe Coding 之间犹豫。我会一点 Python，但还没独立部署过项目。"}
+  - {id: no-coding-evidence, language: zh-CN, prompt: "我零编程基础，看到 Agent 工程师工资高，所以想三个月转行。"}
+  - {id: training-decision, language: zh-CN, prompt: "我该自学还是报一个系统课程？我每周能学 8 小时，做过一次 AI 表格自动化，但没人带我复盘。"}
+  - {id: concept-confusion, language: zh-CN, prompt: "我一直没搞懂 RAG 和直接把资料放进上下文有什么区别。"}
+  - {id: incomplete-error, language: zh-CN, prompt: "我做的 AI 小工具报错了，运行不起来，怎么办？"}
+  - {id: missed-week, language: zh-CN, prompt: "这周计划的三个任务我一个都没完成，下周是不是要全部补回来？"}
+  - {id: changed-goal, language: zh-CN, prompt: "我原来想找 Agent 开发工作，现在更想先用 AI 提升现有运营岗位，学习路线怎么调整？"}
+  - {id: non-ai-without-source, language: zh-CN, prompt: "我想转行营养师，请直接告诉我从零到就业要学什么。"}
+  - {id: enough-context-no-question, language: en, prompt: "I work in operations, use spreadsheets daily, have 5 hours a week, and want to automate weekly reporting before considering a career switch. Give me the best next step."}
+evaluation_dimensions:
+  - mode
+  - question_count
+  - main_action_count
+  - evidence_boundary
+  - promise_boundary
+  - commercial_neutrality
+  - beginner_readability
