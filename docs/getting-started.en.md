@@ -1,116 +1,86 @@
 # ZJSkills Getting Started
 
-ZJSkills is an outcome-driven learning-system Skill, not a course recommender. It starts with your target, baseline, capacity, and constraints, then works backward into capabilities, projects, a roadmap, weekly commitments, and verifiable evidence. When evidence or circumstances change, it replans the affected system instead of merely adding more content.
+[简体中文](getting-started.md)
 
-## Before you begin
+You do not need to understand a career model or prepare a complete profile. Describe the real situation, even if it is messy. ZJSkills reads the existing conversation first, diagnoses immediately when it can, and asks one question only when one missing fact could change the judgment.
 
-You do not need a complete personal dossier. Bring as much of this as you can:
+## First: describe the real situation
 
-- the result you want and the evidence you hope to have by a given date;
-- your current work, education, and relevant experience;
-- sustainable weekly time, budget, and available equipment;
-- language, math, programming, or business baseline;
-- hard constraints involving work, family, health, privacy, or access;
-- the authentic outcome you want to produce, such as a portfolio case, deployed project, work sample, or real delivery.
-
-Use “unknown” or a range when necessary. Self-assessment is treated as `self-report`, not automatically as verified capability.
-
-## First use
-
-Enable `learning-architect` in a Skill-capable AI client, then copy and adapt this prompt:
+This is a complete and useful first input:
 
 ```text
-Use ZJSkills to design my personalized learning system.
-Target: [target]
-Current situation: [work, education, and relevant experience]
-Weekly capacity: [hours]
-Target date: [date or duration]
-Binding constraints: [budget, language, equipment, family, work, or other limits]
-Evidence I want to produce: [project, portfolio, real delivery, work sample, and so on]
-First identify the missing information that could change the route. Ask only the highest-impact question at a time, and do not jump to a course list.
+I want to move into AI, but I do not know whether Agent, Vibe Coding, AI Product, or AI Operations fits me.
+I work in traditional operations, use AI for content and spreadsheets, have never coded, and have no complete project.
+I can spend about six hours per week, have a limited budget, and hope to produce work I can use to pursue a new opportunity in six months, although I do not know whether that is realistic.
+Diagnose first; do not give me a catalog of courses.
 ```
 
-The first response may not be a polished timetable. The Skill first checks whether the outcome is verifiable, whether constraints conflict, and which conclusions are facts, evidence, inferences, or assumptions.
+It supplies the desired result, current work, observable experience, time, and budget constraints. Do not fill every gap as a questionnaire. If a missing fact does not change the useful next step, ZJSkills labels the uncertainty and continues.
 
-## Why it asks before planning
-
-“Learn AI” can mean industry exploration, improving current work, becoming an AI Product Manager, becoming an AI Agent Engineer, or delivering an enterprise project. Those targets require different capability evidence and project sequences. Capacity, budget, and baseline can also change the dependency order.
-
-The Skill should ask only decision-critical questions. You do not need to answer the full discovery bank at once:
-
-1. Start with the target, baseline, weekly capacity, and hard constraints.
-2. Mark unknowns explicitly.
-3. Let low-risk work continue as a labeled draft with assumptions and validation actions.
-4. Add reliable sources or qualified human review for hiring rules, regulation, health, finance, production deployment, and other high-risk decisions.
-
-## How to continue
-
-Once the critical inputs are clear, request the first complete system:
+For a shorter copy-paste prompt, use:
 
 ```text
-Using the confirmed information, create version 1 of the complete learning system: target outcome, capability gaps, competency tree, dependency graph, project ladder, phased roadmap, next weekly plan, assessment criteria, and replanning triggers. Separate facts, self-reports, evidence, inference, and assumptions, and show every gate that has not passed.
+I want to move into AI, but I do not know whether Agent, Vibe Coding, AI Product, or AI Operations fits me.
+Use the experience I have already described in this conversation and diagnose first. Ask one question only if one missing fact could change the judgment.
 ```
 
-You can resume without starting over. For cross-task persistence, name a learner workspace you authorize and ask for `system-state.yaml` to be written there. The Skill does not select a global storage location, and it must not claim persistence when file writes are unavailable.
+## What a one-page career diagnosis contains
+
+The default diagnosis stays within seven compact sections:
+
+1. your current situation;
+2. the real problem to solve;
+3. the current judgment;
+4. evidence for the judgment, separating known facts, inference, and uncertainty;
+5. what not to do yet;
+6. one minimum validation action;
+7. how to interpret the result.
+
+“Stronger fit,” “worth testing with risk,” “do not invest heavily yet,” and “insufficient evidence” are provisional judgments, not capability certificates. They do not guarantee an offer, transition, or income. Interest, education, course completion, and confidence are context, not standalone proof.
+
+## Reply “Continue”: expand a learning route
+
+When the direction is clear, “Continue” is enough. For a more explicit request, copy:
 
 ```text
-Read and validate [learner workspace path]/system-state.yaml, then continue the previous ZJSkills state from the earliest stage whose gate has not passed.
+The direction is clear. Expand it into a learning route with no more than three stages.
+For each stage, put the capability, observable deliverable, and evidence project before resources.
+End with one action for this week, its completion signal, and the assumption or constraint most likely to change the route.
 ```
+
+The route does not automatically become a daily task list. A real project or target behavior under changed conditions supports a capability judgment better than course completion.
+
+## Say “I'm stuck”: enter learning help
+
+You do not need to resubmit your background or classify the problem. Say:
 
 ```text
-Here is new evidence from this week: [repository, artifact, test result, feedback, or reflection]. Update the capability judgment and only recompute affected decisions.
+I'm stuck: [paste the observed result, error, attempts, or say “I do not know where to start”].
+Locate the smallest blocker. Give me one action to do now, an observable success signal, and one fallback check, then say whether the existing route is affected.
 ```
+
+For concept confusion, it finds the distinction you cannot explain or apply. For an error, it uses the exact message, reproduction steps, input, output, and environment already supplied. For a missed week, it distinguishes a one-off interruption from a persistent capacity mismatch. One failure does not automatically rewrite the whole route.
+
+## Save one Markdown route
+
+Results stay in chat by default. ZJSkills creates a file only after an explicit request:
 
 ```text
-I now have only four hours this week. Keep the target, recalculate capacity, and give me the minimum viable delivery.
+Save the current diagnosis and learning route as one Markdown file.
+Include only the current diagnosis, target, no more than three stages, current action, evidence, and a short update log. Do not create companion state files.
 ```
 
-Every stage should return concise natural-language guidance plus synchronized structured state in the canonical `engine_result` wrapper. `artifacts_written` must list only files actually persisted.
+Later, provide the observed result and ask it to append an update. If the path, write permission, or destination is unclear, it should explain the limit rather than claim that it saved anything.
 
-## When you get stuck
+## What to say next
 
-You do not need to wait for a formal review or diagnose the category yourself. Any of these can start learning support:
+- Direction still uncertain: “Give me one minimum experience task that distinguishes Agent from Vibe Coding.”
+- Experience task completed: “I finished it. Here is the result... Reassess without repeating answered questions.”
+- Conditions changed: “I now have only three hours per week. Decide whether to adjust the current task, the stage, or the direction.”
+- You have material: “Extract only what matters to my current target and turn it into one retrieval, practice, or transfer action.”
 
-- “I do not understand this part.”
-- “I can explain the idea, but I cannot do it alone.”
-- “The tool returned an error and I do not know what it means.”
-- “The project feels too large and I do not know the first step.”
-- “I missed this week. What should change?”
-- “I cannot explain it; I just feel stuck.”
+## Public support note
 
-Use this general prompt:
+If you encounter usage issues, planning questions, or other unresolved problems while using ZJSkills, contact Zhijian to join the Q&A group.
 
-```text
-Use ZJSkills to help with a problem during learning. My current task is [task]. I am stuck because [problem; write "I don't know" if necessary].
-Use beginner-friendly language. For a simple issue, tell me “Do only this now” and “What success looks like.” For a complex issue, ask only one key question at a time. Do not give me many alternatives at once, and end by deciding whether the existing learning plan must change.
-```
-
-The default reply covers six things: where you are stuck, the initial cause hypothesis, one action now, an observable success signal, one fallback, and whether the plan changes. If you answer “I don't know,” the Skill offers two or three plain choices or one tiny test instead of a questionnaire.
-
-After trying the step, continue with:
-
-```text
-I tried the previous step. The result was [visible result, sanitized error, or artifact]. Decide whether the issue is resolved. If not, give me only the next step and do not repeat an approach that already failed.
-```
-
-Resolving the blocker does not automatically prove independent capability. A later practice attempt or project check without decisive guidance may still be needed.
-
-## How to replan
-
-Replanning rolls back to the earliest affected decision:
-
-- target change: return to Goal Analysis and recompute all affected downstream artifacts;
-- time, budget, or environment change: recheck Roadmap and Weekly Planner;
-- failed project or assessment: locate the earliest causal gap and add focused practice, debugging, or reflection;
-- changed domain evidence: recheck the Domain Pack, capabilities, curriculum, and projects;
-- contradictory evidence: retain the conflict, lower confidence, and run the smallest discriminating assessment.
-
-```text
-My target changed from [old target] to [new target] because [reason]. Create a new version, identify all affected downstream artifacts, and replan from the correct stage without overwriting history.
-```
-
-```text
-This stage missed its rubric threshold. The failure evidence is [evidence]. Find the earliest causal gap, design a guided-to-independent recovery path, and update the downstream roadmap.
-```
-
-ZJSkills can improve learning decisions, capability evidence, and adaptation. It cannot guarantee an offer, career transition, promotion, income, venture outcome, client acceptance, or any result controlled by external parties.
+This transparent note does not enter runtime diagnoses or route recommendations. See the [Full Usage Guide](usage-guide.en.md) for the complete rules and the [multi-platform guide](platform-installation.en.md) for installation.

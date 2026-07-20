@@ -2,131 +2,80 @@
 
 [简体中文](README.md)
 
-**Version [1.0.0](VERSION) · 86 core regression tests / 101 total tests · MIT**
+**Version [3.0.0](VERSION) · MIT**
 
-Turn an ambiguous learning goal into a verifiable, adaptable, personalized learning system.
+Tell ZJSkills your real AI career or learning situation.
+It diagnoses the current problem, explains the evidence boundary,
+and gives one useful next step.
 
-## What it helps you solve
+ZJSkills 3.0 is a lightweight, AI-first career diagnosis Skill. It does not default to a questionnaire, long-term curriculum, or course recommendations. It reads goals, experience, constraints, and feedback already in the conversation, works immediately when evidence is sufficient, and asks **zero or one** decisive question only when the missing fact could change the judgment.
 
-Course lists rarely answer three critical questions: which capabilities the target actually requires, what evidence supports the current gap, and where to recompute when circumstances change. ZJSkills starts from the target, baseline, capacity, and constraints, then designs a competency model, project ladder, phased roadmap, weekly actions, and assessment gates while keeping facts, self-reports, evidence, inferences, and assumptions distinct.
+## Career diagnosis
 
-Once learning begins, it also handles real problems such as confusion, theory that does not transfer into action, tool errors, an unclear first step, or missed commitments. It uses problem decomposition to produce one small action and an observable success signal, then decides whether the current task, week, roadmap, or goal system must change.
+Use this mode when you do not know which direction to take, need to compare options, doubt your fit, or need to decide whether investing now is justified. The diagnosis separates known facts, evidence-backed inference, and uncertainty. It gives a minimum experience task instead of treating interest, education, certificates, or confidence as proof of capability.
 
-It can improve the quality of learning decisions, capability evidence, and adaptation, but it does not guarantee an offer, career transition, promotion, income, or any result controlled by external parties.
+The five visible directions are:
+
+- AI Agent Development
+- Vibe Coding / AI Application Building
+- AI Product Management
+- AI Operations, with Content/Growth and Business Efficiency branches
+- AI Tools and Workplace Application
+
+## Learning route
+
+When the direction is sufficiently clear, or you explicitly request a route, ZJSkills produces a compact route with no more than three stages. Each stage starts with the capability outcome, observable deliverable, and evidence project; replaceable resources come later. It ends with one useful action for this week and the assumption or constraint most likely to change the route.
+
+The default output stays in chat and **does not create files by default**. Only an explicit request to save, export, or maintain the route creates one Markdown file, with no companion state files.
+
+## Learning help
+
+Use this mode for concept confusion, understanding without action, difficulty starting a project, a tool error, a missed week, a changed goal, or material you want to process. ZJSkills locates the smallest blocker, gives one action, one observable success signal, and one fallback check, then says whether the existing route needs adjustment.
 
 ## Quick start
 
-Enable the Skill displayed as `ZJSkills` in a Skill-capable AI tool. For installed-user compatibility, its directory and explicit invocation identifier remain `learning-architect`. Then state your target and constraints directly:
+Enter `$zjskills` or `/zjskills` on a host that supports Skills, or simply describe the real situation:
 
 ```text
-Use ZJSkills to design my personalized learning system.
-My target: build verifiable capabilities for an AI Agent Engineer role within six months.
-My baseline: I can write basic Python scripts.
-My weekly capacity: 12 hours.
-My main constraint: limited budget, with a preference for project-first learning.
-First ask for the decision-critical information that could change the route. Do not jump to course recommendations.
+I want to move into AI, but I do not know whether Agent, Vibe Coding, AI Product, or AI Operations fits me.
+I currently work in operations, use AI for content, have no coding project, and can spend six hours per week.
+Diagnose first; do not jump to a long-term curriculum.
 ```
 
-See [Getting Started](docs/getting-started.en.md) for prompts covering first use, continuation, and replanning.
+When the direction becomes clear, say, “Continue and expand this into a learning route with no more than three stages.” During learning, say, “I'm stuck,” and include the observed result, error, or material.
 
-## Problems during learning
+See [Getting Started](docs/getting-started.en.md) for copy-paste prompts and the [Full Usage Guide](docs/usage-guide.en.md) for the complete contract.
 
-You do not need to restate your whole profile or know any internal terminology. Say:
+## Non-AI and safety boundaries
 
-```text
-Use ZJSkills to continue supporting my learning. I'm stuck: [describe the problem in your own words].
-First locate the earliest step blocking me. If it is simple, give me only one action to do now, an observable success signal, and one fallback. If it is complex, ask only one key question at a time. End by saying whether the existing plan needs to change.
-```
+If the target is mainly outside AI, ZJSkills says so instead of forcing an AI label. It can clarify the target, constraints, unknowns, and a transferable next step, but it does not impersonate a domain expert or invent occupational standards, market facts, licensing requirements, or safety rules when reliable sources are absent.
 
-If you cannot describe the problem, “I'm stuck and I don't know where” is enough. The Skill will offer a few plain options or one tiny diagnostic task instead of a long tutorial or questionnaire.
+It does not replace qualified medical, legal, financial, or mental-health judgment and does not promise employment, transition, promotion, income, client results, or another externally controlled outcome. Self-study, free resources, paid courses, and structured support are compared neutrally by constraints, feedback needs, practice access, and evidence value.
 
-## Install
+## Installation and platforms
 
-ZJSkills supports native or compatible Skill integration with Codex, Claude Code, and Tencent WorkBuddy. Doubao uses an explicitly labeled prompt-based conversational mode. See the [multi-platform installation and usage guide](docs/platform-installation.en.md) for platform capabilities, macOS/Linux and Windows commands, upgrades, uninstallation, and acceptance tests.
-
-Codex users can get the repository and run this user-level installation from its root:
+The technical name remains `zjskills`, and the repository URL is:
 
 ```bash
-git clone https://github.com/zhijianZJ/ZJSklls.git
-cd ZJSklls
-(
-  set -e
-  skills_dir="$HOME/.agents/skills"
-  destination="$skills_dir/learning-architect"
-  if [ -e "$destination" ]; then
-    echo "Installation stopped: $destination already exists; back it up or use the upgrade flow first." >&2
-    exit 1
-  fi
-  mkdir -p "$skills_dir"
-  cp -R ./learning-architect "$skills_dir/"
-  test -f "$destination/SKILL.md"
-)
+git clone https://github.com/zhijianZJ/ZJSkills.git
 ```
 
-The parenthesized command exits successfully only when the destination was absent and `SKILL.md` was copied; an existing destination stops the copy with an error. After installation, open a new task and explicitly ask for `ZJSkills`. For Claude Code, install to `~/.claude/skills/learning-architect`. For Tencent WorkBuddy, prefer importing the local directory through the Skills UI. Do not describe Doubao as a native local Skill host; follow the guide's conversational workflow.
+ZJSkills supports Native Skill installation on Codex and Claude Code. On Tencent WorkBuddy, Doubao, and generic hosts, use this six-file package as manual file/context. Follow the [multi-platform installation and usage guide](docs/platform-installation.en.md) for setup and acceptance checks.
 
-For an upgrade, do not merge the new directory into the old one. Move the installed directory to a backup location you control, copy the new version, and keep the backup until verification succeeds so local modifications are not silently overwritten. To uninstall, move the installed directory away only after preserving any changes you need.
+## Documentation
 
-Maintainers and contributors can validate the complete repository from its root:
+- [Getting Started](docs/getting-started.en.md)
+- [Full Usage Guide](docs/usage-guide.en.md)
+- [Nine Scenarios and Prompts](docs/examples.en.md)
+- [Multi-platform Installation and Usage](docs/platform-installation.en.md)
+- [Contribution Guide](CONTRIBUTING.md)
 
-```bash
-python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" learning-architect
-python3 -m unittest discover -s tests/learning-architect -p "test_*.py" -q
-python3 learning-architect/scripts/validate_learning_system.py --skill-root learning-architect --learner-dir tests/learning-architect/fixtures/valid-learner
-```
+## Public support note
 
-The validator requires Python 3.9+ with `PyYAML`, `jsonschema`, and `referencing`. The first command uses Codex's bundled `skill-creator`; if that path is unavailable, run the latter two repository checks.
+If you encounter usage issues, planning questions, or other unresolved problems while using ZJSkills, contact Zhijian to join the Q&A group.
 
-## What you get
-
-- A learner profile covering the target, baseline evidence, capacity, constraints, and risks.
-- A competency tree and prerequisite dependencies derived backward from the target outcome.
-- A project ladder centered on authentic artifacts and explicit rubrics.
-- A phased roadmap, next weekly plan, and clear passing gates.
-- Step-by-step learning-problem decomposition, one next action, a success signal, and follow-up.
-- Traceable structured state and versioned updates when the target, constraints, or evidence change.
-- A reusable Domain Pack contract, with an AI Agent Engineer pack included in the repository.
-
-## How it works
-
-```text
-Discovery → Goal Analysis → Gap Analysis → Competency Design → Curriculum Design
-→ Project Design → Roadmap → Weekly Planner → Assessment → Outcome Preparation
-→ Continuous Optimization
-```
-
-Each stage has entry conditions, artifacts, and a gate. When evidence is insufficient, the system labels assumptions or requests more information. When a project or assessment fails, it locates the earliest causal gap and recomputes only the affected downstream parts.
-
-Learning support runs horizontally during execution: `problem → earliest blocker → one action → verify → minimally adjust the plan when necessary`. A single blocker does not force the learner through all stages again.
-
-## Full documentation
-
-- [Getting Started](docs/getting-started.en.md): first use, getting unstuck, continuation, and replanning.
-- [Full Usage Guide](docs/usage-guide.en.md): workflow, problem decomposition, adaptive planning, structured state, and safety boundaries.
-- [Scenarios and Prompts](docs/examples.en.md): four target examples plus learning-in-progress support.
-- [Multi-platform Installation and Usage](docs/platform-installation.en.md): Codex, Claude Code, Tencent WorkBuddy, and Doubao.
-- [Domain Pack Extension Guide](docs/domain-pack-guide.en.md): data contract, competency dependencies, project archetypes, and validation requirements.
-- [中文文档](README.md): Chinese project entry.
-
-## Project structure
-
-| Location | Purpose |
-| --- | --- |
-| [`learning-architect/SKILL.md`](learning-architect/SKILL.md) | Core operating contract and workflow router |
-| [`learning-architect/references/`](learning-architect/references/) | Discovery, competency, curriculum, project, assessment, and optimization engines |
-| [`learning-architect/assets/`](learning-architect/assets/) | Schemas, templates, and Domain Packs |
-| [`learning-architect/scripts/`](learning-architect/scripts/) | Offline learning-system validator |
-| [`tests/learning-architect/`](tests/learning-architect/) | 86 core regression tests, 15 open-source package tests, and valid/invalid fixtures |
-| [`docs/`](docs/) | Chinese and English usage and extension guides |
-
-## Contributing
-
-Documentation fixes, reproducible issue reports, and new Domain Packs that follow the data contract are welcome. Read the [contribution guide](CONTRIBUTING.md) before submitting, and follow its evidence, privacy, brand-neutrality, and no-hidden-promotion boundaries.
-
-## Initiator and maintainer
-
-Initiated and maintained by ZJSkills.
+This note belongs only in public documentation; it does not enter runtime diagnoses, route recommendations, or course judgments.
 
 ## License
 
-This project is available under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).

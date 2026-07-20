@@ -2,182 +2,188 @@
 
 [简体中文](platform-installation.md)
 
-This guide explains how to use ZJSkills with Codex, Claude Code, Tencent WorkBuddy, and Doubao. These products do not provide the same Agent Skills interface, so choose the integration level that the host actually supports.
+This guide applies to ZJSkills 3.0.0. The technical directory and Skill name are `zjskills`; the public display name is `ZJSkills`. Hosts have different integration capabilities. A Native Skill is discovered by the host, which loads `SKILL.md` and references when needed. Manual file/context use treats the files as instructions and reference material in the current conversation; it does not imply automatic triggering, complete loading, or cross-session continuity.
 
 ## Compatibility matrix
 
-| Platform | Integration level | Recommended approach | Invocation | Notes |
-| --- | --- | --- | --- | --- |
-| Codex | Native Skill | Install in a user or repository Skills directory | Name `ZJSkills` in the prompt; CLI/IDE users can also select it with `$` | Supports explicit and automatic selection |
-| Claude Code | Native Skill | Install under `~/.claude/skills` or project `.claude/skills` | `/learning-architect` or natural-language triggering | Supports explicit and automatic selection |
-| Tencent WorkBuddy | Native/compatible Skill | Import the local Skill through the Skills UI; if import is unavailable, ask WorkBuddy to create and install it from the local directory | Select or name the Skill in a new task | Import UI varies by version; review the security scan and file permissions |
-| Doubao | prompt-based conversational integration | Upload `SKILL.md`, add referenced files as needed, and send the bootstrap prompt | Explicitly request the ZJSkills workflow in that conversation | This is not a local Native Skill installation; automatic triggering, cross-session state, and complete resource loading are not guaranteed |
-
-“Native Skill” means the host discovers `SKILL.md` and loads it when needed. Prompt-based integration treats the Skill as instructions and reference material for the current conversation, subject to upload, context-window, and session-state limits.
-
-The UI display name is `ZJSkills`. `learning-architect` remains the compatible technical directory and explicit invocation identifier, so installation paths and `/learning-architect` do not change.
+| Host category | Integration level | Recommended approach | Invocation and acceptance |
+| --- | --- | --- | --- |
+| Codex | Native Skill | User `$HOME/.agents/skills/zjskills` or project `.agents/skills/zjskills` | `$zjskills` or natural language; returns a career diagnosis |
+| Claude Code | Native Skill | User `$HOME/.claude/skills/zjskills` or project `.claude/skills/zjskills` | `/zjskills` or natural language; returns a career diagnosis |
+| Tencent WorkBuddy | Manual file/context | Provide `SKILL.md` and the references needed for the current task | Explicitly request the ZJSkills workflow; returns a career diagnosis |
+| Doubao | Manual file/context | Upload runtime files in a dedicated conversation | Explicitly request the ZJSkills workflow; do not describe this as local native installation |
+| Generic file and context hosts | Manual file/context | Provide `SKILL.md` and only the references needed now | Confirm actual file access; do not assume automatic triggering |
 
 ## Before installation
 
-1. Get the repository and confirm that `learning-architect/SKILL.md` exists.
-2. Review `SKILL.md` and any scripts the host may execute. ZJSkills's core planning workflow does not require writing to an external online service, but the host may still have file, shell, or network permissions.
-3. Stop if the destination already exists. Back up and inspect local changes instead of overwriting or merging two versions in place.
+Get the repository and confirm that the 3.0 runtime contains `SKILL.md`, one interface file, and four reference files:
 
 ```bash
-git clone https://github.com/zhijianZJ/ZJSklls.git
-cd ZJSklls
-test -f learning-architect/SKILL.md
+git clone https://github.com/zhijianZJ/ZJSkills.git
+cd ZJSkills
+test -f zjskills/SKILL.md
+test -f zjskills/agents/openai.yaml
+test -f zjskills/references/career-diagnosis.md
+test -f zjskills/references/learning-route.md
+test -f zjskills/references/learning-help.md
+test -f zjskills/references/ai-career-map.md
+test "$(find zjskills/references -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
 ```
+
+Acceptance is not about having more files. The installed directory must contain `SKILL.md`; all four reference files must exist; an explicit invocation must return a career diagnosis; a clear direction must produce a route of at most three stages; and “I'm stuck” must produce one action, success signal, and fallback check.
 
 ## Codex
 
-Codex currently recommends `$HOME/.agents/skills` for user Skills and `.agents/skills` inside a repository for project Skills. The following installs ZJSkills for the current user across projects.
-
-### macOS / Linux
-
-Run from the repository root:
+Run the user-level installation from the repository root. It stops instead of overwriting a same-name directory:
 
 ```bash
 (
   set -e
-  source_dir="$PWD/learning-architect"
-  destination="$HOME/.agents/skills/learning-architect"
+  source_dir="$PWD/zjskills"
+  destination="$HOME/.agents/skills/zjskills"
   test -f "$source_dir/SKILL.md"
   if [ -e "$destination" ]; then
-    echo "Installation stopped: $destination already exists; back it up or upgrade first." >&2
+    echo "Installation stopped: $destination exists; back it up or use the upgrade flow." >&2
     exit 1
   fi
   mkdir -p "$HOME/.agents/skills"
   cp -R "$source_dir" "$destination"
   test -f "$destination/SKILL.md"
+  test "$(find "$destination/references" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
 )
-```
-
-### Windows PowerShell
-
-Run from the repository root:
-
-```powershell
-$Source = Join-Path (Get-Location) "learning-architect"
-$Destination = Join-Path $HOME ".agents\skills\learning-architect"
-if (-not (Test-Path (Join-Path $Source "SKILL.md"))) { throw "learning-architect/SKILL.md was not found" }
-if (Test-Path $Destination) { throw "Installation stopped: $Destination already exists; back it up or upgrade first." }
-New-Item -ItemType Directory -Force (Split-Path $Destination) | Out-Null
-Copy-Item -Recurse $Source $Destination
-if (-not (Test-Path (Join-Path $Destination "SKILL.md"))) { throw "Installation verification failed" }
 ```
 
 Open a new task and enter:
 
 ```text
-Use ZJSkills. First understand my target, baseline, available time, and constraints, then decide which decision-critical questions remain. Do not jump to course recommendations.
+$zjskills
+I want to move into AI, but my direction is uncertain. My real work experience is [content], and I have [time] per week. Return a career diagnosis first; do not jump to a long curriculum.
 ```
 
-In Codex CLI or the IDE, you can also type `$` and select `learning-architect`. Codex normally discovers newly installed Skills automatically. If it does not appear, open a new task or restart the client and check again.
-
-For repository-only use, change the destination to `.agents/skills/learning-architect` in the repository root and commit that directory with the project.
+For project-only use, change the destination to `.agents/skills/zjskills`. On Windows, copy the local `zjskills` directory to `$HOME\.agents\skills\zjskills` only after confirming the destination does not exist; then check `SKILL.md` and the four Markdown files under `references`.
 
 ## Claude Code
 
-Claude Code uses `$HOME/.claude/skills` for personal Skills and `.claude/skills` for project Skills.
-
-### macOS / Linux
+Claude Code uses `$HOME/.claude/skills/zjskills` for a personal Skill and `.claude/skills/zjskills` for a project Skill. The flow matches Codex with a different destination root:
 
 ```bash
 (
   set -e
-  source_dir="$PWD/learning-architect"
-  destination="$HOME/.claude/skills/learning-architect"
+  source_dir="$PWD/zjskills"
+  destination="$HOME/.claude/skills/zjskills"
   test -f "$source_dir/SKILL.md"
   if [ -e "$destination" ]; then
-    echo "Installation stopped: $destination already exists; back it up or upgrade first." >&2
+    echo "Installation stopped: $destination exists." >&2
     exit 1
   fi
   mkdir -p "$HOME/.claude/skills"
   cp -R "$source_dir" "$destination"
   test -f "$destination/SKILL.md"
+  test "$(find "$destination/references" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
 )
 ```
 
-### Windows PowerShell
-
-```powershell
-$Source = Join-Path (Get-Location) "learning-architect"
-$Destination = Join-Path $HOME ".claude\skills\learning-architect"
-if (-not (Test-Path (Join-Path $Source "SKILL.md"))) { throw "learning-architect/SKILL.md was not found" }
-if (Test-Path $Destination) { throw "Installation stopped: $Destination already exists; back it up or upgrade first." }
-New-Item -ItemType Directory -Force (Split-Path $Destination) | Out-Null
-Copy-Item -Recurse $Source $Destination
-if (-not (Test-Path (Join-Path $Destination "SKILL.md"))) { throw "Installation verification failed" }
-```
-
-Run an explicit test in Claude Code:
-
-```text
-/learning-architect
-```
-
-Then provide your goal and constraints. You can also say, “Use ZJSkills to plan my AI career learning path.” Claude Code watches an existing Skills directory for changes. If this installation created the top-level directory for the first time, restart Claude Code once.
-
-For project-only use, copy the Skill to `.claude/skills/learning-architect` in the project root.
+Enter `/zjskills` in a new session, then describe the real situation. A correct response selects career diagnosis instead of exposing an old workflow or requiring a state file. If the Skill does not appear after installation, reopen the session or client and check that the path is exactly `.../zjskills/SKILL.md`.
 
 ## Tencent WorkBuddy
 
-Tencent WorkBuddy provides a Skill marketplace, custom Skills, and documented compatibility with OpenClaw community Skill imports. ZJSkills is a directory containing `SKILL.md` and supporting resources. Prefer the WorkBuddy Skills UI over guessing an internal storage path.
+WorkBuddy's official documentation says that a custom Skill typically includes `skill.yml`, implementation files, and a README. The current ZJSkills package uses the Agent Skill `SKILL.md` structure, does not include `skill.yml`, and has no WorkBuddy-specific adaptation that has been created and tested. Therefore, this guide does not claim it is a native WorkBuddy Skill or instruct users to import the six-file directory.
 
-1. Download this repository and confirm that `learning-architect/SKILL.md` exists.
-2. Open WorkBuddy's Skills or Skill Marketplace UI and look for Import Skill, Community Skill, or the corresponding entry in your version.
-3. Select the local `learning-architect` directory. If your version accepts repository URLs, you may instead provide this GitHub repository URL.
-4. Review WorkBuddy's security scan, file list, and requested permissions before installing and enabling it.
-5. Create a new task, select ZJSkills in the Skill picker, or use the verification prompt below.
+For now, use manual file/context:
 
-If your version has no manual import entry, create a task with this repository as its working directory and enter:
+1. Set the repository as the task working directory, or provide `zjskills/SKILL.md` in the task.
+2. Follow the conditional routing in `SKILL.md` and provide only the reference needed for the current task.
+3. Ask WorkBuddy to name the files it actually read, then send the same career-diagnosis prompt used for Codex.
+4. Provide the necessary files and prior result again in a new task; do not assume automatic triggering or cross-task continuity.
 
-```text
-Inspect the local learning-architect directory and install its SKILL.md and supporting resources as a custom Skill. Before installation, list the destination, files to be copied, and required permissions. Do not overwrite an existing Skill with the same name. After installation, tell me how to verify it in the Skills UI.
-```
-
-This fallback depends on the custom-Skill features in your current WorkBuddy version. Review the proposed changes before authorizing them, especially any request to replace an existing directory.
+If a future WorkBuddy-specific adaptation is created with `skill.yml`, implementation files, and a README, install it through the documented custom-Skill flow and test it in a new conversation before describing that adaptation as native support.
 
 ## Doubao
 
-The public consumer-product documentation used for this guide does not publish a local `SKILL.md` installation convention for Doubao. This section therefore uses prompt-based conversational integration and does not describe it as a Native Skill installation.
+This guide does not describe the Doubao consumer product as a local Native Skill host. Use manual file/context in a dedicated conversation:
 
-1. Start a dedicated conversation.
-2. Upload `learning-architect/SKILL.md`.
-3. Send the bootstrap prompt below.
-4. When Doubao asks for a referenced file, upload the exact file from `learning-architect/references/` or `learning-architect/assets/`. Do not let it assume the contents of unread files.
-5. Save the final learner profile, roadmap, and weekly plan as files. Re-upload them in a new conversation instead of relying on implicit cross-session memory.
-
-```text
-Treat the SKILL.md I uploaded as the ZJSkills operating contract for this conversation.
-Follow its stages, entry conditions, and gates: begin with discovery and goal analysis, then continue to gap, competency, project, roadmap, and weekly planning.
-If the contract references a file you have not read, tell me the exact filename and wait for me to upload it. Do not guess its contents.
-Ask first for information that could materially change the route. Do not jump to course recommendations or promise an offer, income, or another externally controlled outcome.
-```
-
-Doubao's conversational integration is suitable for initial analysis and lightweight planning. Prefer Codex, Claude Code, or a WorkBuddy version that can import Skills when you need reliable automatic triggering, complete on-demand resource loading, script validation, or long-term versioned state.
-
-## Verify the integration
-
-Use the same acceptance prompt on every platform:
+1. Upload `zjskills/SKILL.md`.
+2. Upload `zjskills/references/career-diagnosis.md`.
+3. Add `ai-career-map.md` for direction comparison, `learning-route.md` for a clear route request, or `learning-help.md` for a current blocker.
+4. Send the bootstrap prompt and require it not to guess the contents of files that were not uploaded.
 
 ```text
-Use ZJSkills to design a six-month AI Agent Engineer learning path. I have told you only that I know a little Python and have ten hours per week. Do not generate the route yet. Tell me which missing facts could materially change the plan.
+Treat the uploaded SKILL.md as the ZJSkills operating contract for this conversation.
+Read existing context and select exactly one of career diagnosis, learning route, or learning help.
+If a required reference is missing, name the exact file and wait for it. Do not guess its contents.
+Answer in chat by default, give one current action, and do not promise external outcomes.
 ```
 
-A correct first step fills decision-critical gaps or labels assumptions instead of immediately returning a course list. Continue the test by checking for competency dependencies, project evidence, phase gates, and next-week actions.
+Provide the needed files and prior readable result again in a new conversation. Manual context is limited by uploads, the context window, and session state; it cannot guarantee automatic conditional loading.
 
-## Upgrade and uninstall
+## Generic file and context hosts
 
-- Upgrade: move the installed directory to a backup location you control, then copy or import the new version. Keep the backup until verification succeeds.
-- Uninstall: use the platform's Skills UI or move its `learning-architect` directory out of the Skills location. Preserve your learning state and local modifications first.
-- Share one source across hosts: experienced users may point multiple native Skill locations at one trusted source directory with symbolic links. Stop when a same-name real directory exists; never overwrite it.
+Any AI host that can read Markdown may attempt manual use, but this is not equivalent to Native Skill support:
+
+1. Provide `SKILL.md` first.
+2. Provide only the reference selected by its routing table for the current request.
+3. Ask the host to name the files it actually read.
+4. Use the same career-diagnosis acceptance prompt.
+5. Restore necessary files and context in a new session instead of relying on implicit memory.
+
+If the host cannot read references reliably, paste the relevant content into the context. Do not claim that `$zjskills` or `/zjskills` must work on a host with no native invocation mechanism.
+
+## Unified acceptance check
+
+After installation or upload, check:
+
+```bash
+test -f zjskills/SKILL.md
+test "$(find zjskills/references -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
+```
+
+Then use `$zjskills` or `/zjskills`—or send the body directly on a manual host:
+
+```text
+I want to move into AI but cannot choose between Agent and Vibe Coding. I know a little Python, have only copied tutorial projects, and have six hours per week. Diagnose first and give one minimum validation action.
+```
+
+A correct result returns a career diagnosis, separates known facts, inference, and uncertainty, and gives one validation action. Then test “The direction is clear; generate a route of at most three stages” and “I'm stuck: [observed result]” to confirm all three modes.
+
+## Migrate from 2.x to 3.0.0
+
+Both versions use the technical directory `zjskills`, so do not merge the new files into an old installation. Back up the installed Skill, then replace it completely:
+
+```bash
+(
+  set -e
+  skills_root="$HOME/.agents/skills"
+  installed="$skills_root/zjskills"
+  backup="$skills_root/zjskills.backup-2.x"
+  replacement="$PWD/zjskills"
+  test -f "$installed/SKILL.md"
+  test -f "$replacement/SKILL.md"
+  if [ -e "$backup" ]; then
+    echo "Migration stopped: $backup exists; inspect it first." >&2
+    exit 1
+  fi
+  mv "$installed" "$backup"
+  cp -R "$replacement" "$installed"
+  test -f "$backup/SKILL.md"
+  test -f "$installed/SKILL.md"
+  test "$(find "$installed/references" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
+)
+```
+
+For Claude Code, change the root to `$HOME/.claude/skills`. In Windows PowerShell, first confirm that `$HOME\.agents\skills\zjskills.backup-2.x` does not exist, move the installed directory to that backup name, copy the repository `zjskills` directory, and check `SKILL.md` plus the four reference files.
+
+Always **keep user-created learning files**; they are outside the installed Skill upgrade. Version 3.0 does not maintain an old YAML workspace by default. When a user supplies one, read it as source material and optionally summarize still-valid diagnosis, target, route, current action, and update history into one Markdown file. Never delete or overwrite the source.
+
+Keep the backup until acceptance passes. To roll back, move the 3.0 installation away, then restore `zjskills.backup-2.x` as `zjskills`. Do not copy over local modifications.
+
+## Public support note
+
+If you encounter usage issues, planning questions, or other unresolved problems while using ZJSkills, contact Zhijian to join the Q&A group.
 
 ## Official capability references
 
 - [Codex: Build skills](https://learn.chatgpt.com/docs/build-skills)
-- [Claude Code: Extend Claude with skills](https://code.claude.com/docs/en/skills)
-- [Tencent WorkBuddy: Skill selection and community Skill import](https://www.workbuddy.ai/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Task-Bar)
-- [Tencent WorkBuddy: Create custom Skills](https://www.workbuddy.ai/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Create-Skills)
+- [Claude Code: Extend Claude with Skills](https://code.claude.com/docs/en/skills)
+- [Tencent WorkBuddy: create custom Skills](https://www.workbuddy.ai/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Create-Skills)
+- [Tencent WorkBuddy: Skill Marketplace](https://www.workbuddy.ai/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)
 - [Doubao](https://www.doubao.com/)

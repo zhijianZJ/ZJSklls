@@ -2,182 +2,188 @@
 
 [English](platform-installation.en.md)
 
-本文说明如何在 Codex、Claude Code、Tencent WorkBuddy 和豆包中使用 ZJSkills。不同产品对 Agent Skills 的支持并不相同，因此先确认接入级别，再选择安装方式。
+本文适用于 ZJSkills 3.0.0。技术目录和 Skill 名称是 `zjskills`，公开名称是 `ZJSkills`。不同产品的接入能力不相同：原生 Skill 由宿主发现并按需加载 `SKILL.md` 及引用文件；手动文件/上下文接入只在当前会话中把这些文件作为指令和参考，不能假设自动触发、完整加载或跨会话持续。
 
 ## 兼容性矩阵
 
-| 平台 | 接入级别 | 推荐方式 | 调用方式 | 说明 |
-| --- | --- | --- | --- | --- |
-| Codex | 原生 Skill | 安装到用户级或项目级 Skills 目录 | 在提示词中点名 `ZJSkills`，CLI/IDE 也可用 `$` 选择 | 支持自动匹配与显式调用 |
-| Claude Code | 原生 Skill | 安装到 `~/.claude/skills` 或项目 `.claude/skills` | `/learning-architect` 或自然语言触发 | 支持自动匹配与显式调用 |
-| Tencent WorkBuddy | 原生/兼容 Skill | 从技能界面导入本地 Skill；没有导入入口时让 WorkBuddy 从本地目录创建并安装 | 在新任务中选择或点名 Skill | 产品版本的导入入口可能不同，安装前查看安全扫描与文件权限 |
-| 豆包 | 对话接入 | 上传 `SKILL.md`，按需补充引用文件，并使用启动提示词 | 在当前对话中明确要求按 ZJSkills 工作流执行 | 不是本地原生 Skill 安装；自动触发、跨会话状态与完整资源加载不作保证 |
-
-“原生 Skill”表示宿主能发现 `SKILL.md` 并按需加载它；“对话接入”表示把 Skill 当作当前对话的指令与参考资料，能力会受文件上传、上下文窗口和会话状态限制。
-
-界面显示名称统一为 `ZJSkills`。`learning-architect` 是保留的技术目录和显式调用标识，因此安装命令、目录路径和 `/learning-architect` 不需要改名。
+| 平台类别 | 接入级别 | 推荐方式 | 调用与验收 |
+| --- | --- | --- | --- |
+| Codex | 原生 Skill | 用户级 `$HOME/.agents/skills/zjskills` 或项目级 `.agents/skills/zjskills` | `$zjskills` 或自然语言；返回职业诊断 |
+| Claude Code | 原生 Skill | 用户级 `$HOME/.claude/skills/zjskills` 或项目级 `.claude/skills/zjskills` | `/zjskills` 或自然语言；返回职业诊断 |
+| Tencent WorkBuddy | 手动文件/上下文 | 在任务中提供 `SKILL.md` 和当前所需引用 | 明确要求按 ZJSkills 工作；返回职业诊断 |
+| 豆包 | 手动文件/上下文 | 在专用对话上传运行文件 | 明确要求按 ZJSkills 工作；不描述为本地原生安装 |
+| 通用文件与上下文宿主 | 手动文件/上下文 | 提供 `SKILL.md` 和本次所需引用 | 能读取文件并遵守条件加载；不保证自动触发 |
 
 ## 安装前检查
 
-1. 从本仓库获取代码，并确认 `learning-architect/SKILL.md` 存在。
-2. 阅读 `SKILL.md` 以及会被执行的脚本。ZJSkills 的核心规划流程不需要联网写入外部服务，但宿主本身仍可能拥有文件、命令或网络权限。
-3. 如果目标位置已经存在同名目录，先停止安装。备份并核对本地修改，不要直接覆盖或混合两个版本。
+获取仓库并确认 3.0 运行目录只有 `SKILL.md`、一个界面文件和四个引用文件：
 
 ```bash
-git clone https://github.com/zhijianZJ/ZJSklls.git
-cd ZJSklls
-test -f learning-architect/SKILL.md
+git clone https://github.com/zhijianZJ/ZJSkills.git
+cd ZJSkills
+test -f zjskills/SKILL.md
+test -f zjskills/agents/openai.yaml
+test -f zjskills/references/career-diagnosis.md
+test -f zjskills/references/learning-route.md
+test -f zjskills/references/learning-help.md
+test -f zjskills/references/ai-career-map.md
+test "$(find zjskills/references -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
 ```
+
+验收标准不是文件越多越好，而是：安装目录含 `SKILL.md`；四个引用文件都存在；显式调用会返回职业诊断；方向清楚时能生成最多三阶段路线；“我卡住了”会得到一个行动、成功信号和备用检查。
 
 ## Codex
 
-Codex 当前推荐的用户级目录是 `$HOME/.agents/skills`，项目级目录是仓库中的 `.agents/skills`。下面安装为用户级 Skill，适用于你打开的所有项目。
-
-### macOS / Linux
-
-在仓库根目录执行：
+在仓库根目录执行用户级安装。命令遇到同名目录会停止，不会覆盖：
 
 ```bash
 (
   set -e
-  source_dir="$PWD/learning-architect"
-  destination="$HOME/.agents/skills/learning-architect"
+  source_dir="$PWD/zjskills"
+  destination="$HOME/.agents/skills/zjskills"
   test -f "$source_dir/SKILL.md"
   if [ -e "$destination" ]; then
-    echo "安装已停止：$destination 已存在，请先备份或升级。" >&2
+    echo "安装已停止：$destination 已存在，请先备份或按升级流程处理。" >&2
     exit 1
   fi
   mkdir -p "$HOME/.agents/skills"
   cp -R "$source_dir" "$destination"
   test -f "$destination/SKILL.md"
+  test "$(find "$destination/references" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
 )
 ```
 
-### Windows PowerShell
-
-在仓库根目录执行：
-
-```powershell
-$Source = Join-Path (Get-Location) "learning-architect"
-$Destination = Join-Path $HOME ".agents\skills\learning-architect"
-if (-not (Test-Path (Join-Path $Source "SKILL.md"))) { throw "未找到 learning-architect/SKILL.md" }
-if (Test-Path $Destination) { throw "安装已停止：$Destination 已存在，请先备份或升级。" }
-New-Item -ItemType Directory -Force (Split-Path $Destination) | Out-Null
-Copy-Item -Recurse $Source $Destination
-if (-not (Test-Path (Join-Path $Destination "SKILL.md"))) { throw "安装验证失败" }
-```
-
-安装后新建任务并输入：
+新建任务后输入：
 
 ```text
-请使用 ZJSkills。先了解我的目标、基础、时间与约束，再决定还需要问哪些关键问题；不要直接推荐课程。
+$zjskills
+我想进入 AI 行业，但方向不确定。我做过的真实工作是[内容]，每周可投入[时间]。请先返回职业诊断，不要直接生成长期课表。
 ```
 
-在 Codex CLI 或 IDE 中，也可以先输入 `$` 并选择 `learning-architect`。Codex 通常会自动发现新 Skill；若未出现，重新打开任务或重启客户端后再检查。
-
-如果只希望当前项目使用，把目标目录改成项目根目录下的 `.agents/skills/learning-architect`，并把该目录纳入项目版本管理。
+项目级使用时，把目标改为仓库中的 `.agents/skills/zjskills`。Windows 可把本地 `zjskills` 目录复制到 `$HOME\.agents\skills\zjskills`；复制前确认目标不存在，复制后检查 `SKILL.md` 和 `references` 下四个 Markdown 文件。
 
 ## Claude Code
 
-Claude Code 的用户级目录是 `$HOME/.claude/skills`，项目级目录是 `.claude/skills`。
-
-### macOS / Linux
+Claude Code 的个人 Skill 目录是 `$HOME/.claude/skills/zjskills`，项目目录是 `.claude/skills/zjskills`。安装逻辑与 Codex 相同，只替换目标根目录：
 
 ```bash
 (
   set -e
-  source_dir="$PWD/learning-architect"
-  destination="$HOME/.claude/skills/learning-architect"
+  source_dir="$PWD/zjskills"
+  destination="$HOME/.claude/skills/zjskills"
   test -f "$source_dir/SKILL.md"
   if [ -e "$destination" ]; then
-    echo "安装已停止：$destination 已存在，请先备份或升级。" >&2
+    echo "安装已停止：$destination 已存在。" >&2
     exit 1
   fi
   mkdir -p "$HOME/.claude/skills"
   cp -R "$source_dir" "$destination"
   test -f "$destination/SKILL.md"
+  test "$(find "$destination/references" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
 )
 ```
 
-### Windows PowerShell
-
-```powershell
-$Source = Join-Path (Get-Location) "learning-architect"
-$Destination = Join-Path $HOME ".claude\skills\learning-architect"
-if (-not (Test-Path (Join-Path $Source "SKILL.md"))) { throw "未找到 learning-architect/SKILL.md" }
-if (Test-Path $Destination) { throw "安装已停止：$Destination 已存在，请先备份或升级。" }
-New-Item -ItemType Directory -Force (Split-Path $Destination) | Out-Null
-Copy-Item -Recurse $Source $Destination
-if (-not (Test-Path (Join-Path $Destination "SKILL.md"))) { throw "安装验证失败" }
-```
-
-在 Claude Code 中执行显式测试：
-
-```text
-/learning-architect
-```
-
-然后输入你的目标和约束。也可以直接说“请使用 ZJSkills 帮我规划 AI 职业学习路线”。Claude Code 会监控已经存在的 Skills 目录；如果本次安装才创建顶层目录，重启一次 Claude Code。
-
-项目级安装时，把 Skill 复制到项目根目录的 `.claude/skills/learning-architect`。
+新会话输入 `/zjskills`，再描述真实处境。正确响应会选择职业诊断，而不是显示旧工作流或要求先创建状态文件。若新安装后尚未出现，重新打开会话或客户端，并检查目录层级是否正好是 `.../zjskills/SKILL.md`。
 
 ## Tencent WorkBuddy
 
-Tencent WorkBuddy 提供技能市场、自定义 Skill，并公开说明兼容 OpenClaw 社区 Skill 导入。ZJSkills 是一个包含 `SKILL.md` 和配套资源的目录，推荐从 WorkBuddy 的技能界面导入，而不是猜测内部存储路径。
+WorkBuddy 官方文档中的自定义 Skill 通常包含 `skill.yml`、实现文件和 README。当前 ZJSkills 包采用 Agent Skill 的 `SKILL.md` 结构，不含 `skill.yml`，也尚未创建并完成测试 WorkBuddy 专用改造，因此不把它宣称为 WorkBuddy 原生 Skill，也不指示用户导入这个六文件目录。
 
-1. 下载本仓库，确认 `learning-architect/SKILL.md` 存在。
-2. 打开 WorkBuddy 的“技能”或“技能市场”界面，查找“导入 Skill”“社区 Skill”或同类入口。
-3. 选择本地 `learning-architect` 目录；如果当前版本支持仓库地址导入，也可填写本仓库 GitHub 地址。
-4. 查看 WorkBuddy 的安全扫描、文件清单与权限请求，确认后安装并启用。
-5. 新建任务，在技能选择器中选择 ZJSkills，或输入下面的测试提示词。
+当前请按手动文件/上下文使用：
 
-如果当前版本没有手动导入入口，创建一个以本仓库为工作目录的新任务，并输入：
+1. 把仓库设为任务工作目录，或在任务中提供 `zjskills/SKILL.md`；
+2. 按 `SKILL.md` 的条件路由，只提供当前任务需要的引用文件；
+3. 要求 WorkBuddy 说明它实际读取了哪些文件，然后发送与 Codex 相同的职业诊断提示词；
+4. 在新任务中重新提供必要文件和上一轮结果，不假设自动触发或跨任务持续。
 
-```text
-请检查本地 learning-architect 目录，把其中的 SKILL.md 及配套资源作为一个自定义 Skill 安装。安装前先列出目标位置、将复制的文件和所需权限；不要覆盖已有同名 Skill。安装后告诉我如何在技能栏验证它。
-```
-
-这个回退方式依赖 WorkBuddy 当前版本的自定义 Skill 能力。执行前检查它给出的变更，不要授权覆盖已有目录。
+以后若创建了含 `skill.yml`、实现文件和 README 的 WorkBuddy 专用改造，应按官方自定义 Skill 流程安装并在新对话中完成测试后，再单独说明原生支持。
 
 ## 豆包
 
-截至本文所依据的公开产品资料，豆包消费端没有公开本地 `SKILL.md` 目录安装规范。因此这里提供对话接入，而不把它描述为原生安装。
+这里不把豆包消费端描述为本地原生 Skill。使用专用对话进行手动文件/上下文接入：
 
-1. 新建一个专用对话。
-2. 上传 `learning-architect/SKILL.md`。
-3. 发送下面的启动提示词。
-4. 当豆包需要某个引用文件时，从 `learning-architect/references/` 或 `learning-architect/assets/` 上传对应文件。不要让它在未读取文件时假设文件内容。
-5. 把最终学习者画像、路线图和周计划另存为文件；开启新对话时重新上传，避免依赖隐含的跨会话记忆。
-
-```text
-请把我上传的 SKILL.md 作为本次对话的 ZJSkills 工作协议。
-严格按照其中的阶段、进入条件和关卡执行：先发现与目标分析，再做差距、能力、项目、路线和周计划。
-如果协议引用了你尚未读取的文件，请先告诉我准确文件名并等待上传，不要猜测其内容。
-先询问真正会改变路线的关键信息，不要直接推荐课程，也不要承诺 Offer、收入或其他外部结果。
-```
-
-豆包的对话接入适合首次分析和轻量规划。需要稳定的自动触发、完整资源按需加载、脚本验证或长期版本化状态时，优先使用 Codex、Claude Code 或支持导入 Skill 的 WorkBuddy。
-
-## 验证是否生效
-
-无论使用哪个平台，都用同一条验收提示词测试：
+1. 上传 `zjskills/SKILL.md`；
+2. 上传 `zjskills/references/career-diagnosis.md`；
+3. 如果需要比较方向，再上传 `ai-career-map.md`；方向明确需要路线时上传 `learning-route.md`；学习卡住时上传 `learning-help.md`；
+4. 发送启动提示词，并要求它不要猜测未上传文件的内容。
 
 ```text
-请使用 ZJSkills 帮我制定 6 个月 AI Agent 工程师学习路线。我只告诉你：会一点 Python，每周 10 小时。现在先不要生成路线，请告诉我还缺哪些会实质改变规划的信息。
+把我上传的 SKILL.md 作为本次对话的 ZJSkills 工作协议。
+先读取已有对话并只选择职业诊断、学习路线、学习解题中的一种模式。
+如果所需引用文件尚未上传，请告诉我准确文件名并等待；不要猜测内容。
+默认在对话中回答，只给一个当前行动，不承诺外部结果。
 ```
 
-正确的第一步应是补齐决策关键事实或标记假设，而不是立即给出课程清单。接着再测试它是否能输出能力依赖、项目证据、阶段关卡和下一周行动。
+新对话应重新提供必要文件和上一轮可读结果。手动上下文接入受上传、上下文窗口和会话状态限制，不能承诺自动按需加载。
 
-## 升级与卸载
+## 通用文件与上下文宿主
 
-- 升级：先把已安装目录移动到你指定的备份位置，再复制或导入新版本；验证成功前保留备份。
-- 卸载：从对应平台的 Skills 界面卸载，或移走该平台的 `learning-architect` 目录。先保存你自己的学习状态和本地修改。
-- 多平台共用：熟悉符号链接的用户可以让多个原生 Skill 目录指向同一份可信源目录，以减少版本分叉；遇到同名真实目录时必须停止，不能覆盖。
+任何能够读取 Markdown 文件的 AI 宿主都可以尝试手动使用，但这不等于原生 Skill 支持：
+
+1. 先提供 `SKILL.md`；
+2. 根据当前请求只提供表格中对应的引用文件；
+3. 要求宿主先说明它实际读取了哪些文件；
+4. 用同一条职业诊断提示词验收；
+5. 新会话重新提供必要上下文，不依赖隐含记忆。
+
+宿主若无法可靠读取引用文件，就把相关内容直接粘贴到上下文中。不要声称 `$zjskills` 或 `/zjskills` 在没有原生调用机制的平台上一定有效。
+
+## 统一验收
+
+安装或上传后检查：
+
+```bash
+test -f zjskills/SKILL.md
+test "$(find zjskills/references -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
+```
+
+然后用 `$zjskills` 或 `/zjskills`（手动宿主则直接发送正文）测试：
+
+```text
+我想转入 AI，但不知道选 Agent 还是 Vibe Coding。我会一点 Python，只复制过教程项目，每周 6 小时。请先诊断，并给一个最小验证行动。
+```
+
+正确结果应返回职业诊断，区分已知事实、推断与不确定性，并只给一个验证行动。再分别测试“方向已明确，请生成最多三阶段路线”和“我卡住了：[现象]”，确认三种模式都能工作。
+
+## 从 2.x 迁移到 3.0.0
+
+2.x 与 3.0 使用相同技术目录 `zjskills`，不能把新文件直接合并进旧安装目录。先备份已安装 Skill，再完整替换：
+
+```bash
+(
+  set -e
+  skills_root="$HOME/.agents/skills"
+  installed="$skills_root/zjskills"
+  backup="$skills_root/zjskills.backup-2.x"
+  replacement="$PWD/zjskills"
+  test -f "$installed/SKILL.md"
+  test -f "$replacement/SKILL.md"
+  if [ -e "$backup" ]; then
+    echo "迁移已停止：$backup 已存在，请先核对。" >&2
+    exit 1
+  fi
+  mv "$installed" "$backup"
+  cp -R "$replacement" "$installed"
+  test -f "$backup/SKILL.md"
+  test -f "$installed/SKILL.md"
+  test "$(find "$installed/references" -maxdepth 1 -type f -name '*.md' | wc -l | tr -d ' ')" = "4"
+)
+```
+
+Claude Code 只需把根目录改为 `$HOME/.claude/skills`。Windows PowerShell 中，先确认 `$HOME\.agents\skills\zjskills.backup-2.x` 不存在，再把已安装目录移动为该备份名，复制仓库中的 `zjskills`，最后检查 `SKILL.md` 与四个引用文件。
+
+始终**保留用户自己创建的学习文件**；它们不属于安装目录升级范围。3.0 不默认维护旧 YAML 工作区。用户主动提供时，把它当作来源材料读取，并可选择把仍然有效的诊断、目标、路线、当前行动和更新记录汇总为一份 Markdown 文件；不要删除或覆盖原文件。
+
+迁移验收通过前保留备份。需要回滚时，先移走 3.0 安装目录，再把 `zjskills.backup-2.x` 恢复为 `zjskills`，不要用复制覆盖可能存在的本地修改。
+
+## 公开支持说明
+
+使用 ZJSkills 时如遇到使用问题、规划疑问或其他未解决问题，可联系智建进入答疑群交流。
 
 ## 官方能力参考
 
 - [Codex：Build skills](https://learn.chatgpt.com/docs/build-skills)
 - [Claude Code：使用 Skills 扩展 Claude](https://code.claude.com/docs/zh-CN/skills)
-- [Tencent WorkBuddy：选择技能与社区 Skill 导入](https://www.workbuddy.ai/docs/zh/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Task-Bar)
-- [Tencent WorkBuddy：创建自定义 Skills](https://www.workbuddy.ai/docs/zh/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Create-Skills)
+- [Tencent WorkBuddy：创建自定义 Skills](https://www.workbuddy.ai/docs/workbuddy/From-Beginner-to-Expert-Guide/Practice-Cases/Create-Skills)
+- [Tencent WorkBuddy：Skill Marketplace](https://www.workbuddy.ai/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/Skills-Market)
 - [豆包官网](https://www.doubao.com/)

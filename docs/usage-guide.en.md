@@ -1,133 +1,126 @@
 # ZJSkills Full Usage Guide
 
-ZJSkills manages growth as a versioned decision system. Define a verifiable outcome first, design capabilities and authentic projects next, and only then schedule knowledge and time. Learning activity supports a capability judgment only when it produces observable behavior and resolved evidence.
+[简体中文](usage-guide.md)
 
-## Complete workflow
+ZJSkills 3.0 is a lightweight, AI-first career diagnosis Skill. It reads the current conversation, selects one mode, returns a compact result, and ends with the single most useful action. Users do not need internal terminology or a fixed intake sequence.
 
-Stages run in order. Prose output alone never passes a gate. A genuinely irrelevant stage must be recorded as `not_applicable` with a reason, source, confidence, and affected downstream items.
+## How the three modes are selected
 
-| Stage | Decision purpose | Minimum input | Primary artifact | Gate | Continuation prompt |
-|---|---|---|---|---|---|
-| 1. Discovery | Establish the learner and constraint boundary | target signal, background, capacity, hard constraints | learner profile, SWOT, unknowns | decision-critical data has source and confidence | “Ask the one question most likely to change the route.” |
-| 2. Goal Analysis | Turn intent into a timed, verifiable outcome | target, deadline, success evidence, constraints | target outcome, milestones, key results | verifiable and not silently incompatible with constraints | “Rewrite my target as an observable outcome.” |
-| 3. Gap Analysis | Compare current evidence with target behavior | target capabilities, current evidence | current/target levels, prioritized gaps | baselines are sourced and inference is separate | “Prioritize the causal gaps from current evidence.” |
-| 4. Competency Design | Define what the learner must be able to do | prioritized gaps, target context | nodes, L0–L5 behaviors, weights, evidence needs | every core node has a target level | “Build an observable competency tree, not a topic list.” |
-| 5. Curriculum Design | Build the smallest dependency-safe learning graph | gaps and prerequisites | learning units, acyclic graph, practice | every unit serves a gap and prerequisites are complete | “Design the minimum dependency graph.” |
-| 6. Project Design | Produce authentic capability evidence | competency model, context, constraints | project briefs, deliverables, coverage, rubrics | every core competency has authentic coverage | “Design a progressive project ladder with gates.” |
-| 7. Roadmap | Sequence feasible phases with buffers | project dependencies, capacity, budget, deadline | phases, milestones, checkpoints | time, cost, and dependencies are feasible | “Show conservative, baseline, and minimum-viable routes.” |
-| 8. Weekly Planner | Convert the roadmap into a bounded commitment | current phase, real available hours, and risks | weekly outcome, tasks, retrieval, minimum delivery | load fits capacity and produces evidence | “Build this week around the minimum delivery.” |
-| 9. Assessment | Judge independent performance | artifacts, runtime results, rubric | scores, observed behavior, evidence, next action | every critical dimension meets its evidence threshold | “Score the evidence and name the earliest causal gap.” |
-| 10. Outcome Preparation | Make verified capability evaluable in context | verified evidence and target route | portfolio, work sample, demo, or handoff | target evaluators can verify relevant evidence | “Prepare the target materials using verified evidence only.” |
-| 11. Continuous Optimization | Adapt through explainable version changes | progress, quality, feedback, triggers | diagnosis, version change, expected effect, review date | cause is explained and affected artifacts rechecked | “Update the system from this week’s evidence and keep history.” |
+Each request uses exactly one mode:
 
-When goals compete for the same capacity, name one primary goal. Compatible work may be secondary; incompatible work is deferred with a review condition.
+| Mode | When it applies | Default result |
+| --- | --- | --- |
+| Career diagnosis | Direction, fit, feasibility, realistic expectations, or the need for structured support is unresolved | One-page diagnosis and one minimum validation action |
+| Learning route | The direction is sufficiently clear, or the user explicitly requests a route | At most three stages, evidence projects, and one action for this week |
+| Learning help | Concept confusion, an action gap, project-start difficulty, an error, missed work, a changed goal, or supplied material | One action, success signal, fallback check, and route impact |
 
-## Learning support and problem decomposition
+Reuse goals, experience, constraints, conclusions, and feedback already in the conversation. Ask no question when the evidence supports a useful next step. Ask only one decisive question when one missing fact could change the judgment or action. Do not launch a fixed questionnaire or predeclare a compulsory chain of later steps.
 
-Learning support is not a twelfth stage. It is a horizontal loop available during execution: hear the problem, locate the earliest blocker, distinguish plausible causes, shrink the problem to one action, define success, try, verify, and assess plan impact. The learner can speak naturally and does not need to know the workflow or data model.
+## Evidence categories and judgment boundaries
 
-Internally, the Skill distinguishes nine issue types: knowledge confusion, theory-to-practice transfer, unclear starting point, prerequisite gap, tool or environment failure, oversized task, resource mismatch, capacity change, and goal change. A type is a hypothesis for organizing the next decision. It never replaces the learner's words or justifies a judgment about diligence, intelligence, personality, or a fixed learning style.
+Separate three layers in every important judgment:
 
-There are three interaction modes:
+- **Known facts:** the user's stated situation and observable results;
+- **Inference:** a judgment supported by named facts or evidence;
+- **Uncertainty:** missing, conflicting, or unvalidated information that may change the conclusion.
 
-- `direct_action`: context is sufficient and risk is low, so provide one action, one success signal, and one fallback;
-- `guided_diagnosis`: multiple causes remain plausible or decisive information is missing, so ask one decision-changing question per turn;
-- `safety_handoff`: medical, mental-health, legal, financial, security, or production risk requires an explicit boundary and appropriate human or qualified review.
+Career direction uses five evidence dimensions: the actual desired result; current work and project experience; time, budget, equipment, language, and learning conditions; observed response to coding, product, content, process, or workplace tasks; and the result of a minimum experience task.
 
-The beginner-facing reply shows only six useful fields: where you are stuck, the initial read, one action now, what success looks like, one fallback, and whether the plan changes. With an authorized learner workspace, structured records may be stored under `learning-issues/*.yaml`; YAML is hidden by default. Resolving an issue records that a blocker was addressed, not that independent capability was proven.
+Interest, confidence, education, certificates, course attendance, and content completion may inform a hypothesis but cannot independently prove capability, independent delivery, or job readiness. A diagnosis uses one of four levels: stronger fit, worth testing with a named risk, do not invest heavily yet, or insufficient evidence—validate first.
 
-Plan adjustment uses the smallest justified impact:
+## Five visible AI directions
 
-| Level | When it applies | Change scope |
-|---|---|---|
-| `none` | one bounded check lets learning continue | no plan artifact changes |
-| `task` | the active task must be split, replaced, scaffolded, or rescheduled | current task only |
-| `week` | capacity, dependencies, or several commitments changed | weekly plan and minimum delivery |
-| `roadmap` | persistent capacity, prerequisite, or project-sequence evidence changes phase feasibility | roadmap and affected downstream gates |
-| `goal_system` | target, deadline, success evidence, or career/business route changed | return to Goal Analysis and rebuild affected artifacts |
+| Direction | Work object | Strong evidence | Common false positive | Primary risk |
+| --- | --- | --- | --- | --- |
+| AI Agent Development | Model-, API-, tool-, and workflow-based systems | Independently builds, inspects, debugs, evaluates, and delivers a bounded Agent or automation | A copied demo runs once | Weak software fundamentals make failures opaque and delivery unreliable |
+| Vibe Coding / AI Application Building | User-facing software built with AI assistance | Understands, changes, tests, debugs, and deploys assisted code | Generated code or a polished screen alone | Speed hides correctness, security, and maintenance gaps |
+| AI Product Management | User and business problems translated into testable AI decisions | Defines capability boundaries, failure cases, a prototype, metrics, and acceptance criteria | Feature ideas or prompt lists alone | Probabilistic model behavior is treated as deterministic |
+| AI Operations | Content/Growth or Business Efficiency | Produces a measurable result and explains AI's causal contribution | Content volume, impressions, tool count, or automation count alone | Quantity displaces audience response, business value, or process safety |
+| AI Tools and Workplace Application | Real role-specific deliverables and workflows | Repeatable improvement in quality, time, verification, or collaboration | Tool familiarity or one unverified draft | A cross-role capability is mistaken for a standalone career |
 
-One missed task or first failure does not justify `roadmap`. Escalation needs repeated evidence or a confirmed real-world change. A `goal_system` change preserves history and cannot be disguised as a small weekly edit.
+## Six minimum experience tasks
 
-## Artifacts and structured state
+When evidence is weak or two directions remain plausible, use the smallest real task that separates them:
 
-Each stage returns two synchronized layers:
+1. **Agent:** complete a bounded model/API task and diagnose one induced failure;
+2. **Vibe Coding:** build a small tool, then implement and verify one changed requirement;
+3. **AI Product:** specify one AI feature with limitations, failure cases, and acceptance criteria;
+4. **Content/Growth Operations:** complete one research-to-distribution loop and review the observed result;
+5. **Business Efficiency Operations:** map one real process and validate one bounded automation point with its user;
+6. **AI Tools:** redo one real work deliverable and compare before/after quality or time.
 
-1. concise prose stating the decision, decisive evidence, uncertainty, and one next action;
-2. the canonical `engine_result` recording inputs, decisions, evidence, assumptions, confidence, writes, downstream effects, gate, and next action.
+The evidence is the observed result: what worked, what failed, what changed, and what the user can explain. One task is not a lifelong fit verdict, but it is more useful than a self-rating.
 
-```yaml
-engine_result:
-  engine: goal-analysis
-  run_id: run-2026-001
-  status: needs_input
-  summary: Direction is clear, but deadline and success evidence are missing
-  inputs_used: [learner-statement-001]
-  decisions: []
-  evidence_refs: []
-  assumptions: []
-  confidence: low
-  artifacts_written: []
-  affected_downstream: [gap-analysis]
-  gate:
-    passed: false
-    missing: [deadline, success-evidence]
-  next_action: Confirm the date and artifact that would demonstrate success
+## A learning route of at most three stages
+
+When the direction is clear, organize the route in this order:
+
+1. **Target:** the desired result and observable evidence;
+2. **Current starting point:** demonstrated capability, experience, constraints, and important unknowns;
+3. **Stage 1:** the first missing capability and its proving deliverable;
+4. **Stage 2:** the next capability and deliverable, only when needed;
+5. **Stage 3:** a bounded target-level deliverable, only when earlier stages do not reach the target;
+6. **Evidence project for each stage:** realistic work, its observable result, and acceptance check;
+7. **Only this week's action:** one capacity-aware action and completion signal;
+8. **Biggest assumption or constraint:** the one factor most likely to change the route.
+
+Define outcomes, deliverables, and evidence projects before resources. Explain the job each resource serves and keep it replaceable. Course completion is not evidence. Do not create a daily plan unless asked.
+
+## Learning-help output
+
+Learning help locates the smallest current blocker and returns, in order:
+
+1. where the user is stuck;
+2. the most likely cause, with uncertainty labeled;
+3. one action to do first;
+4. an observable success signal;
+5. one fallback check if it fails;
+6. whether the route is unchanged, the current task changes, the stage changes, or the direction must be reconsidered after a changed goal.
+
+For an error, use the exact message, reproduction steps, input, output, and environment already supplied; ask only for the decisive missing item. For missed work, distinguish a one-off interruption from a persistent capacity mismatch. For a changed goal, identify whether the target or only the current task changed. One failure does not automatically invalidate the route.
+
+## When the user supplies material
+
+First decide whether the material is relevant to the current target. Classify relevant content as fact, opinion, example, inference, or unknown. Extract only what the active action needs, explain the key dependency in beginner language, and select one retrieval, practice, or transfer action.
+
+If a page, file, or complete excerpt was not actually available, say so rather than fabricating access. A summary is learning activity; it is not automatic proof of understanding, transfer, or independent capability.
+
+## Boundary for non-AI requests
+
+Say plainly when a target is mainly outside AI. ZJSkills may still clarify the target, facts, assumptions, unknowns, and constraints; organize user-supplied material; design a small validation task; or decompose a current learning blocker.
+
+If occupational standards, market data, licensing requirements, safety rules, or readiness criteria lack reliable support, identify the evidence gap and request the smallest reliable source, rubric, example, or qualified feedback. Do not impersonate a domain expert or manufacture an authoritative detailed route.
+
+## Safety and commercial neutrality
+
+- Do not promise employment, transition, promotion, income, admission, client results, or external acceptance.
+- Do not replace qualified medical, legal, financial, or mental-health judgment. Narrow advice and recommend appropriate professional help in consequential or unsafe situations.
+- Do not request sensitive information unrelated to the current judgment. Redact code, resumes, client material, and error logs first.
+- Do not fabricate access, execution, deployment, or file writes.
+- Compare self-study, structured support, free resources, and paid courses only by constraints, feedback needs, practice access, and evidence value.
+- Do not recommend a course, community, or service because the maintainer benefits, and never imply that purchase guarantees a result.
+
+## Saved Markdown shape
+
+Chat is the default output. Only an explicit request to save, export, or maintain a continuing route creates **one** Markdown file:
+
+```markdown
+# My ZJSkills Route
+
+## Current diagnosis
+## Target
+## Stage 1
+## Stage 2 (if needed)
+## Stage 3 (if needed)
+## Current action
+## Evidence
+## Update log
 ```
 
-Whenever `gate.missing` is non-empty, `gate.passed` remains `false`. Use `needs_input` for an unanswered question that can materially change the decision. Reserve `blocked` for a substantive obstacle to safe progress. Low-risk work may become a `draft` only with explicit assumptions and a validation action.
+Append only observed results and resulting route changes to the update log. Do not create extra state files by default or claim a successful save without write access.
 
-Persistent artifacts retain a stable `id` and increment `content_version`. Material changes create a new version; old versions become `superseded` or archived instead of being overwritten. Resume from the earliest failed gate without rebuilding validated upstream decisions.
+## Public support note
 
-The Skill assumes no global or automatic storage directory. To continue across tasks, name a learner workspace you authorize and ask it to persist the entry state as `system-state.yaml` in that directory; other schema-backed artifacts live in the same workspace or its subdirectories. If the current tool cannot write files, state remains in the conversation and `artifacts_written` must be empty. In a new task, provide the workspace path again and ask the Skill to read and validate `system-state.yaml` first.
+If you encounter usage issues, planning questions, or other unresolved problems while using ZJSkills, contact Zhijian to join the Q&A group.
 
-Before writing, compare the loaded active version and timestamp or content hash with the file on disk. On an external modification, stop automatic overwrite, preserve both states, and request a merge decision. Preserve corrupt state and a recovery trace; if no valid version can be identified deterministically, return `blocked` instead of inventing one.
-
-## Evidence and capability judgment
-
-Important claims use `epistemic_class` independently from operational source and confidence:
-
-- `fact`: verifiable through a stable external source;
-- `self-report`: what the learner says about themselves;
-- `evidence`: artifact, code, test, review, or observed performance;
-- `inference`: a conclusion derived from inputs;
-- `assumption`: a temporary premise that enables a draft and still needs validation.
-
-Self-report can form a hypothesis, but cannot by itself prove independent delivery. Contradictory evidence remains visible, lowers confidence, and triggers the smallest discriminating assessment.
-
-Watching videos, reading books, attending programs, checking boxes, earning certificates, and feeling confident are activity evidence. Capability evidence asks whether the learner can:
-
-- complete a bounded real task independently;
-- explain trade-offs and limits;
-- modify the solution for changed requirements;
-- debug failures;
-- deploy or deliver with rollback evidence;
-- teach or review the work.
-
-Assessment distinguishes `understanding`, `guided`, `independent`, and `transfer` and cites resolved evidence IDs. A failed project should roll back to its earliest causal gap, not automatically add more advanced theory.
-
-## Versioning, review, and optimization
-
-Replanning triggers include target changes; altered time, budget, tools, or access; persistently low completion; weak retention or transfer; project, interview, or delivery feedback; and stale technical, market, or regulatory evidence.
-
-Record stable ID, prior and new version, trigger, reason, evidence, assumptions, confidence, rollback target, timestamps, and `affected_downstream`. Revalidate dependencies and gates before activation. Define an observation window and success measure so one noisy result does not cause constant route changes.
-
-Useful review inputs include planned versus actual hours, minimum delivery status, retrieval performance, project rubric results, failure category, external feedback, and constraint changes. Optimize transfer and delivery probability, not content completion.
-
-## Failure and safety boundaries
-
-- Feasibility: expose conflicts among target, deadline, capacity, budget, and environment; offer trade-offs or a minimum viable outcome without promising external results.
-- Privacy: collect the minimum decision-relevant information and redact portfolios, resumes, feedback, and enterprise data. Never store passwords, API keys, identity documents, or unauthorized data.
-- High-risk decisions: hiring policy, law, health, finance, production safety, and current-market claims need dated sources, limitations, and appropriate qualified review.
-- External evidence: record access date and scope. When sources are stale, contradictory, or too weak, return `needs_input` or a validation action.
-- Tool honesty: never claim a search, deployment, or write that did not occur. `artifacts_written` contains only persisted files.
-- Public claims: do not write “mastered,” “independent delivery,” or “job ready” into public materials without resolved evidence.
-- Outcomes: the Skill cannot guarantee employment, promotion, revenue, venture success, project acceptance, or another party’s decision.
-
-Maintainers can run:
-
-```bash
-python3 learning-architect/scripts/validate_learning_system.py \
-  --skill-root learning-architect \
-  --learner-dir tests/learning-architect/fixtures/valid-learner
-python3 -m unittest tests/learning-architect/test_validate_learning_system.py -q
-```
+The support note belongs only in public documentation; the runtime remains commercially neutral. See [Scenarios and Prompts](examples.en.md) for practical inputs.
