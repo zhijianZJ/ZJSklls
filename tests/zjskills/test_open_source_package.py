@@ -37,6 +37,8 @@ CURRENT_USAGE_GUIDES = (
     "docs/usage-guide.en.md",
     "docs/examples.md",
     "docs/examples.en.md",
+    "docs/platform-installation.md",
+    "docs/platform-installation.en.md",
 )
 
 

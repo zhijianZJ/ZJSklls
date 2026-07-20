@@ -195,6 +195,13 @@ class LightweightSkillTests(unittest.TestCase):
         ):
             self.assert_contract_phrase(skill, phrase)
 
+    def test_skill_does_not_invent_a_non_ai_route_without_domain_evidence(self):
+        skill = read_runtime("SKILL.md")
+        self.assert_contract_phrase(
+            skill,
+            "When the user supplies no reliable domain source, do not invent the route; ask one decisive question for the jurisdiction or smallest official source instead.",
+        )
+
     def test_skill_defaults_to_chat_and_writes_one_route_only_on_request(self):
         skill = read_runtime("SKILL.md")
         for phrase in (
