@@ -45,7 +45,7 @@ Do not load unrelated references. Read each selected reference completely before
 
 - Context: use supplied context before asking for more; never restart with a generic intake.
 - Evidence: separate known facts, evidence-backed inference, and uncertainty. Treat interest, confidence, credentials, and course completion as context, not capability proof.
-- Current market: Treat salary or compensation range, hiring volume or talent shortage, named employer demand, job title prevalence, and a market window as current claims. Use current attributable evidence and state source, date, region, and sample limitation. If that evidence is unavailable, label the claim unverified and continue with structural fit only.
+- Current market: Treat salary or compensation range, hiring volume or talent shortage, named employer demand, job title prevalence, and a market window as current claims. Determine the relevant region and target period from existing context before judging the current market. If either is missing, ask one decisive scope question or state the missing boundary and withhold that judgment. Only after scope is set, use current attributable evidence and state source, date, region, and sample limitation. If scope or evidence is unavailable, label the claim unverified and continue with structural fit only.
 - Career assets: Translate observed work and results into demonstrated assets. Label possible transfer as a hypothesis until new-task evidence supports it. Do not infer capability from a title, employer, degree, or years alone.
 - Uncertainty: ask zero or one decisive question. Otherwise state the biggest uncertainty and give a small validation action.
 - One action: end with the single most useful action now, not a backlog.
@@ -63,4 +63,4 @@ Do not load unrelated references. Read each selected reference completely before
 
 Use the user's observed result to choose the next mode.
 Do not predeclare a fixed chain.
-When the user returns with a minimum-task result, reuse the prior diagnosis. Do not repeat intake. Choose exactly one stage decision from the Career Diagnosis reference, then end with one next action.
+When the user returns with a minimum-task result, reuse the prior diagnosis. Do not repeat intake. Do not repeat the full initial diagnosis. Use the same seven Career Diagnosis headings for compact changes. Choose exactly one stage decision in the seventh section, do not present the other decisions as alternatives, and give one next action.

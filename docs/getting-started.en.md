@@ -32,7 +32,7 @@ My job title is [title]. The problem I repeatedly solved was [problem], and the 
 
 ## What a one-page career diagnosis contains
 
-The default diagnosis stays within seven compact sections:
+The initial diagnosis stays within seven compact sections:
 
 1. current situation;
 2. transferable career assets;
@@ -50,7 +50,7 @@ After completing the minimum experience task in section 6, return to the same co
 I completed the minimum experience task. The observed result was [result]. Reuse the previous diagnosis and decide whether I am ready to enter a route, still need comparison, should build foundations first, or should apply this in my current role first. Give only one next step.
 ```
 
-This response makes one current stage decision. Only “ready to enter a route” hands off to Learning route. The other decisions remain in Career diagnosis and use one action to close the most important evidence or foundation gap.
+This review uses the same seven headings but records only changes caused by the new evidence instead of repeating the full diagnosis. Its seventh section gives one current stage decision and one next action without expanding the other three alternatives. Only “ready to enter a route” hands off to Learning route. The other decisions remain in Career diagnosis and use one action to close the most important evidence or foundation gap.
 
 ## Reply “Continue”: expand a learning route
 

@@ -16,7 +16,7 @@ Each request uses exactly one mode:
 
 Reuse goals, experience, constraints, conclusions, and feedback already in the conversation. Ask no question when the evidence supports a useful next step. Ask only one decisive question when one missing fact could change the judgment or action. Do not launch a fixed questionnaire or predeclare a compulsory chain of later steps.
 
-Career diagnosis keeps seven visible sections: current situation, transferable career assets, real problem to solve, opportunity hypotheses, judgment and evidence, one minimum validation action, and how the result changes the decision. It is not a long report by default; each section keeps only what can change the judgment or action.
+An initial Career diagnosis keeps seven visible sections: current situation, transferable career assets, real problem to solve, opportunity hypotheses, judgment and evidence, one minimum validation action, and how the result changes the decision. It is not a long report by default; each section keeps only what can change the judgment or action. A returned-result review uses the same seven headings but writes only compact changes caused by the new evidence instead of repeating the full diagnosis; the seventh section gives only the selected stage decision and one next action.
 
 ## Evidence categories and judgment boundaries
 
@@ -38,7 +38,7 @@ Career diagnosis does not map a job title directly to a new career. It translate
 - **Transfer hypotheses:** existing assets that may create value in the target direction but still need testing with a new work object, tool, or constraint;
 - **Unverified boundaries:** areas with no evidence, conflicting evidence, or enough decision impact to require validation.
 
-Start with the problems the person repeatedly solved, who benefited, and the observed results, then describe the new tasks where that asset may transfer. A title, tenure, or certificate supplies context but does not automatically become a demonstrated asset. The result is an opportunity hypothesis with a test, not a guarantee of fit.
+Start with the problems the person repeatedly solved, who benefited, and the observed results, then describe the new tasks where that asset may transfer. A title, tenure, or certificate supplies context but does not automatically become a demonstrated asset. Each opportunity may include a candidate validation idea, but those ideas are alternatives rather than parallel assignments; select only the one action expected to reduce the current decision uncertainty most. That action may test one stronger hypothesis or contrast two still-plausible hypotheses. The result is an opportunity hypothesis with a test, not a guarantee of fit.
 
 ## Five visible AI directions
 
@@ -72,7 +72,7 @@ When a user returns with a minimum-experience result, remain in Career diagnosis
 3. **Build foundations first:** a prerequisite is missing, so give one bounded foundation action and observe the result;
 4. **Apply in the current role first:** evidence or conditions for a direct move remain weak, so create a real deliverable and feedback loop in the current role.
 
-Only the first decision hands off to Learning route. The other three continue evidence collection with one observable action. Do not turn one success or failure into a permanent conclusion or an automatic long-term route.
+The review keeps the seven headings but records only changes caused by the new evidence; its seventh section presents the selected decision and one next action instead of expanding the other three as alternatives. Only the first decision hands off to Learning route. The other three continue evidence collection with one observable action. Do not turn one success or failure into a permanent conclusion or an automatic long-term route.
 
 ## A learning route of at most three stages
 
@@ -110,7 +110,7 @@ If a page, file, or complete excerpt was not actually available, say so rather t
 
 ## Evidence boundary for current market information
 
-Treat “current salary,” “hiring now,” “hiring window,” job counts, or trends as current market facts only when the answer can name the **source, publication date, applicable region, and sample or method limitations**. For a user-supplied screenshot, job page, or report, separate the source observation, sample scope, and inference; one sample cannot represent the whole market.
+For “current salary,” “hiring now,” “hiring window,” job counts, or trends, first determine the **applicable region and target period** from existing context. If either is missing, ask one scope question only when it would change the judgment; otherwise state the missing boundary and withhold the current-market judgment. Once scope is set, treat a claim as a current market fact only when the answer can name the **source, publication date, applicable region, and sample or method limitations**. For a user-supplied screenshot, job page, or report, separate the source observation, sample scope, and inference; one sample cannot represent the whole market.
 
 When those conditions are missing, explicitly withhold a specific salary, window, or trend claim instead of filling the gap with a guess. Structural guidance is still useful: break down common work objects, define fields to collect from local job postings, or design a small job-sample check. If the current fact would change the decision, ask only for the smallest reliable source.
 

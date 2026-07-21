@@ -10,6 +10,12 @@
 
 ## Global Constraints
 
+Post-review clarifications supersede narrower examples later in this plan:
+
+- opportunity-level validation ideas are alternatives; select one current action by expected reduction in decision uncertainty, without requiring a leading hypothesis;
+- a returned-result review retains the seven Career Diagnosis headings as a compact delta, with only one selected stage decision and one next action in the seventh section;
+- reuse any supplied target period before asking for missing market scope, so the `current-market-without-region` scenario asks only for its missing region or states that boundary.
+
 - Release version is exactly `3.1.0`.
 - Keep exactly three modes: Career Diagnosis, Learning Route, and Learning Help.
 - Keep exactly six tracked runtime files under `zjskills/`.

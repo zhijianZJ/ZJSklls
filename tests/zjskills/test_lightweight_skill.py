@@ -28,16 +28,28 @@ EXPECTED_SCENARIO_IDS = (
     "changed-goal",
     "non-ai-without-source",
     "enough-context-no-question",
+    "broad-title-assets",
+    "demonstrated-transferable-asset",
+    "returned-validation-result",
+    "current-market-without-region",
+    "supplied-postings-market",
 )
 
 EXPECTED_EVALUATION_DIMENSIONS = (
     "mode",
     "question_count",
     "main_action_count",
-    "evidence_boundary",
+    "asset_evidence_boundary",
+    "opportunity_count",
+    "stage_decision_closure",
+    "current_market_source_boundary",
     "promise_boundary",
     "recommendation_fit",
     "beginner_readability",
+)
+
+EXPECTED_CURRENT_MARKET_PROMPT = (
+    "AI建筑产品经理现在薪资多少？未来12到24个月是不是黄金窗口？直接给结论。"
 )
 
 
@@ -101,7 +113,7 @@ class LightweightSkillTests(unittest.TestCase):
     def test_runtime_contains_only_the_six_approved_files(self):
         self.assertEqual(tracked_runtime_files(), EXPECTED_RUNTIME_FILES)
 
-    def test_forward_scenario_inventory_has_exactly_the_ten_approved_ids(self):
+    def test_forward_scenario_inventory_has_exactly_the_fifteen_approved_ids(self):
         inventory = SCENARIO_INVENTORY.read_text(encoding="utf-8")
         scenario_ids = tuple(
             re.findall(r"(?m)^\s*-\s*\{id:\s*([^,}\s]+)", inventory)
@@ -116,6 +128,15 @@ class LightweightSkillTests(unittest.TestCase):
             match = re.search(r'prompt:\s*"(.+?)"\s*}', entry)
             self.assertIsNotNone(match, entry)
             self.assertTrue(match.group(1).strip(), entry)
+
+    def test_current_market_scenario_supplies_period_but_not_region(self):
+        inventory = SCENARIO_INVENTORY.read_text(encoding="utf-8")
+        match = re.search(
+            r'(?m)^\s*-\s*\{id:\s*current-market-without-region,.*prompt:\s*"([^"]+)"\s*\}\s*$',
+            inventory,
+        )
+        self.assertIsNotNone(match)
+        self.assertEqual(match.group(1), EXPECTED_CURRENT_MARKET_PROMPT)
 
     def test_forward_scenario_inventory_has_exact_evaluation_dimensions(self):
         inventory = SCENARIO_INVENTORY.read_text(encoding="utf-8")
@@ -222,6 +243,28 @@ class LightweightSkillTests(unittest.TestCase):
             self.assertIn(claim, combined)
         for field in ("source", "date", "region", "sample limitation"):
             self.assertIn(field, combined)
+
+    def test_current_market_protocol_sets_scope_before_market_judgment(self):
+        diagnosis = read_runtime("references/career-diagnosis.md")
+        market_section = self.level_two_section(
+            diagnosis, "Current-market evidence"
+        )
+        scope = "Determine the relevant region and target period from the existing context first."
+        missing = "If either scope item is missing"
+        judgment = "Only after the scope is set"
+        for phrase in (scope, missing, judgment):
+            self.assert_contract_phrase(market_section, phrase)
+        self.assertLess(market_section.index(scope), market_section.index(judgment))
+        self.assertIn("ask one key scope question", market_section)
+        self.assertIn("state the missing boundary", market_section)
+        self.assertIn(
+            "When the target period is already supplied, reuse it and do not ask for it again.",
+            market_section,
+        )
+        self.assertIn(
+            "If only the region is missing, ask only for the region or state that boundary.",
+            market_section,
+        )
 
     def test_missing_current_market_evidence_does_not_block_structural_guidance(self):
         diagnosis = read_runtime("references/career-diagnosis.md")
@@ -356,6 +399,20 @@ class LightweightSkillTests(unittest.TestCase):
         self.assertIn("no more than three opportunity hypotheses", diagnosis)
         self.assertIn("Do not infer capability from a title, employer, degree, or years of experience alone.", diagnosis)
 
+    def test_opportunity_hypotheses_do_not_create_parallel_assignments(self):
+        diagnosis = read_runtime("references/career-diagnosis.md")
+        for phrase in (
+            "candidate validation idea",
+            "not a current assignment",
+            "Choose exactly one current minimum action from the candidate validation ideas",
+            "reduce the current decision uncertainty",
+            "test one stronger hypothesis",
+            "contrast two still-plausible hypotheses",
+            "Never ask the user to execute validation ideas for multiple hypotheses in parallel.",
+        ):
+            self.assert_contract_phrase(diagnosis, phrase)
+        self.assertNotIn("leading hypothesis", diagnosis.lower())
+
     def test_skill_keeps_asset_reasoning_evidence_bounded(self):
         skill = read_runtime("SKILL.md")
         self.assertIn("Translate observed work and results into demonstrated assets", skill)
@@ -382,6 +439,31 @@ class LightweightSkillTests(unittest.TestCase):
             "Do not repeat intake.",
         ):
             self.assert_contract_phrase(skill, phrase)
+
+    def test_returned_result_review_emits_only_one_decision_and_one_action(self):
+        diagnosis = read_runtime("references/career-diagnosis.md")
+        for phrase in (
+            "For an initial diagnosis",
+            "For a returned-result review",
+            "use the same seven headings",
+            "write only compact changes",
+            "Under `How the result changes the decision`",
+            "output only the selected stage decision and one next action",
+            "Do not list the other three decisions",
+        ):
+            self.assert_contract_phrase(diagnosis, phrase)
+        self.assertIn(
+            "Do not repeat the full initial diagnosis.", diagnosis
+        )
+
+    def test_diagnosis_has_exactly_one_current_action_contract(self):
+        diagnosis = read_runtime("references/career-diagnosis.md")
+        for phrase in (
+            "Select exactly one current minimum action from the candidate validation ideas",
+            "greatest expected reduction in current decision uncertainty",
+            "The candidate validation ideas are alternatives, not additional actions.",
+        ):
+            self.assert_contract_phrase(diagnosis, phrase)
 
     def test_returned_diagnosis_result_routes_to_diagnosis_not_learning_help(self):
         load_section = self.level_two_section(

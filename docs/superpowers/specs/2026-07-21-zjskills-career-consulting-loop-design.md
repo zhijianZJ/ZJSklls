@@ -35,7 +35,7 @@ After one compact consultation cycle, the user should understand:
 - which past experience is demonstrated career capital;
 - how that capital may transfer into one to three AI opportunity hypotheses;
 - which claim is still uncertain;
-- what one real task can test the leading hypothesis;
+- what one real task can reduce the current decision uncertainty most, either by testing one stronger hypothesis or contrasting two plausible hypotheses;
 - how the observed result maps to a stage decision;
 - whether the next step is another comparison, a foundation repair, current-role AI application, or a learning route.
 
@@ -95,7 +95,9 @@ Each hypothesis contains:
 - the work object or bounded direction;
 - the demonstrated asset it could reuse;
 - the primary capability or evidence gap;
-- one small task that could raise or lower confidence.
+- one candidate validation idea that could raise or lower confidence.
+
+Candidate validation ideas are alternatives, not parallel assignments. Select exactly one current action based on the greatest expected reduction in decision uncertainty; do not require a leading hypothesis before making that selection.
 
 Do not output a default Top 5 list, star rating, percentage fit score, salary, or market claim. A hypothesis is a testable interpretation, not a job guarantee.
 
@@ -121,6 +123,8 @@ Rules:
 - give one minimum action, not parallel tasks;
 - state observable success, failure, or ambiguous signals that map to the next stage decision.
 
+A returned-result review keeps the same seven headings but writes only evidence-driven changes. Its seventh section contains exactly one selected stage decision and one next action; it does not list the other decisions or repeat the full initial diagnosis.
+
 ## 8. Consultation Closure
 
 When the user returns with the result of a minimum experience task, reuse the prior diagnosis and do not repeat intake. Interpret the new evidence and choose exactly one stage decision:
@@ -130,7 +134,7 @@ When the user returns with the result of a minimum experience task, reuse the pr
 3. **Foundation or constraint first:** a basic capability or real constraint blocks a useful direction judgment; give one repair action.
 4. **Current-role application first:** the best next move is a bounded AI application in the current role before a transition decision.
 
-The reply ends with one next action. It does not require an endless sequence of experiments and does not claim that one task proves long-term fit.
+The reply keeps the seven-heading Career Diagnosis contract and ends its seventh section with one selected decision and one next action. It does not require an endless sequence of experiments and does not claim that one task proves long-term fit.
 
 ## 9. Current-Market Evidence Gate
 

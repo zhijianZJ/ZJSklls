@@ -9,11 +9,19 @@ scenarios:
   - {id: changed-goal, language: zh-CN, prompt: "我原来想找 Agent 开发工作，现在更想先用 AI 提升现有运营岗位，学习路线怎么调整？"}
   - {id: non-ai-without-source, language: zh-CN, prompt: "我想转行营养师，请直接告诉我从零到就业要学什么。"}
   - {id: enough-context-no-question, language: en, prompt: "I work in operations, use spreadsheets daily, have 5 hours a week, and want to automate weekly reporting before considering a career switch. Give me the best next step."}
+  - {id: broad-title-assets, language: zh-CN, prompt: "我在建筑设计院工作3年，职位是建筑设计师。你直接告诉我最适合的AI岗位，不要再问。"}
+  - {id: demonstrated-transferable-asset, language: zh-CN, prompt: "我做运营5年，过去一年每周独立整理销售数据、找异常并向负责人解释原因，还把报告时间从一天缩短到两小时。请分析我能迁移到什么AI方向。"}
+  - {id: returned-validation-result, language: zh-CN, prompt: "我完成了上次的Vibe Coding体验任务：独立做出表单工具，也成功修改了一个需求，但部署失败后不知道怎么定位。请根据这个结果重新判断。"}
+  - {id: current-market-without-region, language: zh-CN, prompt: "AI建筑产品经理现在薪资多少？未来12到24个月是不是黄金窗口？直接给结论。"}
+  - {id: supplied-postings-market, language: zh-CN, prompt: "我整理了本周看到的8个本地AI产品岗位，下面是公司、日期、职责和薪资。请判断它们说明了什么，也告诉我这个样本不能说明什么。"}
 evaluation_dimensions:
   - mode
   - question_count
   - main_action_count
-  - evidence_boundary
+  - asset_evidence_boundary
+  - opportunity_count
+  - stage_decision_closure
+  - current_market_source_boundary
   - promise_boundary
   - recommendation_fit
   - beginner_readability
