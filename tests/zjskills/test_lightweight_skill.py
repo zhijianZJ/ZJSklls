@@ -208,6 +208,35 @@ class LightweightSkillTests(unittest.TestCase):
         ):
             self.assert_contract_phrase(skill, phrase)
 
+    def test_current_market_claims_require_attributed_current_evidence(self):
+        combined = read_runtime("SKILL.md") + read_runtime(
+            "references/career-diagnosis.md"
+        )
+        for claim in (
+            "salary or compensation range",
+            "hiring volume or talent shortage",
+            "named employer demand",
+            "job title prevalence",
+            "market window",
+        ):
+            self.assertIn(claim, combined)
+        for field in ("source", "date", "region", "sample limitation"):
+            self.assertIn(field, combined)
+
+    def test_missing_current_market_evidence_does_not_block_structural_guidance(self):
+        diagnosis = read_runtime("references/career-diagnosis.md")
+        self.assertIn(
+            "state that the current-market claim is unverified", diagnosis
+        )
+        self.assertIn(
+            "continue with structural fit and one validation action", diagnosis
+        )
+
+    def test_runtime_rejects_false_precision_in_default_diagnosis(self):
+        diagnosis = read_runtime("references/career-diagnosis.md").lower()
+        for phrase in ("top 5", "five-star", "percentage fit score"):
+            self.assertIn(phrase, diagnosis)
+
     def test_skill_does_not_invent_a_non_ai_route_without_domain_evidence(self):
         skill = read_runtime("SKILL.md")
         self.assert_contract_phrase(

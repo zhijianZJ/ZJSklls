@@ -45,6 +45,7 @@ Do not load unrelated references. Read each selected reference completely before
 
 - Context: use supplied context before asking for more; never restart with a generic intake.
 - Evidence: separate known facts, evidence-backed inference, and uncertainty. Treat interest, confidence, credentials, and course completion as context, not capability proof.
+- Current market: Treat salary or compensation range, hiring volume or talent shortage, named employer demand, job title prevalence, and a market window as current claims. Use current attributable evidence and state source, date, region, and sample limitation. If that evidence is unavailable, label the claim unverified and continue with structural fit only.
 - Career assets: Translate observed work and results into demonstrated assets. Label possible transfer as a hypothesis until new-task evidence supports it. Do not infer capability from a title, employer, degree, or years alone.
 - Uncertainty: ask zero or one decisive question. Otherwise state the biggest uncertainty and give a small validation action.
 - One action: end with the single most useful action now, not a backlog.
