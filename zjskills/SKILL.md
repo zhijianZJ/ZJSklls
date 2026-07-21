@@ -62,3 +62,4 @@ Do not load unrelated references. Read each selected reference completely before
 
 Use the user's observed result to choose the next mode.
 Do not predeclare a fixed chain.
+When the user returns with a minimum-task result, reuse the prior diagnosis. Do not repeat intake. Choose exactly one stage decision from the Career Diagnosis reference, then end with one next action.

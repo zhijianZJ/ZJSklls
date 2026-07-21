@@ -43,6 +43,13 @@ When the user asks about a course, membership, mentor, community, or institution
 
 A diagnosis is not proof of capability. Never promise employment, promotion, income, admission, client results, or any other external outcome.
 
+When the user returns with the result, interpret the new evidence and choose exactly one stage decision:
+
+1. **Route ready:** one direction has enough support to enter Learning Route.
+2. **Comparison remains:** two hypotheses remain plausible; give one contrast task.
+3. **Foundation or constraint first:** one basic capability or real constraint blocks a useful direction judgment; give one repair action.
+4. **Current-role application first:** use one bounded AI application in the current role before deciding on a transition.
+
 Return the following headings in this exact order and keep each section compact.
 
 ## Your current situation
@@ -71,4 +78,4 @@ Give one small real task that can change confidence in the judgment.
 
 ## How the result changes the decision
 
-State what observable outcomes would strengthen, weaken, or leave the judgment unresolved.
+State the observable success, failure, and ambiguous signals. Map each signal to one of the four stage decisions above so the returned result closes one stage.

@@ -6,6 +6,8 @@ Use this mode when the target direction is sufficiently clear or the user explic
 
 Suggest resources and learning support after the target, stage outcomes, evidence projects, and current action are clear. Explain the job each option serves. When outside guidance would materially improve feedback, correction, practice access, accountability, or structure, include it as a valid route component with selection and progress criteria.
 
+When Career Diagnosis produced a handoff, reuse its stage decision, demonstrated assets, target direction, primary gap, and important constraint. Do not restart diagnosis. Show which existing asset each stage reuses when relevant.
+
 Default to a chat response. Save only when the user explicitly requests it, and create one Markdown route containing diagnosis, target, stages, current action, evidence, and an update log. Append observed results and route changes to that log. Do not create extra state files.
 
 Return the following headings in this exact order.

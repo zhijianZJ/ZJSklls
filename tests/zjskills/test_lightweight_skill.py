@@ -332,6 +332,39 @@ class LightweightSkillTests(unittest.TestCase):
         self.assertIn("Translate observed work and results into demonstrated assets", skill)
         self.assertIn("Label possible transfer as a hypothesis until new-task evidence supports it.", skill)
 
+    def test_career_diagnosis_defines_exactly_four_stage_decisions(self):
+        diagnosis = read_runtime("references/career-diagnosis.md")
+        decisions = re.findall(r"(?m)^\d+\. \*\*(.+?):\*\*", diagnosis)
+        self.assertEqual(
+            decisions,
+            [
+                "Route ready",
+                "Comparison remains",
+                "Foundation or constraint first",
+                "Current-role application first",
+            ],
+        )
+
+    def test_returned_result_reuses_context_and_closes_one_stage(self):
+        skill = read_runtime("SKILL.md")
+        for phrase in (
+            "When the user returns with a minimum-task result, reuse the prior diagnosis.",
+            "Choose exactly one stage decision",
+            "Do not repeat intake.",
+        ):
+            self.assert_contract_phrase(skill, phrase)
+
+    def test_learning_route_consumes_the_route_ready_handoff(self):
+        route = read_runtime("references/learning-route.md")
+        for phrase in (
+            "stage decision",
+            "demonstrated assets",
+            "target direction",
+            "primary gap",
+            "important constraint",
+        ):
+            self.assertIn(phrase, route)
+
     def test_learning_route_has_the_three_stage_output_contract(self):
         self.assertTrue((RUNTIME_ROOT / "references/learning-route.md").is_file())
         route = read_runtime("references/learning-route.md")
