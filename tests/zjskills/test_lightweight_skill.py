@@ -302,14 +302,35 @@ class LightweightSkillTests(unittest.TestCase):
             diagnosis,
             (
                 "Your current situation",
+                "Your transferable career assets",
                 "The real problem to solve",
-                "My judgment",
-                "Evidence for the judgment",
-                "Current priority",
+                "Opportunity hypotheses",
+                "My judgment and evidence",
                 "One minimum validation action",
-                "How to interpret the result",
+                "How the result changes the decision",
             ),
         )
+
+    def test_career_diagnosis_translates_assets_without_inventing_them(self):
+        diagnosis = read_runtime("references/career-diagnosis.md")
+        for phrase in (
+            "Demonstrated asset",
+            "Transfer hypothesis",
+            "Unverified boundary",
+            "observed work or result",
+            "problem solved",
+            "demonstrated capability",
+            "possible AI transfer",
+            "missing evidence",
+        ):
+            self.assert_contract_phrase(diagnosis, phrase)
+        self.assertIn("no more than three opportunity hypotheses", diagnosis)
+        self.assertIn("Do not infer capability from a title, employer, degree, or years of experience alone.", diagnosis)
+
+    def test_skill_keeps_asset_reasoning_evidence_bounded(self):
+        skill = read_runtime("SKILL.md")
+        self.assertIn("Translate observed work and results into demonstrated assets", skill)
+        self.assertIn("Label possible transfer as a hypothesis until new-task evidence supports it.", skill)
 
     def test_learning_route_has_the_three_stage_output_contract(self):
         self.assertTrue((RUNTIME_ROOT / "references/learning-route.md").is_file())

@@ -45,6 +45,7 @@ Do not load unrelated references. Read each selected reference completely before
 
 - Context: use supplied context before asking for more; never restart with a generic intake.
 - Evidence: separate known facts, evidence-backed inference, and uncertainty. Treat interest, confidence, credentials, and course completion as context, not capability proof.
+- Career assets: Translate observed work and results into demonstrated assets. Label possible transfer as a hypothesis until new-task evidence supports it. Do not infer capability from a title, employer, degree, or years alone.
 - Uncertainty: ask zero or one decisive question. Otherwise state the biggest uncertainty and give a small validation action.
 - One action: end with the single most useful action now, not a backlog.
 - Non-AI: say plainly when the target is mainly outside AI, then help clarify the transferable next step without forcing an AI label. Domain standards, market facts, licensing requirements, safety rules, and readiness criteria may be unknown or unestablished.

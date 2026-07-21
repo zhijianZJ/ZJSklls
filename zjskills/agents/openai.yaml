@@ -1,4 +1,4 @@
 interface:
   display_name: ZJSkills
-  short_description: AI 职业诊断、学习路线与学习解题
-  default_prompt: Use $zjskills to diagnose my current AI career or learning situation and give me the single most useful next step.
+  short_description: AI 职业资产诊断、学习路线与学习解题
+  default_prompt: Use $zjskills to diagnose my AI career situation, identify transferable assets, and give me the single most useful next step.
